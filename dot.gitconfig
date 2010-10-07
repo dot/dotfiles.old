@@ -1,0 +1,22 @@
+[user]
+	name = dot
+	email = shuhei.kondo@gmail.com
+[alias]
+    ci = commit -a
+    st = status
+    co = checkout
+    url = config --get remote.origin.url
+    pr = pull --rebase
+    b = branch
+[color]
+	diff = auto
+    status = auto
+    branch = auto
+    interactvie = auto
+
+[status]
+	diff = auto
+[branch]
+	diff = auto
+[core]
+	excludesfile = ~/.gitignore

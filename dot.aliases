@@ -1,0 +1,65 @@
+alias vi="vim"
+alias pushd=pd
+alias diff=colordiff
+alias psa='ps auxw'
+
+#### PAGER
+#alias less="$PAGER"
+alias m="$PAGER"
+alias -g L="| $PAGER"
+alias -g M="| $PAGER"
+alias les="less"        # for typo
+
+alias ls='ls -GF'
+#alias ls='ls -vGF'
+#alias ls='ls -F --show-control-chars --color=auto'
+alias la='ls -a'
+alias ll='ls -al'
+alias cdp='cd -P'
+
+#### command
+alias scr="screen -RU"
+alias view="vim -R"
+alias v="view"
+
+# mac applications
+alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+
+# for ruby
+alias be='bundle exec'
+alias bi='bundle install --path=$HOME/.gem'
+
+# browsing
+alias chrome='open -a /Applications/Chromium.app'
+
+# short name
+alias h='head'
+alias t='tail'
+alias g='grep'
+alias c='cat'
+alias j='jobs'
+#alias w='wc'   w は w のまま使う。
+
+alias -g H='| head'
+alias -g T='| tail'
+alias -g G='| grep'
+alias -g C='| cat -n'
+alias -g W='| wc'
+
+#### function
+function cd() { 
+  builtin cd $@ && ls;
+}
+
+function pst() {                # CPU 使用率の高い方から8つ
+  psa | head -n 1
+  psa | sort -r -n +2 | grep -v "ps -auxww" | grep -v grep | head -n 8
+}
+function psm() {                # メモリ占有率の高い方から8つ
+  psa | head -n 1
+  psa | sort -r -n +3 | grep -v "ps -auxww" | grep -v grep | head -n 8
+}
+function psg() {
+  psa | head -n 1
+  psa | grep $* | grep -v "ps -auxww" | grep -v grep
+}
