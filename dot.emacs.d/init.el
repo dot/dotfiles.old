@@ -1,16 +1,31 @@
 ;;; ========== Emacsの基本設定 ==========
+
 ; 言語を日本語にする
 (set-language-environment 'Japanese)
 ; 極力UTF-8とする
- (prefer-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
-;; プライベートなelispへのパス
-(setq load-path
-      (cons
-       (expand-file-name
-        "~/.emacs.d/site-lisp" ) load-path))
-;(add-to-list 'load-path "/Users/shuhei/.emacs.d/site-lisp/icicles")
+;; load paths
+(setq load-path (cons "~/.emacs.d/site-lisp/" load-path))
 
+;; auto-install
+(require 'auto-install)
+(add-to-list 'load-path auto-install-directory)
+;; emacs wiki
+(auto-install-update-emacswiki-package-name t)
+(auto-install-compatibility-setup)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;; fontセットを読み込む
+(load "~/.emacs.d/fontset.el")
+
+;; keybind
+;; switch cmd<=>meta for cocoa emacs
+(setq ns-command-modifier (quote meta))
+(setq ns-alternate-modifier (quote super))
+
+
+;;;; 見た目
 ;; モードラインの変更
 (display-time)
 (line-number-mode 1)
@@ -127,105 +142,6 @@
           "Set `ansi-color-for-comint-mode' to t." t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
-;; フォント
-;; fontset-consolas
-(create-fontset-from-mac-roman-font
- "-apple-consolas-medium-r-normal--14-*-*-*-m-0-mac-roman" nil "consolas")
-(set-fontset-font "fontset-consolas" 'japanese-jisx0208
-                  '("ヒラギノ角ゴ pro w3" . "jisx0208.1983"))
-(set-fontset-font "fontset-consolas" 'katakana-jisx0201
-                  '("ヒラギノ角ゴ pro w3" . "jisx0201.1976"))
-;; fontset-bitstream
-(create-fontset-from-mac-roman-font
- "-apple-bitstream vera sans mono-medium-r-normal--13-*-*-*-*-*-*-*" nil "bitstream")
-(set-fontset-font "fontset-bitstream" 'japanese-jisx0208
-                  '("ヒラギノ角ゴ pro w3" . "jisx0208.1983"))
-(set-fontset-font "fontset-bitstream" 'katakana-jisx0201
-                  '("ヒラギノ角ゴ pro w3" . "jisx0201.1976"))
-(set-fontset-font "fontset-bitstream" 'japanese-jisx0208
-                  '("IPAゴシック" . "iso10646"))
-(set-fontset-font "fontset-bitstream" 'katakana-jisx0201
-                  '("IPAゴシック" . "iso10646"))
-
-;; fontset-monaco
-;; (create-fontset-from-mac-roman-font
-;;  "-apple-monaco-medium-r-normal--12-*-*-*-*-*-iso10646-1" nil "monaco")
-;; (set-fontset-font "fontset-monaco" 'japanese-jisx0208
-;;                   '("ヒラギノ角ゴ pro w3" . "jisx0208.1983"))
-;; (set-fontset-font "fontset-monaco" 'katakana-jisx0201
-;;                   '("ヒラギノ角ゴ pro w3" . "jisx0201.1976"))
-;; fontset-anonymous
-;; (create-fontset-from-mac-roman-font
-;;  "-apple-anonymous-medium-r-normal--12-*-*-*-*-*-iso10646-1" nil "anonymous")
-;; (set-fontset-font "fontset-anonymous" 'japanese-jisx0208
-;;                   '("ヒラギノ角ゴ pro w3" . "jisx0208.1983"))
-;; (set-fontset-font "fontset-anonymous" 'katakana-jisx0201
-;;                   '("ヒラギノ角ゴ pro w3" . "jisx0201.1976"))
-;; fontset-mplus
-;; (create-fontset-from-mac-roman-font
-;;  "-apple-M+ 1m-medium-r-normal--14-*-*-*-*-*-iso10646-1" nil "mplus")
-;; (set-fontset-font "fontset-mplus" 'japanese-jisx0208
-;;                   '("M+ 1m medium" . "iso10646"))
-;; (set-fontset-font "fontset-mplus" (cons (make-char 'japanese-jisx0208 #x30 #x20)
-;;                                         (make-char 'japanese-jisx0208 #x74 #x7f))
-;;                   '("ヒラギノ角ゴ pro w3" . "jisx0208.1983"))
-;; (set-fontset-font "fontset-mplus" 'katakana-jisx0201
-;;                   '("M+ 1m medium" . "iso10646"))
-;; fontset-mplusIPA
-;; (create-fontset-from-mac-roman-font
-;;  "-apple-M+2VM+IPAG circle-medium-r-normal--14-*-*-*-*-*-iso10646-1" nil "mplusIPA")
-;; (set-fontset-font "fontset-mplusIPA" 'japanese-jisx0208
-;;                   '("M+2VM+IPAG circle" . "iso10646"))
-;; (set-fontset-font "fontset-mplus" 'katakana-jisx0201
-;;                   '("M+2VM+IPAG circle" . "iso10646"))
-;;
-;; fontset-meiryo
-;; (create-fontset-from-mac-roman-font
-;;  "-apple-MeiryoKe_Console-medium-r-normal--16-*-*-*-*-*-iso10646-1" nil "meiryo")
-;; (set-fontset-font "fontset-meiryo" 'japanese-jisx0208
-;;                   '("MeiryoKe_Console" . "jisx0208.1983"))
-;; (set-fontset-font "fontset-meiryo" 'katakana-jisx0201
-;;                   '("MeiryoKe_Console" . "jisx0208.1983"))
-
-(setq my-font "-*-*-medium-r-normal--14-*-*-*-*-*-fontset-hiramaru")
-(setq fixed-width-use-QuickDraw-for-ascii t)
-(setq mac-allow-anti-aliasing t)
-(if (= emacs-major-version 22)
-    (require 'carbon-font))
-(set-default-font my-font)
-(add-to-list 'default-frame-alist `(font . ,my-font))
-(when (= emacs-major-version 23)
-  (set-fontset-font
-   (frame-parameter nil 'font)
-   'japanese-jisx0208
-   '("Hiragino Maru Gothic Pro" . "iso10646-1"))
-  (setq face-font-rescale-alist
-	'(("^-apple-hiragino.*" . 1.2)
-	  (".*osaka-bold.*" . 1.2)
-	  (".*osaka-medium.*" . 1.2)
-	  (".*courier-bold-.*-mac-roman" . 1.0)
-	  (".*monaco cy-bold-.*-mac-cyrillic" . 0.9)
-	  (".*monaco-bold-.*-mac-roman" . 0.9)
-	  ("-cdac$" . 1.3))))
-
-(defun my-set-default-fontset (fontset)
-  (interactive                   ; borrowed from describe-fontset code
-   (if (not (and window-system (fboundp 'fontset-list)))
-       (error "No fontsets being used")
-     (let ((fontset-list (nconc
-                          (fontset-list)
-                          (mapcar 'cdr fontset-alias-alist)))
-           (completion-ignore-case t))
-       (list (completing-read
-              "Fontset: "
-              fontset-list nil t "fontset-")))))
-  (let ((old (assoc 'font default-frame-alist)))
-    (if old (setcdr old fontset)
-      (add-to-list 'default-frame-alist (cons 'font fontset))))
-  (set-frame-font fontset))
-
-;; select font-set
-(my-set-default-fontset "fontset-bitstream")
 
 ;; 全角空白、タブ、行末の空白などを表示
 ;;(defface my-face-r-1 '((t (:background "gray15"))) nil)
@@ -361,11 +277,11 @@
   (add-hook 'after-init-hook 'session-initialize))
 
 ;; el-screen
-(setq elscreen-prefix-key "\C-t")
-(load "elscreen" "ElScreen" t)
-(setq elscreen-display-tab t)
-;(require 'elscreen-howm)
-(require 'elscreen-dired)
+;; (setq elscreen-prefix-key "\C-t")
+;; (load "elscreen" "ElScreen" t)
+;; (setq elscreen-display-tab t)
+;; ;(require 'elscreen-howm)
+;; (require 'elscreen-dired)
 
 ;; psvn
 (require 'psvn)
