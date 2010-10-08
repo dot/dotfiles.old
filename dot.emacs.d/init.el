@@ -16,56 +16,13 @@
 (auto-install-compatibility-setup)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; fontセットを読み込む
-(load "~/.emacs.d/fontset.el")
 ;; key設定 を読み込む
 (load "~/.emacs.d/keys.el")
 ;; モード設定 を読み込む
 (load "~/.emacs.d/modes.el")
+;; 見た目周り
+(load "~/.emacs.d/look_and_feel.el")
 
-
-;;;; 見た目
-;; モードラインの変更
-(display-time)
-(line-number-mode 1)
-(column-number-mode 1)
-
-(tool-bar-mode 0)
-(setq visible-bell t)
-(setq inhibit-startup-message t)
-(setq next-line-add-newlines nil)
-;; タブ
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-;; 行間の設定
-(setq line-spacing 0.1) ;; 行の高さの0.1倍
-
-;;; ======= 見映え関係 =======
-(if (boundp 'window-system)
-    (setq initial-frame-alist
-          (append (list
-                   '(foreground-color . "azure3") ;; 文字が白
-                   '(background-color . "black") ;; 背景は黒
-                   '(border-color     . "black")
-                   '(mouse-color      . "white")
-                   '(cursor-color     . "white")
-                   '(cursor-type      . box)
-                   '(menu-bar-lines . 1)
-                   '(width . 120) ;; ウィンドウ幅
-                   '(height . 50) ;; ウィンドウの高さ
-                   )
-                  initial-frame-alist)))
-(setq default-frame-alist initial-frame-alist)
-
-;; 選択範囲に色をつける
-(setq transient-mark-mode t)
-(setq highlight-nonselected-windows t)
-
-;; スクロールする際に重なって表示するサイズ
-(setq next-screen-context-lines 10)
-
-;; 透過処理
-(set-frame-parameter (selected-frame)  'alpha  '(90 90))
 
 ;; minibuffer isearch
 (require 'minibuf-isearch)
@@ -148,3 +105,34 @@
 ;; M-x の補完候補をミニバッファに表示
 (icomplete-mode 1)
 
+;; minibufferでC-wを使えるようにする
+;;(define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
+;; (define-key minibuffer-local-completion-map "\C-w"
+;;   #'(lambda (arg)
+;;       (interactive "p")
+;;       (if (eolp)
+;;           (backward-kill-word arg)
+;;         (kill-line arg))))
+;; (defun ys:minibuffer-delete-file-name (&optional arg)
+;;   (interactive "p")
+;;   (if (eolp)
+;;       (save-excursion
+;;         (while (and (< 0 arg)
+;;                     (re-search-backward "[/\\][^/\\]+[/\\]?$" nil t))
+;;           (replace-match "/")
+;;           (setq arg (1- arg))))
+;;     (kill-line arg))
+;; )
+;; (define-key minibuffer-local-completion-map "\C-w" 'ys:minibuffer-delete-file-name)
+
+(define-key minibuffer-local-completion-map "\C-w" 'backward-kill-word)
+
+;; bm
+(require 'bm)
+(autoload 'bm-toggle   "bm" "Toggle bookmark in current buffer." t)
+(autoload 'bm-next     "bm" "Goto bookmark."                     t)
+(autoload 'bm-previous "bm" "Goto previous bookmark."            t)
+
+(global-set-key "\M-2" 'bm-toggle)
+(global-set-key [f2]   'bm-next)
+(global-set-key [S-f2] 'bm-previous)

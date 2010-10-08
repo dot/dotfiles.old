@@ -25,6 +25,27 @@
 ;; ruby mode
 (autoload 'ruby-mode "ruby-mode"
   "Mode for editing ruby source files" t)
+(autoload 'run-ruby "inf-ruby"
+  "Run an inferior Ruby process")
+(autoload 'inf-ruby-keys "inf-ruby"
+  "Set local key defs for inf-ruby in ruby-mode")
+(require 'ruby-electric)
+
+;; 自動的に閉じないようにする
+(defun ruby-electric-setup-keymap()
+  (define-key ruby-mode-map " " 'ruby-electric-space)
+;;;   (define-key ruby-mode-map "{" 'ruby-electric-curlies)
+;;;   (define-key ruby-mode-map "(" 'ruby-electric-matching-char)
+;;;   (define-key ruby-mode-map "[" 'ruby-electric-matching-char)
+;;;   (define-key ruby-mode-map "\"" 'ruby-electric-matching-char)
+;;;   (define-key ruby-mode-map "\'" 'ruby-electric-matching-char)
+;;;   (define-key ruby-mode-map "|" 'ruby-electric-bar)
+  )
+;; インデントを深くしない
+(setq ruby-deep-indent-paren-style nil)
+
+(autoload 'ruby-mode "ruby-mode"
+  "Mode for editing ruby source files" t)
 (add-hook 'ruby-mode-hook
           (lambda ()
             (set (make-local-variable 'indent-tabs-mode) 'nil)
@@ -45,3 +66,10 @@
                 ("\\.ru$" . ruby-mode)
                 ("Rakefile" . ruby-mode)) auto-mode-alist))
 (modify-coding-system-alist 'file "\\.rb$" 'utf-8)
+
+;;haml-mode
+(require 'haml-mode nil 't)
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
+;;sass-mode
+(require 'sass-mode nil 't)
+(add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
