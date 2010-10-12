@@ -21,7 +21,6 @@
 (setq js2-bounce-indent-flag nil)
 ;(define-key js2-mode-map "\C-i" 'indent-and-back-to-indentation)
 
-
 ;; ruby mode
 (autoload 'ruby-mode "ruby-mode"
   "Mode for editing ruby source files" t)
@@ -73,3 +72,7 @@
 ;;sass-mode
 (require 'sass-mode nil 't)
 (add-to-list 'auto-mode-alist '("\\.sass$" . sass-mode))
+
+;; ReView mode
+(require 'review-mode)
+(add-to-list 'auto-mode-alist '("\\.re$" . review-mode))
