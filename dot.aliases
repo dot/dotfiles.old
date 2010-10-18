@@ -37,7 +37,7 @@ alias chrome='open -a /Applications/Chromium.app'
 # short name
 alias h='head'
 alias t='tail'
-alias g='grep'
+alias g='git'
 alias c='cat'
 alias j='jobs'
 #alias w='wc'   w は w のまま使う。
