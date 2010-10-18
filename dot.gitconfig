@@ -2,7 +2,7 @@
 	name = dot
 	email = shuhei.kondo@gmail.com
 [alias]
-    ci = commit -a
+    ci = commit 
     st = status
     co = checkout
     url = config --get remote.origin.url
