@@ -1,0 +1,3 @@
+[submodule "dot.emacs.d/bundle/rspec-mode"]
+	path = dot.emacs.d/bundle/rspec-mode
+	url = http://github.com/pezra/rspec-mode.git
