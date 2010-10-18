@@ -6,6 +6,7 @@
 
 ;;; load path settings
 (add-to-list 'load-path "~/.emacs.d/site-lisp/howm")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/modes")
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 ;;; auto-install
@@ -47,6 +48,7 @@
                              anything-c-source-bookmarks
                              anything-c-source-recentf
                              anything-c-source-file-name-history
+                             anything-c-source-emacs-commands
                              anything-c-source-locate))
 (define-key anything-map (kbd "C-p") 'anything-previous-line)
 (define-key anything-map (kbd "C-n") 'anything-next-line)
@@ -71,7 +73,12 @@
 
 ;; kill-summery
 (autoload 'kill-summary "kill-summary" nil t)
-(global-set-key "\M-y" 'kill-summary)
+;(global-set-key "\M-y" 'kill-summary)
+(setq kill-ring-max 20)
+;; anything
+(setq anything-kill-ring-threshold 5)
+(global-set-key "\M-y" 'anything-show-kill-ring)
+
 
 ;; minibuffer isearch
 (require 'minibuf-isearch)
@@ -136,3 +143,52 @@
 (global-set-key "\M-2" 'bm-toggle)
 (global-set-key [f2]   'bm-next)
 (global-set-key [S-f2] 'bm-previous)
+
+
+;; rcodetools
+(require 'rcodetools)
+(setq rct-find-tag-if-available nil)
+(defun make-ruby-scratch-buffer ()
+  (with-current-buffer (get-buffer-create "*ruby scratch*")
+    (ruby-mode)
+    (current-buffer)))
+(defun ruby-scratch ()
+  (interactive)
+  (pop-to-buffer (make-ruby-scratch-buffer)))
+(defun ruby-mode-hook-rcodetools ()
+  (define-key ruby-mode-map "\M-\C-i" 'rct-complete-symbol)
+  (define-key ruby-mode-map "\C-c\C-t" 'ruby-toggle-buffer)
+  (define-key ruby-mode-map "\C-c\C-d" 'xmp)
+  (define-key ruby-mode-map "\C-c\C-f" 'rct-ri))
+(add-hook 'ruby-mode-hook 'ruby-mode-hook-rcodetools)
+
+(require 'anything-rcodetools)
+(setq rct-get-all-methods-command "PAGER=cat ri -l")
+;; See docs
+(define-key anything-map [(control ?;)] 'anything-execute-persistent-action)
+
+
+;; anything-c-moccur
+;;; color-moccur.elの設定
+(require 'color-moccur)
+;; 複数の検索語や、特定のフェイスのみマッチ等の機能を有効にする
+;; 詳細は http://www.bookshelf.jp/soft/meadow_50.html#SEC751
+(setq moccur-split-word t)
+;; migemoがrequireできる環境ならmigemoを使う
+(when (require 'migemo nil t) ;第三引数がnon-nilだとloadできなかった場合にエラーではなくnilを返す
+  (setq moccur-use-migemo t))
+
+;;; anything-c-moccurの設定
+(require 'anything-c-moccur)
+;; カスタマイズ可能変数の設定(M-x customize-group anything-c-moccur でも設定可能)
+(setq anything-c-moccur-anything-idle-delay 0.2 ;`anything-idle-delay'
+      anything-c-moccur-higligt-info-line-flag t ; `anything-c-moccur-dmoccur'などのコマンドでバッファの情報をハイライトする
+      anything-c-moccur-enable-auto-look-flag t ; 現在選択中の候補の位置を他のwindowに表示する
+      anything-c-moccur-enable-initial-pattern t) ; `anything-c-moccur-occur-by-moccur'の起動時にポイントの位置の単語を初期パターンにする
+
+;;; キーバインドの割当(好みに合わせて設定してください)
+(global-set-key (kbd "M-o") 'anything-c-moccur-occur-by-moccur) ;バッファ内検索
+(global-set-key (kbd "C-M-o") 'anything-c-moccur-dmoccur) ;ディレクトリ
+(add-hook 'dired-mode-hook ;dired
+          '(lambda ()
+             (local-set-key (kbd "O") 'anything-c-moccur-dired-do-moccur-by-moccur)))

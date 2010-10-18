@@ -3,7 +3,7 @@
 ;; Copyright 1996-1999, 2001-2003 Free Software Foundation, Inc.
 ;;
 ;; Author: Christoph Wedler <wedler@users.sourceforge.net>
-;; Version: (see `session-version' below)
+;; Version: 2.2
 ;; Keywords: session, session management, desktop, data, tools
 ;; X-URL: http://emacs-session.sourceforge.net/
 
@@ -143,13 +143,13 @@
   (defvar minibuffer-local-ns-map))
 
 
-
+ 
 ;;;;##########################################################################
 ;;;;  User options, configuration variables
 ;;;;##########################################################################
 
 
-(defconst session-version "2.2a"
+(defconst session-version "2.2"
   "Current version of package session.
 Check <http://emacs-session.sourceforge.net/> for the newest.")
 
@@ -600,7 +600,7 @@ See `session-buffer-check-function'."
 
 
 
-
+ 
 ;;;;##########################################################################
 ;;;;  Store buffer places and local variables, change register contents
 ;;;;##########################################################################
@@ -1026,32 +1026,31 @@ already at the front of `file-name-history'.  This function is useful in
 
 (defun session-find-file-hook ()
   "Function in `find-file-hooks'.  See `session-file-alist'."
-  (unless (eq this-command 'session-disable)
-    (let* ((ass (assoc (session-buffer-file-name) session-file-alist))
-	   (point (second ass))
-	   (mark (third ass))
-	   (min (fourth ass))
-	   (max (fifth ass))
-	   (alist (nthcdr 7 ass)))
-      (condition-case nil
-	  (while alist
-	    (if (local-variable-if-set-p (caar alist) (current-buffer))
-		(set (caar alist) (cdar alist)))
-	    (setq alist (cdr alist)))
-	(error nil))
-      (setq session-last-change (seventh ass))
-      (and mark
-	   (<= (point-min) mark) (<= mark (point-max))
-	   ;; I had `set-mark' but this function activates mark in Emacs, but
-	   ;; not in XEmacs.  `push-mark' is also OK and doesn't activate in
-	   ;; both Emacsen which is better if we use `pending-delete-mode'.
-	   (push-mark mark t))
-      (and min max
-	   (<= (point-min) min) (<= max (point-max))
-	   (narrow-to-region min max))
-      (and point
-	   (<= (point-min) point) (<= point (point-max))
-	   (goto-char point)))))
+  (let* ((ass (assoc (session-buffer-file-name) session-file-alist))
+	 (point (second ass))
+	 (mark (third ass))
+	 (min (fourth ass))
+	 (max (fifth ass))
+	 (alist (nthcdr 7 ass)))
+    (condition-case nil
+	(while alist
+	  (if (local-variable-if-set-p (caar alist) (current-buffer))
+	      (set (caar alist) (cdar alist)))
+	  (setq alist (cdr alist)))
+      (error nil))
+    (setq session-last-change (seventh ass))
+    (and mark
+	 (<= (point-min) mark) (<= mark (point-max))
+	 ;; I had `set-mark' but this function activates mark in Emacs, but not
+	 ;; in XEmacs.  `push-mark' is also OK and doesn't activate in both
+	 ;; Emacsen which is better if we use `pending-delete-mode'.
+	 (push-mark mark))
+    (and min max
+	 (<= (point-min) min) (<= max (point-max))
+	 (narrow-to-region min max))
+    (and point
+	 (<= (point-min) point) (<= point (point-max))
+	 (goto-char point))))
 
 (defun session-kill-buffer-hook ()
   "Function in `kill-buffer-hook'.
@@ -1084,7 +1083,7 @@ See `session-file-alist' and `session-registers'."
     (add-hook 'kill-buffer-hook session-register-swap-out))
 
 
-
+ 
 ;;;;##########################################################################
 ;;;;  Save global variables, add functions to hooks
 ;;;;##########################################################################
@@ -1391,6 +1390,7 @@ prefix argument 0.  See `kill-emacs-hook'."
 ;;;===========================================================================
 ;;;  Minibuffer history completion, see XEmacs' list-mode
 ;;;===========================================================================
+
 
 (defvar session-history-help-string
   '(concat (if (device-on-window-system-p)

@@ -12,8 +12,6 @@
             (set-face-background 'diff-added-face "gray26")
             (set-face-foreground 'diff-changed-face "DeepSkyBlue1")
             ))
-;; moinmoin mode for trac-wiki
-(require 'moinmoin-mode)
 
 ;; javascript mode
 (autoload 'js2-mode "js2" nil t)
@@ -62,6 +60,7 @@
       (append '(("\\.rb$" . ruby-mode)
                 ("\\.rake$" . ruby-mode)
                 ("Capfile" . ruby-mode)
+                ("Gemfile" . ruby-mode)
                 ("\\.ru$" . ruby-mode)
                 ("Rakefile" . ruby-mode)) auto-mode-alist))
 (modify-coding-system-alist 'file "\\.rb$" 'utf-8)
