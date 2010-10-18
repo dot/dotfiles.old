@@ -29,6 +29,8 @@ alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
 alias be='bundle exec'
 alias bi='bundle install --path=$HOME/.gem'
 
+alias rurema='noglob rurema'
+
 # browsing
 alias chrome='open -a /Applications/Chromium.app'
 
