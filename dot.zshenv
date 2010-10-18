@@ -50,3 +50,12 @@ export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46
 if [ -e $HOME/.zshlocalenv ]; then
     source $HOME/.zshlocalenv
 fi;
+
+#### time
+REPORTTIME=8                    # CPUを8秒以上使った時は time を表示
+TIMEFMT="\
+    The name of this job.             :%J
+    CPU seconds spent in user mode.   :%U
+    CPU seconds spent in kernel mode. :%S
+    Elapsed time in seconds.          :%E
+    The  CPU percentage.              :%P"
