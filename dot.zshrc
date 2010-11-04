@@ -203,3 +203,7 @@ _rake () {
 }
 
 compdef _rake rake
+
+function cdb() {
+  cd `ruby -e "require 'rubygems';gem 'bundler';require 'bundler';Bundler.load.specs.each{|s| puts s.full_gem_path if s.name == '${1}'}"`
+}
