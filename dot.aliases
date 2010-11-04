@@ -27,6 +27,7 @@ alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
 
 # for ruby
 alias be='bundle exec'
+alias bu='bundle update'
 alias bi='bundle install --path=$HOME/.gem'
 
 alias rurema='noglob rurema'
