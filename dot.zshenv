@@ -27,8 +27,9 @@ export SCREENDIR=~/.screens/
 
 ####  path / PATH
 path=( ~/bin \
-    /Users/kondo/.gem/ruby/1.8/bin \
+    ~/.gem/ruby/1.8/bin \
     /usr/local/bin /usr/local/sbin /usr/local/mysql/bin \
+    /usr/local/mongodb/bin \
     /opt/local/bin /opt/local/sbin \
     /bin /sbin /usr/bin /usr/sbin \
 )
