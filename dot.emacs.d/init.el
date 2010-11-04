@@ -24,6 +24,8 @@
 ;; 見た目周り
 (load "~/.emacs.d/look_and_feel.el")
 
+;; バックアップファイルを作らない
+(setq make-backup-files nil)
 
 ;; minibuffer isearch
 (require 'minibuf-isearch)
@@ -192,3 +194,7 @@
 (add-hook 'dired-mode-hook ;dired
           '(lambda ()
              (local-set-key (kbd "O") 'anything-c-moccur-dired-do-moccur-by-moccur)))
+
+
+;; ruby tools
+(load "~/.emacs.d/ruby.el")

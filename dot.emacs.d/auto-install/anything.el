@@ -1656,7 +1656,6 @@ It is needed because restoring position when `anything' is keyboard-quitted.")
 (defun anything-set-frame/window-configuration (conf)
   (funcall (car anything-save-configuration-functions) conf))
 
-(declare-function 'anything-frame/window-configuration "anything")
 (lexical-let (conf)
   (defun anything-frame/window-configuration (save-or-restore)
     (anything-log-eval anything-save-configuration-functions)
@@ -3328,7 +3327,8 @@ You can paste it by typing C-y."
 
 (defun anything-follow-execute-persistent-action-maybe ()
   "Execute persistent action after `anything-input-idle-delay' secs when `anything-follow-mode' is enabled."
-  (and (buffer-local-value 'anything-follow-mode
+  (and (not (get-buffer-window anything-action-buffer 'visible))
+       (buffer-local-value 'anything-follow-mode
                            (get-buffer-create anything-buffer))
        (sit-for anything-input-idle-delay)
        (anything-window)

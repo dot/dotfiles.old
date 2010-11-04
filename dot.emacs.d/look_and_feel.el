@@ -38,7 +38,30 @@
 ;; 透過処理
 (set-frame-parameter (selected-frame)  'alpha  '(90 90))
 
-
-
 ;; fontセットを読み込む
 (load "~/.emacs.d/fontset.el")
+
+;; 全角空白、タブ、行末の空白などを表示
+;;(defface my-face-r-1 '((t (:background "gray15"))) nil)
+(defface my-face-b-1 '((t (:background "gray"))) nil)
+(defface my-face-b-2 '((t (:background "gray26"))) nil)
+(defface my-face-u-1 '((t (:foreground "SteelBlue" :underline t))) nil)
+;;(defvar my-face-r-1 'my-face-r-1)
+(defvar my-face-b-1 'my-face-b-1)
+(defvar my-face-b-2 'my-face-b-2)
+(defvar my-face-u-1 'my-face-u-1)
+(defadvice font-lock-mode (before my-font-lock-mode ())
+  (font-lock-add-keywords
+   major-mode
+   '(("\t" 0 my-face-b-2 append)
+     ("　" 0 my-face-b-1 append)
+     ("[ \t]+$" 0 my-face-u-1 append)
+;     ("[\r]*\n" 0 my-face-r-1 append)
+     )))
+(ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
+(ad-activate 'font-lock-mode)
+(add-hook 'find-file-hooks '(lambda ()
+                              (if font-lock-mode
+                                  nil
+                                (font-lock-mode t))))
+
