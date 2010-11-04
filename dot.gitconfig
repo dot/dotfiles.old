@@ -8,15 +8,21 @@
     url = config --get remote.origin.url
     pr = pull --rebase
     b = branch
+    rbm = rebase master
+    lp = log -p
+    ls = log --stat
 [color]
 	diff = auto
     status = auto
     branch = auto
     interactvie = auto
-
+    grep = auto
 [status]
 	diff = auto
 [branch]
 	diff = auto
 [core]
 	excludesfile = ~/.gitignore
+    autocrlf = input
+[push]
+    default = tracking
