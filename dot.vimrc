@@ -39,7 +39,7 @@ set backspace=indent,eol,start
 " 検索パスに追加
 " let &path = &path.",~"
 
-" ステータス行の表示 
+" ステータス行の表示
 set statusline=%-50.50f\ %16(\ %m%r%{&fileencoding}\ %{&fileformat}%)%=%l\ /%5L
 
 
@@ -47,10 +47,10 @@ set statusline=%-50.50f\ %16(\ %m%r%{&fileencoding}\ %{&fileformat}%)%=%l\ /%5L
 set scrolloff=3
 
 " 日本語を扱う
-set enc=utf-8 
-set fenc=utf-8 
-set fencs=utf-8,euc-jp,iso-2022-jp,cp932 
-set ffs=unix 
+set enc=utf-8
+set fenc=utf-8
+set fencs=utf-8,euc-jp,iso-2022-jp,cp932
+set ffs=unix
 set ambiwidth=single
 " テキスト挿入中の自動折り返しを日本語に対応させる
 set formatoptions+=mM
@@ -59,7 +59,35 @@ let format_allow_over_tw = 1    " ぶら下り可能幅
 
 set fileformats=unix,dos,mac
 
-colorscheme darkblue 
+colorscheme darkblue
+" カーソル行をハイライト
+set cursorline
+" カレントウィンドウにのみ罫線を引く
+augroup cch
+    autocmd! cch
+    autocmd WinLeave * set nocursorline
+    autocmd WinEnter,BufRead * set cursorline
+augroup END
+
+:hi clear CursorLine
+:hi CursorLine gui=underline
+highlight CursorLine ctermbg=black guibg=black
+
+" Escの2回押しでハイライト消去
+nmap <ESC><ESC> ;nohlsearch<CR><ESC>
+
+" 保存時に行末の空白を除去する
+autocmd BufWritePre * :%s/\s\+$//ge
+" 保存時にtabをスペースに変換する
+autocmd BufWritePre * :%s/\t/  /ge
+
+"
+imap {} {}<Left>
+imap [] []<Left>
+imap () ()<Left>
+imap "" ""<Left>
+imap '' ''<Left>
+imap <> <><Left>
 
 "ファイルタイプ別の設定
 au FileType ruby,eruby set ts=2 sw=2 sts=2 expandtab
