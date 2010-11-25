@@ -32,6 +32,9 @@ alias bi='bundle install --path=$HOME/.gem'
 
 alias rurema='noglob rurema'
 
+#
+alias clup="find -E . -regex '.*\/(#.*#|.*~)' -print0 |xargs -0 rm"
+
 # browsing
 alias chrome='open -a /Applications/Chromium.app'
 
@@ -50,7 +53,7 @@ alias -g C='| cat -n'
 alias -g W='| wc'
 
 #### function
-function cd() { 
+function cd() {
   builtin cd $@ && ls;
 }
 
