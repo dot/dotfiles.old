@@ -1,3 +1,9 @@
-[submodule "dot.emacs.d/bundle/rspec-mode"]
-	path = dot.emacs.d/bundle/rspec-mode
-	url = http://github.com/pezra/rspec-mode.git
+[submodule "dot.emacs.d/plugins/rhtml"]
+  path = dot.emacs.d/plugins/rhtml
+  url = https://github.com/eschulte/rhtml.git
+[submodule "dot.emacs.d/plugins/rinari"]
+  path = dot.emacs.d/plugins/rinari
+  url = https://github.com/eschulte/rinari.git
+[submodule "dot.emacs.d/plugins/rspec-mode"]
+  path = dot.emacs.d/plugins/rspec-mode
+  url = http://github.com/pezra/rspec-mode.git
