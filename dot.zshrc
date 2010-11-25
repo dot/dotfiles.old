@@ -183,26 +183,23 @@ alias zmv='noglob zmv'
 
 
 # rake command completion
+#compdef _rake rake
 _rake_does_task_list_need_generating () {
-  if [ ! -f .rake_tasks ]; then return 0;
+  if [[ ! -f .rake_tasks ]]; then return 0;
   else
-    accurate=$(stat -f%m .rake_tasks)
-    changed=$(stat -f%m Rakefile)
-    return $(expr $accurate '>=' $changed)
+    return $([[ Rakefile -nt .rake_tasks ]])
   fi
 }
 
 _rake () {
-  if [ -f Rakefile ]; then
+  if [[ -f Rakefile ]]; then
     if _rake_does_task_list_need_generating; then
-      echo "\nGenerating .rake_tasks..." > /dev/stderr
-      rake --silent --tasks | cut -d " " -f 2 > .rake_tasks
+      echo "\nGenerating .rake_tasks..." >&2
+      rake --silent --tasks | cut -d " " -f 2 | sed 's/\[.*\]//g' >| .rake_tasks
     fi
     compadd $(<.rake_tasks)
   fi
 }
-
-compdef _rake rake
 
 function cdb() {
   cd `ruby -e "require 'rubygems';gem 'bundler';require 'bundler';Bundler.load.specs.each{|s| puts s.full_gem_path if s.name == '${1}'}"`
