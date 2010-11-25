@@ -141,7 +141,7 @@
 ;;  `anything-scroll-other-window-down'
 ;;    Scroll other window (not *Anything* window) downward.
 ;;  `anything-toggle-visible-mark'
-;;    Toggle anything visible bookmark at point.
+;;    Toggle anything visible mark at point.
 ;;  `anything-display-all-visible-marks'
 ;;    Show all `anything' visible marks strings.
 ;;  `anything-next-visible-mark'
@@ -1236,7 +1236,7 @@ If FORCE-DISPLAY-PART is non-nil, return the display string."
                    (source-name
                     (save-excursion
                       (unless header-pos
-                        (message "No candidates")
+                        ;(message "No candidates")
                         (return-from exit nil))
                       (goto-char header-pos)
                       (anything-current-line-contents))))
@@ -2264,7 +2264,12 @@ the real value in a text property."
                        (split-string string "\n")
                        (assoc 'incomplete-line source))
                       source t))
-    (anything-insert-match candidate 'insert-before-markers source)
+    (if (not (assq 'multiline source))
+        (anything-insert-match candidate 'insert-before-markers source)
+      (let ((start (point)))
+        (anything-insert-candidate-separator)
+        (anything-insert-match candidate 'insert-before-markers source)
+        (put-text-property start (point) 'anything-multiline t)))
     (incf (cdr (assoc 'item-count source)))
     (when (>= (assoc-default 'item-count source) limit)
       (anything-kill-async-process process)
@@ -3193,7 +3198,7 @@ Otherwise ignores `special-display-buffer-names' and `special-display-regexps'."
         anything-marked-candidates))
 
 (defun anything-toggle-visible-mark ()
-  "Toggle anything visible bookmark at point."
+  "Toggle anything visible mark at point."
   (interactive)
   (with-anything-window
     (anything-aif (anything-this-visible-mark)
@@ -3204,11 +3209,12 @@ Otherwise ignores `special-display-buffer-names' and `special-display-regexps'."
 (defun anything-display-all-visible-marks ()
   "Show all `anything' visible marks strings."
   (interactive)
-  (lexical-let ((overlays (reverse anything-visible-mark-overlays)))
-    (anything-run-after-quit
-     (lambda ()
-       (with-output-to-temp-buffer "*anything visible marks*"
-         (dolist (o overlays) (princ (overlay-get o 'string))))))))
+  (with-anything-window
+    (lexical-let ((overlays (reverse anything-visible-mark-overlays)))
+      (anything-run-after-quit
+       (lambda ()
+         (with-output-to-temp-buffer "*anything visible marks*"
+           (dolist (o overlays) (princ (overlay-get o 'string)))))))))
 
 (defun anything-marked-candidates ()
   "Marked candidates (real value) of current source if any,

@@ -13,6 +13,12 @@
 ;; 行間の設定
 (setq line-spacing 0.1) ;; 行の高さの0.1倍
 
+;; スクロールバー非表示
+(set-scroll-bar-mode nil)
+
+;; 対応する括弧をハイライト
+(show-paren-mode 1)
+
 ;;; ======= 見映え関係 =======
 (if (boundp 'window-system)
     (setq initial-frame-alist
@@ -36,7 +42,7 @@
 ;; スクロールする際に重なって表示するサイズ
 (setq next-screen-context-lines 10)
 ;; 透過処理
-(set-frame-parameter (selected-frame)  'alpha  '(90 90))
+(set-frame-parameter (selected-frame) 'alpha '(90 90))
 
 ;; fontセットを読み込む
 (load "~/.emacs.d/fontset.el")
