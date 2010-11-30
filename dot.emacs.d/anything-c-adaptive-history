@@ -1,3 +1,3 @@
 ;; -*- mode: emacs-lisp -*-
 ;; History entries used for anything adaptive display.
-(setq anything-c-adaptive-history (quote ((command ("anything-resume" ("anything-resu" . 1)) ("anything-grep" ("anything-grep" . 1)) ("install-elisp-from-emacswiki" ("install-" . 1))))))
+(setq anything-c-adaptive-history (quote ((command ("auto-install-batch" ("auto install bat" . 1)) ("anything-resume" ("anything-resu" . 1)) ("anything-grep" ("anything-grep" . 1)) ("install-elisp-from-emacswiki" ("install-" . 1))))))

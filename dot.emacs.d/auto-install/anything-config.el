@@ -1806,6 +1806,7 @@ buffer that is not the current buffer."
                 (if anything-current-prefix-arg
                     (anything-do-grep (anything-marked-candidates) 'recurse)
                     (anything-do-grep (anything-marked-candidates)))))
+           ("Eshell command on file(s)" . anything-find-files-eshell-command-on-file)
            ("Ediff File" . anything-find-files-ediff-files)
            ("Ediff Merge File" . anything-find-files-ediff-merge-files)
            ("Delete File(s)" . anything-delete-marked-files)
@@ -1887,7 +1888,21 @@ ACTION must be an action supported by `anything-dired-action'."
   (ediff-merge-files
    candidate
    (anything-c-read-file-name
-    (format "Ediff Merge `%s' With File: " (file-name-nondirectory candidate)))))
+    (format "Ediff Merge `%s' With File: "
+            (file-name-nondirectory candidate)))))
+
+(defvar eshell-command-aliases-list nil)
+(defun anything-find-files-eshell-command-on-file (candidate)
+  "Run `eshell-command' on file CANDIDATE possibly with an eshell alias."
+  (let ((default-directory anything-ff-default-directory)
+        (command           (anything-comp-read
+                            "Command: "
+                            (loop for (a . c) in eshell-command-aliases-list
+                               when (string-match "\\$1$" (car c))
+                               collect a)))
+        (cand-list         (anything-marked-candidates)))
+    (loop for i in cand-list
+       do (eshell-command (concat command " " i)))))
 
 (defun* anything-reduce-file-name (fname level &key unix-close expand)
     "Reduce FNAME by LEVEL from end or beginning depending LEVEL value.
@@ -2097,13 +2112,17 @@ If prefix numeric arg is given go ARG level down."
   (cond ((with-current-buffer anything-current-buffer (eq major-mode 'message-mode))
          (append actions '(("Gnus attach file(s)" . anything-ff-gnus-attach-files))))
         ((string-match (image-file-name-regexp) candidate)
-         (append actions '(("Rotate image right" . anything-ff-rotate-image-right)
-                           ("Rotate image left" . anything-ff-rotate-image-left))))
+         (append actions
+                 '(("Rotate image right" . anything-ff-rotate-image-right)
+                   ("Rotate image left" . anything-ff-rotate-image-left))))
         ((string-match "\.el$" (anything-aif (anything-marked-candidates)
                                    (car it) candidate))
          (append actions '(("Byte compile lisp file(s) `C-u to load'"
                             . anything-find-files-byte-compile)
                            ("Load File(s)" . load-file))))
+        ((and (string-match "\.html$" candidate)
+              (file-exists-p candidate))
+         (append actions '(("Browse url file" . browse-url-of-file))))
         (t actions)))
 
 (defun anything-ff-gnus-attach-files (candidate)
@@ -2160,7 +2179,7 @@ If a prefix arg is given or `anything-follow-mode' is on open file."
              (insert-in-minibuffer (file-truename candidate)))
             (t
              ;; First hit on C-z expand CANDIDATE second hit open file.
-             ;; If a prefix arg is given or `anything-follow-mode' is on open file.
+             ;; If a prefix arg is given or `anything-follow-mode' is on, open file.
              (let ((new-pattern   (anything-get-selection))
                    (num-lines-buf (with-current-buffer anything-buffer
                                     (count-lines (point-min) (point-max)))))
@@ -2173,8 +2192,10 @@ If a prefix arg is given or `anything-follow-mode' is on open file."
                           (message nil)
                           (display-buffer image-dired-display-image-buffer))
                          ;; Allow browsing archive on avfs fs.
+                         ;; Assume volume is already mounted with mountavfs.
                          ((and anything-ff-avfs-directory
-                               (string-match "\.avfs" (file-name-directory candidate))
+                               (string-match anything-ff-avfs-directory
+                                             (file-name-directory candidate))
                                (anything-ff-file-compressed-p candidate))
                           (insert-in-minibuffer (concat candidate "#")))
                          (t (find-file candidate))))))))))
@@ -2728,13 +2749,13 @@ from all anything grep commands without setting it here.")
 (defun anything-c-grep-action (candidate &optional where)
   "Define a default action for `anything-do-grep' on CANDIDATE.
 WHERE can be one of other-window, elscreen, other-frame."
-  (let* ((split  (split-string candidate ":"))
-         (lineno (string-to-number (if (eq system-type 'windows-nt)
-                                       (nth 2 split)
-                                       (nth 1 split))))
-         (fname  (if (eq system-type 'windows-nt)
-                     (concat (car split) ":" (second split))
-                     (car split))))
+  (let* ((split        (anything-c-grep-split-line candidate))
+         (lineno       (string-to-number (nth 1 split)))
+         (loc-fname    (car split))
+         (tramp-method (file-remote-p anything-ff-default-directory 'method))
+         (tramp-host   (file-remote-p anything-ff-default-directory 'host))
+         (tramp-prefix (concat "/" tramp-method ":" tramp-host ":"))
+         (fname        (if tramp-host (concat tramp-prefix loc-fname) loc-fname)))
     (case where
       (other-window (find-file-other-window fname))
       (elscreen     (anything-elscreen-find-file fname))
@@ -2773,6 +2794,7 @@ When RECURSE is given use -r option of grep."
         (candidates
          . (lambda () (funcall anything-c-grep-default-function only)))
         (filtered-candidate-transformer anything-c-grep-cand-transformer)
+        (candidate-number-limit . 9999)
         (action . ,(delq
                     nil
                     `(("Find File" . anything-c-grep-action)
@@ -2808,13 +2830,17 @@ If a prefix arg is given use the -r option of grep."
                 "\nP"))
   (anything-do-grep1 only arg))
 
+(defun anything-c-grep-split-line (line)
+  "Split a grep output line."
+  (when (string-match "\\(.*\\)\\(:[0-9]+:\\)\\(.*\\)" line)
+    (list (match-string 1 line)
+          (replace-regexp-in-string ":" "" (match-string 2 line))
+          (match-string 3 line))))
+
 (defun anything-c-grep-cand-transformer (candidates sources)
   "Filtered candidate transformer function for `anything-do-grep'."
   (loop for i in candidates
-     for split  = (and i (string-match "\\(.*\\)\\(:[0-9]+:\\)\\(.*\\)" i)
-                       (list (match-string 1 i)
-                             (replace-regexp-in-string ":" "" (match-string 2 i))
-                             (match-string 3 i)))
+     for split  = (and i (anything-c-grep-split-line i))
      for fname  = (car split)
      for lineno = (nth 1 split)
      for str    = (nth 2 split)
