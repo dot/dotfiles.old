@@ -7,3 +7,6 @@
 [submodule "dot.emacs.d/plugins/rspec-mode"]
   path = dot.emacs.d/plugins/rspec-mode
   url = http://github.com/pezra/rspec-mode.git
+[submodule "dot.emacs.d/plugins/simplenote"]
+	path = dot.emacs.d/plugins/simplenote
+	url = https://github.com/cefstat/simplenote.el.git
