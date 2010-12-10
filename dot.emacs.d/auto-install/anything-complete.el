@@ -234,7 +234,7 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
         (if (loop for src in (anything-get-sources)
                   thereis (string-match "^dabbrev" (assoc-default 'name src)))
             anything-dabbrev-last-target
-          (anything-aif (symbol-at-point) (symbol-name it) "")))
+          (anything-aif (tap-symbol) (symbol-name it) "")))
   (anything-candidate-buffer (get-buffer bufname)))
 
 (defcustom anything-complete-sort-candidates nil
@@ -442,8 +442,15 @@ used by `anything-lisp-complete-symbol-set-timer' and `anything-apropos'"
   (alcs-make-candidates)
   (anything-update))
 
+(defun tap-symbol ()
+  "Get symbol before point."
+  (save-excursion
+    (let ((beg (point)))
+      (when (re-search-backward "\(\\|\\s-\\|^\\|\r\\|'\\|#'" (point-at-bol))
+        (intern (buffer-substring-no-properties beg (match-end 0)))))))
+
 (defun alcs-initial-input (partial-match)
-  (anything-aif (symbol-at-point)
+  (anything-aif (tap-symbol)
       (format "%s%s%s"
               (if partial-match "" "^")
               it
@@ -944,7 +951,7 @@ So, (anything-read-string-mode 1) and
 (defvaralias 'anything-c-source-complete-emacs-functions-partial-match
   'anything-c-source-complete-emacs-functions)
 
-
+[http://burntofat.com/fat-burning-diet/the-diet-solution-reviews-diet-solution-program-burn-fat/'''Diet Solution'''] - [http://findtohealth.com/rapid-weight-loss/the-diet-solution-program-review/'''The Diet Solution Reviews'''] - [http://www.fattoloss.com/fat-loss-diets/the-diet-solution-reviews-is-the-diet-solution-a-scam/'''The Diet Solution Book'''] - [http://www.everydaydiets.org/weight-loss-program/the-diet-solution-diet-solution-program-scam-review/'''The Diet Solution Program''']
 
 (provide 'anything-complete)
 
