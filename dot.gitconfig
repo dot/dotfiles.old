@@ -4,6 +4,7 @@
 [alias]
     ci = commit 
     st = status
+#    st = status -sb
     co = checkout
     url = config --get remote.origin.url
     pr = pull --rebase
@@ -11,6 +12,9 @@
     rbm = rebase master
     lp = log -p
     ls = log --stat
+    lg= log --decorate
+    lgg= log --decorate --oneline --graph
+    wd= diff --word-diff
 [color]
 	diff = auto
     status = auto
