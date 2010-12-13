@@ -951,7 +951,6 @@ So, (anything-read-string-mode 1) and
 (defvaralias 'anything-c-source-complete-emacs-functions-partial-match
   'anything-c-source-complete-emacs-functions)
 
-[http://burntofat.com/fat-burning-diet/the-diet-solution-reviews-diet-solution-program-burn-fat/'''Diet Solution'''] - [http://findtohealth.com/rapid-weight-loss/the-diet-solution-program-review/'''The Diet Solution Reviews'''] - [http://www.fattoloss.com/fat-loss-diets/the-diet-solution-reviews-is-the-diet-solution-a-scam/'''The Diet Solution Book'''] - [http://www.everydaydiets.org/weight-loss-program/the-diet-solution-diet-solution-program-scam-review/'''The Diet Solution Program''']
 
 (provide 'anything-complete)
 
