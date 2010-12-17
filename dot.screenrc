@@ -39,8 +39,6 @@ bind ^x
 #make them better
 #bind '\\' quit
 bind 'K' kill
-#bind 'I' login on
-#bind 'O' login off
 #bind '}' history
 
 # configre PREFIX key
@@ -51,8 +49,14 @@ sorendition 10 93
 
 hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w"
 
-#term xterm-256color
+term xterm-256color
 #termcapinfo xterm-256color 'is=^[r^[mJ^[H^[?7h^[?1;4;6l'
 termcapinfo xterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
 defbce "on"
-term xterm-256color
+
+#split window
+bind s eval "split" focus screen
+bind o focus
+
+# enable screen scrolling with mouse
+termcapinfo xterm* ti@:te@
