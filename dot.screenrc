@@ -44,10 +44,13 @@ bind 'K' kill
 # configre PREFIX key
 escape ^t^t
 
-# inversion cosole color 
+# inversion cosole color
 sorendition 10 93
 
 hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w"
+# hardstatus string "%?%h%:%t (screen #%n on %H)%?"
+# caption always "%{=r dd}%-Lw%40L>%?%F%{=b dR}%:[%? %n%f %t %?%F%{-}%:]%?%+Lw %?%F%-024=GNU Screen of Git master%:%=%?"
+sorendition "+rb .G"
 
 term xterm-256color
 #termcapinfo xterm-256color 'is=^[r^[mJ^[H^[?7h^[?1;4;6l'
