@@ -83,3 +83,8 @@
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@interface" . objc-mode))
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@protocol" . objc-mode))
 
+;; c++ mode
+(add-hook 'c++-mode-common-hook
+          '(lambda ()
+             (gtags-mode 1)
+             ))
