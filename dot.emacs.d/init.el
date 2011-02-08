@@ -9,6 +9,10 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/modes")
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
+;; environment path
+(setenv "PATH" (concat "/Users/kondo/bin:/Users/kondo/.gem/ruby/1.8/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/mongodb/bin:/opt/local/bin:/opt/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:"
+                       (getenv "PATH")))
+
 ;;; auto-install
 (require 'auto-install)
 (add-to-list 'load-path auto-install-directory)
@@ -74,6 +78,7 @@
 
 ;; anything
 (require 'anything-startup)
+(require 'anything-gtags)
 ; anything-my-default() を設定する
 (define-key global-map (kbd "C-;") 'anything-my-default)
 (defun anything-my-default ()
@@ -197,10 +202,42 @@
 (require 'wdired)
 (define-key dired-mode-map "r" 'wdired-change-to-wdired-mode)
 
-;; zlc
+;; ;; zlc
 ;; (require 'zlc)
 ;; (setq zlc-select-completion-immediately t)
+;; (let ((map minibuffer-local-map))
+;;   ;;; like menu select
+;;   (define-key map (kbd "<down>")  'zlc-select-next-vertical)
+;;   (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
+;;   (define-key map (kbd "<right>") 'zlc-select-next)
+;;   (define-key map (kbd "<left>")  'zlc-select-previous)
+
+;;   ;;; reset selection
+;;   (define-key map (kbd "C-c") 'zlc-reset)
+;;   )
 
 ;; simple note
 (require 'simplenote)
 (simplenote-setup)
+
+;;
+(require 'org-html5presentation)
+
+;; global
+(require 'gtags) 
+(autoload 'gtags-mode "gtags" "" t)
+(setq gtags-mode-hook
+      '(lambda ()
+         (local-set-key "\M-t" 'gtags-find-tag)
+         (local-set-key "\M-r" 'gtags-find-rtag)
+         (local-set-key "\M-s" 'gtags-find-symbol)
+         (local-set-key "\C-t" 'gtags-pop-stack)
+         ))
+;; mode hook
+(add-hook 'java-mode-hook (lambda () (gtags-mode 1)))
+(add-hook 'c-mode-hook (lambda () (gtags-mode 1)))
+(add-hook 'c++-mode-hook (lambda () (gtags-mode 1)))
+
+;; save place
+(load "saveplace")
+(setq-default save-place t)
