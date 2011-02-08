@@ -50,7 +50,7 @@
 ;; 全角空白、タブ、行末の空白などを表示
 ;;(defface my-face-r-1 '((t (:background "gray15"))) nil)
 (defface my-face-b-1 '((t (:background "gray"))) nil)
-(defface my-face-b-2 '((t (:background "gray26"))) nil)
+(defface my-face-b-2 '((t (:background "gray12"))) nil)
 (defface my-face-u-1 '((t (:foreground "SteelBlue" :underline t))) nil)
 ;;(defvar my-face-r-1 'my-face-r-1)
 (defvar my-face-b-1 'my-face-b-1)
