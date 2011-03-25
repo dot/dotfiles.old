@@ -77,6 +77,11 @@
 (recentf-mode 1)
 
 ;; anything
+
+;; see http://d.hatena.ne.jp/fu7mu4/20110116/1295173582
+(setq warning-suppress-types nil) ;; magic word to prevent bellow error
+;;; symbol's value as variable is void : warning-suppress-types
+
 (require 'anything-startup)
 (require 'anything-gtags)
 ; anything-my-default() を設定する
@@ -241,3 +246,17 @@
 ;; save place
 (load "saveplace")
 (setq-default save-place t)
+
+;; 終了時に未保存バッファの確認をしない
+;; (defadvice save-buffers-kill-terminal (before my-save-buffers-kill-terminal activate)
+;;   (when (process-list)
+;;     (dolist (p (process-list))
+;;       (set-process-query-on-exit-flag p nil))))
+
+;; emacsclientから閉じるときに確認しない
+(remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+
+;; 古いバッファを勝手に閉じる
+;; (require 'tempbuf)
+;; (add-hook 'find-file-hooks 'turn-on-tempbuf-mode)
+;; (add-hook 'dired-mode-hook 'turn-on-tempbuf-mode)
