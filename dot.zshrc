@@ -43,7 +43,7 @@ setopt hist_ignore_space        # コマンド行先頭が空白の時登録し�
 #setopt hist_verify
 setopt append_history           # zsh を終了させた順にファイルに記録(デフォルト)
 setopt inc_append_history       # 同上、ただしコマンドを入力した時点で記録
-setopt share_history            # ヒストリの共有。    
+setopt share_history            # ヒストリの共有。
 setopt list_packed              # 補完候補リストを詰めて表示
 setopt print_eight_bit          # 補完候補リストの日本語を適正表示
 setopt no_clobber               # 上書きリダイレクトの禁止
@@ -84,13 +84,15 @@ stty    intr    '^C'
 stty    susp    '^Z'
 
 #### bindkey
-bindkey -e    # emacs like keybind 
+bindkey -e    # emacs like keybind
 bindkey '^I' complete-word
 bindkey '^|' expand-or-complete-prefix
 bindkey '^P' history-beginning-search-backward
 bindkey '^N' history-beginning-search-forward
 bindkey '^X^F' forward-word
 bindkey '^X^B' backward-word
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
 
 autoload -U predict-on
 zle -N predict-on
@@ -145,6 +147,11 @@ _quote-previous-word-in-double() {
 }
 zle -N _quote-previous-word-in-double
 bindkey '^[d' _quote-previous-word-in-double
+
+# git completion
+autoload -U bashcompinit
+bashcompinit
+# source /usr/local/etc/bash_completion.d/git-completion.bash
 
 
 # up command
