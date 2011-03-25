@@ -36,5 +36,5 @@ end
 IRB.conf[:PROMPT_MODE] = :SIMPLE if IRB.conf[:PROMPT_MODE] == :DEFAULT
 IRB.conf[:USE_READLINE] = true
 IRB.conf[:AUTO_INDENT] = true
-IRB.conf[:SAVE_HISTORY] = 1000
+IRB.conf[:SAVE_HISTORY] = 3000
 IRB.conf[:HISTORY_PATH] = File::expand_path("~/.irb_history")
