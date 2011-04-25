@@ -62,7 +62,19 @@
 (setq read-buffer-completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 
+
+
 ;; howm
+;
+;; with org-mode
+(require 'org)
+(add-hook 'org-mode-hook 'howm-mode)
+(add-to-list 'auto-mode-alist '("\\.howm$" . org-mode))
+(setq howm-view-title-header "*") ;; ← howm のロードより前に書くこと
+
+;; キー割当の重複を避ける (お好みで)
+;(setq howm-prefix "\C-z") ;; howm のキーを「C-c , □」から「C-z □」に変更
+
 (require 'howm)
 (setq howm-menu-lang 'ja)
 (global-set-key "\C-c,," 'howm-menu)
@@ -260,3 +272,9 @@
 ;; (require 'tempbuf)
 ;; (add-hook 'find-file-hooks 'turn-on-tempbuf-mode)
 ;; (add-hook 'dired-mode-hook 'turn-on-tempbuf-mode)
+
+;; Edit with Emacs (chrome ext)
+;; https://chrome.google.com/extensions/detail/ljobjlafonikaiipfkggjbhkghgicgoh
+;; for invoke server
+(require 'edit-server)
+(edit-server-start)
