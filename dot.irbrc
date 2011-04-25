@@ -11,13 +11,21 @@ rescue LoadError => e
   p e.message
 end
 
+#begin
+#  require 'wirble'
+#  Wirble.init
+#  Wirble.colorize
+#rescue LoadError => e
+#  p e.message
+#end
+
 begin
-  require 'wirble'
-  Wirble.init
-  Wirble.colorize
+  require 'wirb'
+  Wirb.start
 rescue LoadError => e
   p e.message
 end
+
 
 begin
   require 'irb/history'
