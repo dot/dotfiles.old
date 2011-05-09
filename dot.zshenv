@@ -52,6 +52,9 @@ if [ -e $HOME/.zshlocalenv ]; then
     source $HOME/.zshlocalenv
 fi;
 
+# login shell
+export SHELL=/usr/local/bin/zsh
+
 #### time
 REPORTTIME=8                    # CPUを8秒以上使った時は time を表示
 TIMEFMT="\
