@@ -30,7 +30,7 @@
                    '(cursor-color     . "white")
                    '(cursor-type      . box)
                    '(menu-bar-lines . 1)
-                   '(width . 120) ;; ウィンドウ幅
+                   '(width . 60) ;; ウィンドウ幅
                    '(height . 50) ;; ウィンドウの高さ
                    )
                   initial-frame-alist)))

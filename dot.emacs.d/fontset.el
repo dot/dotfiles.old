@@ -5,4 +5,13 @@
                   (font-spec :family "Hiragino Kaku Gothic ProN" :size 16)
                   nil
                   'append)
-(add-to-list 'default-frame-alist '(font . "fontset-menlokakugo"))
+;;(add-to-list 'default-frame-alist '(font . "fontset-menlokakugo"))
+
+;; Ricty {{{2 (http://save.sys.t.u-tokyo.ac.jp/~yusa/fonts/ricty.html)
+(set-face-attribute 'default nil
+                   :family "Ricty"
+                   :height 160)
+
+(set-fontset-font
+ nil 'japanese-jisx0208
+ (font-spec :family "Ricty"))
