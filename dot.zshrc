@@ -9,7 +9,7 @@ setopt extended_history         # コマンドの開始時刻と経過時間を�
 function history-all { history -E 1 }
 
 
-autoload -U compinit; compinit -u
+autoload -Uz compinit; compinit -u
 compinit -d /tmp/$USER.zcompdump
 _cache_hosts=(`perl -ne  'if (/^([a-zA-Z0-9.-]+)/) { print "$1\n";}' ~/.ssh/known_hosts`)
 
@@ -110,6 +110,11 @@ autoload -U replace-string
 zle -N replace-string
 
 
+# enable 'C-h' as backspace on tmux
+if [ $TERM = "screen" ]; then
+   stty erase "^?"
+fi
+
 # dabbrev
 HARDCOPYFILE=$HOME/tmp/screen-hardcopy
 touch $HARDCOPYFILE
@@ -151,7 +156,7 @@ bindkey '^[d' _quote-previous-word-in-double
 # git completion
 autoload -U bashcompinit
 bashcompinit
-# source /usr/local/etc/bash_completion.d/git-completion.bash
+#source /usr/local/etc/bash_completion.d/git-completion.bash
 
 
 # up command
@@ -175,6 +180,12 @@ autoload -Uz vcs_info
 
 zstyle ':vcs_info:*' formats '[%b]'
 zstyle ':vcs_info:*' actionformats '[%b] (%a)'
+
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' unstagedstr '¹'  # display ¹ if there are unstaged changes
+zstyle ':vcs_info:git:*' stagedstr '²'    # display ² if there are staged changes
+zstyle ':vcs_info:git:*' formats '[%b]%c%u'
+zstyle ':vcs_info:git:*' actionformats '[%b|%a]%c%u'
 
 precmd () {
     psvar=()
