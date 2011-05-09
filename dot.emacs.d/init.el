@@ -278,3 +278,6 @@
 ;; for invoke server
 (require 'edit-server)
 (edit-server-start)
+
+(require 'git)
+(require 'git-blame)
