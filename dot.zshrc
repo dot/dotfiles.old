@@ -196,10 +196,6 @@ precmd () {
 #PROMPT=$'%{$fg[green]%}%n@%M %{$fg[cyan]%}%~ %1(v|%F{green}%1v%f|)\n%{$fg[yellow]%}%#%{$reset_color%} '
 PROMPT=$'%{$fg[yellow]%}%n%{$fg[red]%}@$fg[green]%}%m %{$fg[cyan]%}%~ %1(v|%F{green}%1v%f|)\n%{$fg[green]%}%#%{$reset_color%} '
 
-autoload zmv
-alias zmv='noglob zmv'
-
-
 # rake command completion
 #compdef _rake rake
 _rake_does_task_list_need_generating () {
