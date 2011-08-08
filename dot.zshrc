@@ -1,4 +1,3 @@
-source ~/.aliases
 
 # about history
 HISTFILE="$HOME/.zhistory"
@@ -53,7 +52,6 @@ setopt no_beep                  # コマンド入力エラーでBEEPを鳴らさ
 setopt extended_glob            # 拡張グロブ
 setopt numeric_glob_sort        # 数字を数値と解釈して昇順ソートで出力
 setopt auto_cd                  # 第1引数がディレクトリだと cd を補完
-setopt auto_pushd
 setopt correct                  # スペルミス補完
 setopt no_checkjobs             # exit 時にバックグラウンドジョブを確認しない
 setopt ignore_eof               # C-dでlogoutしない(C-dを補完で使う人用)
@@ -187,6 +185,8 @@ zstyle ':vcs_info:git:*' stagedstr '²'    # display ² if there are staged chan
 zstyle ':vcs_info:git:*' formats '[%b]%c%u'
 zstyle ':vcs_info:git:*' actionformats '[%b|%a]%c%u'
 
+
+
 precmd () {
     psvar=()
     vcs_info
@@ -218,3 +218,5 @@ _rake () {
 function cdb() {
   cd `ruby -e "require 'rubygems';gem 'bundler';require 'bundler';Bundler.load.specs.each{|s| puts s.full_gem_path if s.name == '${1}'}"`
 }
+
+source ~/.aliases

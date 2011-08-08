@@ -8,7 +8,7 @@ fi;
 export host=`echo $HOST | sed -e 's/\..*//'`
 
 # coredumpファイルを吐かないようにする
-limit coredumpsize  0
+#limit coredumpsize  0
 limit maxproc 255  #40 is default
 umask 022
 
@@ -27,9 +27,9 @@ export SCREENDIR=~/.screens/
 
 ####  path / PATH
 path=( ~/bin \
-    ~/.gem/ruby/1.8/bin \
     /usr/local/bin /usr/local/sbin /usr/local/mysql/bin \
     /usr/local/mongodb/bin \
+    /usr/local/cuda/bin \
     /opt/local/bin /opt/local/sbin \
     /bin /sbin /usr/bin /usr/sbin \
 )
@@ -53,7 +53,7 @@ if [ -e $HOME/.zshlocalenv ]; then
 fi;
 
 # login shell
-export SHELL=/usr/local/bin/zsh
+#export SHELL=/usr/local/bin/zsh
 
 #### time
 REPORTTIME=8                    # CPUを8秒以上使った時は time を表示
