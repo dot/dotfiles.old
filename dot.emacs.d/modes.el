@@ -172,7 +172,7 @@
 
 ;; Objective-C mode
 (add-to-list 'auto-mode-alist '("\\.mm?$" . objc-mode))
-(add-to-list 'auto-mode-alist '("\\.h$" . objc-mode))
+;(add-to-list 'auto-mode-alist '("\\.h$" . objc-mode))
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@implementation" . objc-mode))
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@interface" . objc-mode))
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@protocol" . objc-mode))
@@ -186,3 +186,15 @@
             (gtags-mode 1)
 ;;            (gtags-make-complete-list)
 ))
+
+;; c++ mode
+;; BackSpace キーを「賢く」し，インデント幅は4桁，タブはスペースに展開
+(add-hook 'c-mode-common-hook
+          '(lambda ()
+             (progn
+               (c-toggle-hungry-state 1)
+               (setq c-basic-offset 4 indent-tabs-mode nil))))
+(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
+
+;; cuda mode
+(require 'cuda-mode)
