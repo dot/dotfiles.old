@@ -42,7 +42,7 @@
 ;; スクロールする際に重なって表示するサイズ
 (setq next-screen-context-lines 10)
 ;; 透過処理
-(set-frame-parameter (selected-frame) 'alpha '(90 90))
+(set-frame-parameter (selected-frame) 'alpha '(85 85))
 
 ;; fontセットを読み込む
 (load "~/.emacs.d/fontset.el")
