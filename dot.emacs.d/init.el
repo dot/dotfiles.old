@@ -281,3 +281,13 @@
 
 (require 'git)
 (require 'git-blame)
+
+;; psvn
+(require 'psvn)
+;; (autoload 'svn-status "dsvn" "Run `svn status'." t)
+;; (autoload 'svn-update "dsvn" "Run `svn update'." t)
+(setq process-coding-system-alist
+      (cons '("svn" . utf-8) process-coding-system-alist))
+
+;; magit
+(require 'magit)
