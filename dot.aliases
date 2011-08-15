@@ -54,9 +54,10 @@ alias -g C='| cat -n'
 alias -g W='| wc'
 
 #### function
-function cd() {
-  builtin cd $@ && ls;
-}
+#function cd() {
+#  builtin cd $@ && ls;
+#}
+function chpwd() {ls }
 
 function pst() {                # CPU 使用率の高い方から8つ
   psa | head -n 1
