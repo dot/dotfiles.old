@@ -114,19 +114,19 @@ if [ $TERM = "screen" ]; then
 fi
 
 # dabbrev
-HARDCOPYFILE=$HOME/tmp/screen-hardcopy
-touch $HARDCOPYFILE
+#HARDCOPYFILE=$HOME/tmp/screen-hardcopy
+#touch $HARDCOPYFILE
 
-dabbrev-complete () {
-    local reply lines=80 # 80行分
-    screen -X eval "hardcopy -h $HARDCOPYFILE"
-    reply=($(sed '/^$/d' $HARDCOPYFILE | sed '$ d' | tail -$lines))
-    compadd - "${reply[@]%[*/=@|]}"
-}
-
-zle -C dabbrev-complete menu-complete dabbrev-complete
-bindkey '^[/' dabbrev-complete
-bindkey '^[/^_' reverse-menu-complete
+#dabbrev-complete () {
+#    local reply lines=80 # 80行分
+#    screen -X eval "hardcopy -h $HARDCOPYFILE"
+#    reply=($(sed '/^$/d' $HARDCOPYFILE | sed '$ d' | tail -$lines))
+#    compadd - "${reply[@]%[*/=@|]}"
+#}
+#
+#zle -C dabbrev-complete menu-complete dabbrev-complete
+#bindkey '^[/' dabbrev-complete
+#bindkey '^[/^_' reverse-menu-complete
 
 # insert previous command last word
 autoload smart-insert-last-word
