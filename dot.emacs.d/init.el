@@ -88,6 +88,10 @@
 (setq recentf-auto-cleanup 'never)
 (recentf-mode 1)
 
+;;;;
+(require 'gist)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; anything
 
 ;; see http://d.hatena.ne.jp/fu7mu4/20110116/1295173582
@@ -96,6 +100,7 @@
 
 (require 'anything-startup)
 (require 'anything-gtags)
+(require 'anything-gist)
 ; anything-my-default() を設定する
 (define-key global-map (kbd "C-;") 'anything-my-default)
 (defun anything-my-default ()
@@ -126,6 +131,9 @@
       ((name . "File Name History")
        (candidates . file-name-history)
        (match anything-c-match-on-file-name anything-c-match-on-directory-name) (type . file)) 
+      ;; ((name . "include")
+      ;;  anything-c-source-include
+
       ((name . "Files from Current Directory")
        (candidates lambda nil
                    (with-current-buffer anything-current-buffer
@@ -177,6 +185,28 @@
           '(lambda ()
              (local-set-key (kbd "O") 'anything-c-moccur-dired-do-moccur-by-moccur)))
 
+;; ;; anything-include (from emacswiki)
+;; (require 'anything-include)
+;; (setq anything-sources
+;;       (list anything-c-source-buffers
+;; 	    anything-c-source-files-in-current-dir
+;; 	    anything-c-source-recentf
+;; 	    anything-c-source-emacs-commands
+;; 	    anything-c-source-info-pages
+;; 	    anything-c-source-include
+;; 	    ))
+;; ;(setq anything-include-save-file "~/.anything-include")
+;; (setq anything-include-max-saved-items 700)
+
+;; anything-dabbrev-expand
+(require 'anything-dabbrev-expand)
+(global-set-key "\M-/" 'anything-dabbrev-expand)
+(define-key anything-dabbrev-map "\M-/" 'anything-dabbrev-find-all-buffers)
+
+;; anything-show-completion
+(require 'anything-show-completion)
+
+;;;;;;;;;;;;;;;;
 ;; ruby tools
 (load "~/.emacs.d/ruby.el")
 
@@ -187,6 +217,19 @@
 ;; anything
 (setq anything-kill-ring-threshold 5)
 (global-set-key "\M-y" 'anything-show-kill-ring)
+
+
+;;;;;;;;;;;;
+;; session
+(when (require 'session nil t)
+  (setq session-initialize '(de-saveplace session keys menus)
+        session-globals-include '((kill-ring 500)
+                                  (session-file-alist 300 t)
+                                  (file-name-history 100)))
+  (add-hook 'after-init-hook 'session-initialize))
+
+
+
 
 ;; minibuffer isearch
 (require 'minibuf-isearch)
