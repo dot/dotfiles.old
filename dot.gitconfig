@@ -1,6 +1,6 @@
 [user]
-  name = dot
-  email = shuhei.kondo@gmail.com
+    name = dot
+    email = shuhei.kondo@gmail.com
 [alias]
     ci = commit
     st = status --ignore-submodules=dirty
@@ -16,17 +16,17 @@
     lgg= log --decorate --oneline --graph
     wd= diff --word-diff
 [color]
-  diff = auto
+    diff = auto
     status = auto
     branch = auto
     interactvie = auto
     grep = auto
 [status]
-  diff = auto
+    diff = auto
 [branch]
-  diff = auto
+    diff = auto
 [core]
-  excludesfile = ~/.gitignore
+    excludesfile = ~/.gitignore
     autocrlf = input
 [push]
     default = tracking
