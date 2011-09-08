@@ -112,6 +112,9 @@ zle -N replace-string
 if [ $TERM = "screen" ]; then
    stty erase "^?"
 fi
+if [ "${TMUX:=}" != "" ]; then
+   export TERM="screen-256color"
+fi
 
 # dabbrev
 #HARDCOPYFILE=$HOME/tmp/screen-hardcopy
@@ -154,7 +157,8 @@ bindkey '^[d' _quote-previous-word-in-double
 # git completion
 autoload -U bashcompinit
 bashcompinit
-#source /usr/local/etc/bash_completion.d/git-completion.bash
+export COMP_WORDBREAKS=
+source /usr/local/etc/bash_completion.d/git-completion.bash
 
 
 # up command
@@ -176,6 +180,14 @@ unsetopt promptcr               # 改行のない出力をプロンプトで上�
 setopt prompt_subst             # ESCエスケープを有効にする
 autoload -Uz vcs_info
 
+# Colours {{{
+local HOSTNAME_COLOR=$'%{\e[38;5;190m%}'
+local USERNAME_COLOR=$'%{\e[38;5;199m%}'
+local PATH_COLOR=$'%{\e[38;5;61m%}'
+local RVM_COLOR=$'%{\e[38;5;31m%}'
+local VCS_COLOR=$'%{\e[38;5;248m%}'
+# }}}
+
 zstyle ':vcs_info:*' formats '[%b]'
 zstyle ':vcs_info:*' actionformats '[%b] (%a)'
 
@@ -185,7 +197,13 @@ zstyle ':vcs_info:git:*' stagedstr '²'    # display ² if there are staged chan
 zstyle ':vcs_info:git:*' formats '[%b]%c%u'
 zstyle ':vcs_info:git:*' actionformats '[%b|%a]%c%u'
 
-
+# rvm version
+function rvm_prompt {
+    result=`rvm-prompt v g 2> /dev/null`
+    if [ "$result" ] ; then
+        echo "[$result]"
+    fi  
+}
 
 precmd () {
     psvar=()
@@ -193,8 +211,12 @@ precmd () {
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
 
-#PROMPT=$'%{$fg[green]%}%n@%M %{$fg[cyan]%}%~ %1(v|%F{green}%1v%f|)\n%{$fg[yellow]%}%#%{$reset_color%} '
+RVM_INFO=$'%{$RVM_COLOR%}$(rvm_prompt)%{${reset_color}%}'
+RPROMPT="${RVM_INFO}%{${reset_color}%}"
+
 PROMPT=$'%{$fg[yellow]%}%n%{$fg[red]%}@$fg[green]%}%m %{$fg[cyan]%}%~ %1(v|%F{green}%1v%f|)\n%{$fg[green]%}%#%{$reset_color%} '
+
+
 
 # rake command completion
 #compdef _rake rake
