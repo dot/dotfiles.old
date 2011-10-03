@@ -19,3 +19,35 @@
 ;; バッファ切り替えを簡単に
 (global-set-key "\M-N" 'next-buffer)
 (global-set-key "\M-P" 'previous-buffer)
+
+(defun my-kill-or-delete-line ()
+  "ポイントが空行ならキルリングに追加しない"
+  (interactive)
+  (if (and (bolp) (eolp)) ;お気に入り
+      (my-delete-line)
+    (kill-line)))
+
+;; ポイント位置が空行なら C-k してもキルリングに追加しない
+;; see http://d.hatena.ne.jp/kitokitoki/20100904/p2
+;; kill-line から置換。もっと縮められそう。
+(defun my-delete-line (&optional arg)
+  (interactive "P")
+  (delete-region (point)
+                 (progn
+                   (if arg
+                       (forward-visible-line (prefix-numeric-value arg))
+                     (if (eobp)
+                         (signal 'end-of-buffer nil))
+                     (let ((end
+                            (save-excursion
+                              (end-of-visible-line) (point))))
+                       (if (or (save-excursion
+                                 (unless show-trailing-whitespace
+                                   (skip-chars-forward " \t" end))
+                                 (= (point) end))
+                               (and kill-whole-line (bolp)))
+                           (forward-visible-line 1)
+                         (goto-char end))))
+                   (point))))
+
+(global-set-key (kbd "C-k") 'my-kill-or-delete-line)
