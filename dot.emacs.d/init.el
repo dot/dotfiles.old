@@ -233,13 +233,15 @@
 ;;;;;;;;;;;;
 ;; session
 (when (require 'session nil t)
-  (setq session-initialize '(de-saveplace session keys menus)
+  (setq session-initialize '(de-saveplace session keys menus places)
         session-globals-include '((kill-ring 500)
-                                  (session-file-alist 300 t)
-                                  (file-name-history 100)))
+                                  (session-file-alist 500 t)
+                                  (file-name-history 10000)))
+  ;; これがないと file-name-history に500個保存する前に max-string に達する
+  (setq session-globals-max-string 100000000)
+  ;; デフォルトでは30!
+  (setq history-length t)
   (add-hook 'after-init-hook 'session-initialize))
-
-
 
 
 ;; minibuffer isearch
@@ -310,8 +312,8 @@
 (add-hook 'c++-mode-hook (lambda () (gtags-mode 1)))
 
 ;; save place
-(load "saveplace")
-(setq-default save-place t)
+;; (load "saveplace")
+;; (setq-default save-place t)
 
 ;; 終了時に未保存バッファの確認をしない
 ;; (defadvice save-buffers-kill-terminal (before my-save-buffers-kill-terminal activate)
