@@ -111,6 +111,7 @@
       ((name . "Buffers")
        (candidates . anything-c-buffer-list)
        (type . buffer)
+       (real-to-display . anything-howm-title-real-to-display)
        (candidate-transformer
         anything-c-skip-current-buffer
         anything-c-highlight-buffers
@@ -205,6 +206,11 @@
 
 ;; anything-show-completion
 (require 'anything-show-completion)
+
+;; anything-howm
+(require 'anything-howm)
+(global-set-key (kbd "C-M-h") 'anything-howm-menu-command)
+(setq anything-howm-recent-menu-number-limit 3000)
 
 ;;;;;;;;;;;;;;;;
 ;; ruby tools
@@ -324,6 +330,7 @@
 
 (require 'git)
 (require 'git-blame)
+(require 'git-status)
 
 ;; psvn
 (require 'psvn)
