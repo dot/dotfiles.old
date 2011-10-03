@@ -207,6 +207,11 @@
 ;; anything-show-completion
 (require 'anything-show-completion)
 
+;; descbinds
+(require 'descbinds-anything)
+(descbinds-anything-install)
+(global-set-key (kbd "C-?") 'descbinds-anything)
+
 ;; anything-howm
 (require 'anything-howm)
 (global-set-key (kbd "C-M-h") 'anything-howm-menu-command)

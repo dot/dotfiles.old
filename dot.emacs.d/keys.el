@@ -9,6 +9,7 @@
 ;; to swap C-h and Backspace
 (keyboard-translate ?\C-h ?\C-?)
 (global-set-key "\C-h" nil)
+;(global-set-key "\C-?" 'help-command)
 
 ;; avoid hiding with M-h
 (setq mac-command-key-is-meta t)
