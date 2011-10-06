@@ -8,13 +8,18 @@
     co = checkout
     url = config --get remote.origin.url
     pr = pull --rebase
-    b = branch
     rbm = rebase master
     lp = log -p
     ls = log --stat
     lg= log --decorate
     lgg= log --decorate --oneline --graph
     wd= diff --word-diff
+
+    b = branch
+    bm = branch --merged
+
+    d = diff
+    ds = diff --staged
 [color]
     diff = auto
     status = auto
