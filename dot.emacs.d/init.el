@@ -332,8 +332,8 @@
 ;; Edit with Emacs (chrome ext)
 ;; https://chrome.google.com/extensions/detail/ljobjlafonikaiipfkggjbhkghgicgoh
 ;; for invoke server
-(require 'edit-server)
-(edit-server-start)
+;; (require 'edit-server)
+;; (edit-server-start)
 
 (require 'git)
 (require 'git-blame)
