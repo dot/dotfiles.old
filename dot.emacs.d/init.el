@@ -217,6 +217,10 @@
 (global-set-key (kbd "C-M-h") 'anything-howm-menu-command)
 (setq anything-howm-recent-menu-number-limit 3000)
 
+;; anything-project
+(require 'anything-project)
+(global-set-key (kbd "C-c C-f") 'anything-project)
+
 ;;;;;;;;;;;;;;;;
 ;; ruby tools
 (load "~/.emacs.d/ruby.el")
