@@ -7,6 +7,7 @@
 ;;; load path settings
 (add-to-list 'load-path "~/.emacs.d/site-lisp/howm")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/modes")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/apel")
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 ;; environment path
@@ -309,6 +310,8 @@
          (local-set-key "\M-r" 'gtags-find-rtag)
          (local-set-key "\M-s" 'gtags-find-symbol)
          (local-set-key "\C-t" 'gtags-pop-stack)
+
+         (setq gtags-path-style 'relative)
          ))
 ;; mode hook
 (add-hook 'java-mode-hook (lambda () (gtags-mode 1)))
@@ -352,3 +355,14 @@
 
 ;; magit
 (require 'magit)
+
+;; 矩形選択
+(cua-mode t)
+(setq cua-enable-cua-keys nil) ;; 変なキーバインド禁止
+
+;; el-screen
+(setq elscreen-prefix-key "\C-t")
+(load "elscreen" "ElScreen" t)
+(require 'elscreen-howm)
+(require 'elscreen-dired)
+(define-key elscreen-map "\C-]" '(lambda () (interactive) (anything 'anything-c-source-elscreen)))
