@@ -47,32 +47,35 @@
 ;; fontセットを読み込む
 (load "~/.emacs.d/fontset.el")
 
-;; 全角空白、タブ、行末の空白などを表示
-;;(defface my-face-r-1 '((t (:background "gray15"))) nil)
-(defface my-face-b-1 '((t (:background "gray"))) nil)
-(defface my-face-b-2 '((t (:background "gray12"))) nil)
-(defface my-face-u-1 '((t (:foreground "SteelBlue" :underline t))) nil)
-;;(defvar my-face-r-1 'my-face-r-1)
-(defvar my-face-b-1 'my-face-b-1)
-(defvar my-face-b-2 'my-face-b-2)
-(defvar my-face-u-1 'my-face-u-1)
-(defadvice font-lock-mode (before my-font-lock-mode ())
-  (font-lock-add-keywords
-   major-mode
-   '(("\t" 0 my-face-b-2 append)
-     ("　" 0 my-face-b-1 append)
-     ("[ \t]+$" 0 my-face-u-1 append)
-;     ("[\r]*\n" 0 my-face-r-1 append)
-     )))
-(ad-enable-advice 'font-lock-mode 'before 'my-font-lock-mode)
-(ad-activate 'font-lock-mode)
-(add-hook 'find-file-hooks '(lambda ()
-                              (if font-lock-mode
-                                  nil
-                                (font-lock-mode t))))
+;; タブ文字、全角空白、文末の空白の色付け
+;; @see http://www.emacswiki.org/emacs/WhiteSpace
+;; @see http://xahlee.org/emacs/whitespace-mode.html
+(require 'whitespace)
+(global-whitespace-mode 1)
+;; 常に whitespace-mode だと動作が遅くなる場合がある
+;(global-set-key (kbd "C-x w") 'global-whitespace-mode)
 
-(require 'color-theme)
-(eval-after-load "color-theme"
-  '(progn
-     (color-theme-initialize)
-     (color-theme-tomorrow-night-bright)))
+(set-face-foreground 'whitespace-newline "gray5")
+(set-face-foreground 'whitespace-tab "gray25")
+(set-face-background 'whitespace-tab 'nil)
+;(set-face-underline  'whitespace-tab "SteelBlue")
+(set-face-foreground 'whitespace-trailing "gray25")
+(set-face-background 'whitespace-trailing "gray12")
+(set-face-bold-p 'whitespace-trailing 'nil)
+
+(setq whitespace-style '(face tabs space-mark tab-mark newline-mark trailing))
+(setq whitespace-display-mappings
+      '((space-mark ?\x3000 [?\□]) ;; 全角スペース
+        (newline-mark ?\n [?\u21B5 ?\n] [?$ ?\n])
+;        (newline-mark ?\n [9166 ?\n] [?$ ?\n])
+        (tab-mark 9 [8614 9] [92 9])
+        ))
+;; ;; EOB を表示
+;(setq-default indicate-empty-lines t)
+;(setq-default indicate-buffer-boundaries 'left)
+
+;; (require 'color-theme)
+;; (eval-after-load "color-theme"
+;;   '(progn
+;;      (color-theme-initialize)
+;;      (color-theme-tomorrow-night-bright)))
