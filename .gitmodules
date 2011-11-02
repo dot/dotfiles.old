@@ -10,3 +10,6 @@
 [submodule "dot.emacs.d/plugins/simplenote"]
 	path = dot.emacs.d/plugins/simplenote
 	url = https://github.com/cefstat/simplenote.el.git
+[submodule "dot.functions/zsh-completions"]
+	path = dot.functions/zsh-completions
+	url = git://github.com/zsh-users/zsh-completions.git

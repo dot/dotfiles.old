@@ -36,7 +36,7 @@ path=( ~/bin \
     /bin /sbin /usr/bin /usr/sbin \
 )
 
-fpath=(~/.functions ${fpath})
+fpath=(~/.functions ~/.functions/zsh-completions ${fpath})
 
 export LESS='--tabs=4 --no-init --LONG-PROMPT --ignore-case'
 if type /usr/local/bin/lesspipe.sh &>/dev/null

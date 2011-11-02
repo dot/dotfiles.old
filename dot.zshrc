@@ -113,7 +113,7 @@ if [ $TERM = "screen" ]; then
    stty erase "^?"
 fi
 if [ "${TMUX:=}" != "" ]; then
-   export TERM="screen-256color"
+#   export TERM="screen-256color"
 fi
 
 # dabbrev
@@ -151,8 +151,8 @@ _quote-previous-word-in-double() {
     modify-current-argument '${(qqq)${(Q)ARG}}'
     zle vi-forward-blank-word
 }
-zle -N _quote-previous-word-in-double
-bindkey '^[d' _quote-previous-word-in-double
+#zle -N _quote-previous-word-in-double
+#bindkey '^[d' _quote-previous-word-in-double
 
 # git completion
 autoload -U bashcompinit
@@ -199,10 +199,10 @@ zstyle ':vcs_info:git:*' actionformats '[%b|%a]%c%u'
 
 # rvm version
 function rvm_prompt {
-    result=`rvm-prompt v g 2> /dev/null`
+    result=`rbenv version | sed -e 's/ .*//'`
     if [ "$result" ] ; then
         echo "[$result]"
-    fi  
+    fi
 }
 
 precmd () {
