@@ -242,3 +242,8 @@ function cdb() {
 }
 
 source ~/.aliases
+
+eval "$(rbenv init -)"
+if [[ -f ~/.rbenv/completions/rbenv.zsh ]]; then
+   source ~/.rbenv/completions/rbenv.zsh
+fi
