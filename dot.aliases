@@ -21,7 +21,7 @@ alias cdp='cd -P'
 alias scr="screen -RU"
 alias view="vim -R"
 alias v="view"
-alias tm="tmux"
+alias tm="tmux attach"
 
 # mac applications
 alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
