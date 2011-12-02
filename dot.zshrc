@@ -114,6 +114,7 @@ if [ $TERM = "screen" ]; then
 fi
 if [ "${TMUX:=}" != "" ]; then
 #   export TERM="screen-256color"
+    stty erase "^?"
 fi
 
 # dabbrev
