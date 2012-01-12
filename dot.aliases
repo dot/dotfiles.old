@@ -1,74 +1,49 @@
 alias vi="vim"
-alias pushd=pd
+alias view="vim -R"
 alias diff=colordiff
-alias psa='ps auxw'
-
-#### PAGER
-#alias less="$PAGER"
-alias m="$PAGER"
-alias -g L="| $PAGER"
-alias -g M="| $PAGER"
-alias les="less"        # for typo
-
 alias ls='ls -GF'
-#alias ls='ls -vGF'
-#alias ls='ls -F --show-control-chars --color=auto'
 alias la='ls -a'
 alias ll='ls -al'
 alias cdp='cd -P'
+alias tm="tmux -2 attach"
 
-#### command
-alias scr="screen -RU"
-alias view="vim -R"
-alias v="view"
-alias tm="tmux attach"
-
-# mac applications
-alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
-
-# for ruby
+# for bundler
 alias be='bundle exec'
 alias bu='bundle update'
-alias bi='bundle install --path=$HOME/.gem'
 
-alias rurema='noglob rurema'
-
-#
 alias clup="find -E . -regex '.*\/(#.*#|.*~)' -print0 |xargs -0 rm"
 
-# browsing
-alias chrome='open -a /Applications/Chromium.app'
-
-# short name
-alias h='head'
-alias t='tail'
 alias g='git'
-alias c='cat'
-alias j='jobs'
-#alias w='wc'   w は w のまま使う。
-
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
-alias -g C='| cat -n'
-alias -g W='| wc'
-alias -g D='|diff|lv'
 
-#### function
-#function cd() {
-#  builtin cd $@ && ls;
-#}
-function chpwd() {ls }
+### functions
+function chpwd() { ls }
 
-function pst() {                # CPU 使用率の高い方から8つ
-  psa | head -n 1
-  psa | sort -r -n +2 | grep -v "ps -auxww" | grep -v grep | head -n 8
-}
-function psm() {                # メモリ占有率の高い方から8つ
-  psa | head -n 1
-  psa | sort -r -n +3 | grep -v "ps -auxww" | grep -v grep | head -n 8
-}
 function psg() {
   psa | head -n 1
   psa | grep $* | grep -v "ps -auxww" | grep -v grep
 }
+
+# up command
+# http://gist.github.com/607290
+# http://d.hatena.ne.jp/hitode909/20101002/1285994430
+function up() {
+    to=$(perl -le '$p=$ENV{PWD}."/";$d="/".$ARGV[0]."/";$r=rindex($p,$d);$r>=0 && print substr($p, 0, $r+length($d))' $1)
+    if [ "$to" = "" ]; then
+        echo "no such file or directory: $1" 1>&2
+        return 1
+    fi
+    cd $to
+}
+
+# cdb
+function cdb() {
+  cd `ruby -e "require 'rubygems';gem 'bundler';require 'bundler';Bundler.load.specs.each{|s| puts s.full_gem_path if s.name == '${1}'}"`
+}
+
+
+# for mac applications
+alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+
