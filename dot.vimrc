@@ -59,7 +59,7 @@ let format_allow_over_tw = 1    " ぶら下り可能幅
 
 set fileformats=unix,dos,mac
 
-colorscheme darkblue
+colorscheme default
 " カーソル行をハイライト
 set cursorline
 " カレントウィンドウにのみ罫線を引く
