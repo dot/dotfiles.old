@@ -70,7 +70,7 @@
 (defvar ap:default-directory-filter-regexps nil)
 
 (defvar ap:default-filter-regexps
-  '("\\.pm$" "\\.t$" "\\.pl$" "\\.PL$"))
+  '("\\.pm$" "\\.t$" "\\.pl$" "\\.PL$" "\\.c$" "\\.cc$" "\\.h$"))
 
 ;; almost copied from `anything-find-resource--project-root-files'.
 (defvar ap:default-project-root-files
