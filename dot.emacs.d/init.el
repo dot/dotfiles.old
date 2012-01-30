@@ -102,6 +102,13 @@
 (require 'anything-startup)
 (require 'anything-gtags)
 (require 'anything-gist)
+(require 'anything-rdefs)
+(setq ar:command "~/bin/rdefs.rb")
+(add-hook 'ruby-mode-hook
+  (lambda ()
+    (define-key ruby-mode-map (kbd "C-@") 'anything-rdefs)))
+;; current-buffer も末尾に表示する
+(setq anything-allow-skipping-current-buffer t)
 ; anything-my-default() を設定する
 (define-key global-map (kbd "C-;") 'anything-my-default)
 (defun anything-my-default ()
