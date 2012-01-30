@@ -18,9 +18,16 @@ alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
 
+#
+if [[ -f /Applications/p4merge.app/Contents/MacOS/p4merge ]]; then
+   alias p4merge=/Applications/p4merge.app/Contents/MacOS/p4merge
+fi
+
+
 ### functions
 function chpwd() { ls }
 
+alias psa='ps auxw'
 function psg() {
   psa | head -n 1
   psa | grep $* | grep -v "ps -auxww" | grep -v grep
