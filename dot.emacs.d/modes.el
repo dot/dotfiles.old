@@ -209,3 +209,7 @@
 (set (make-local-variable 'coffee-cleanup-whitespace) nil))
 (add-hook 'coffee-mode-hook
  '(lambda() (coffee-custom)))
+
+;; yaml mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
