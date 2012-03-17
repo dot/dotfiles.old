@@ -82,7 +82,8 @@ zstyle ':completion:*' list-colors $LS_COLORS
 ### etc
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-setopt no_unset
+#setopt no_unset
+unsetopt no_unset
 setopt auto_cd
 setopt no_beep
 
