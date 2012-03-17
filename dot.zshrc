@@ -142,11 +142,10 @@ _quote-previous-word-in-double() {
 zle -N _quote-previous-word-in-double
 bindkey '^[d' _quote-previous-word-in-double
 
-# git completion
-autoload -U bashcompinit
-bashcompinit
-export COMP_WORDBREAKS=
-source /usr/local/etc/bash_completion.d/git-completion.bash
+## git completion
+#autoload -U bashcompinit
+#bashcompinit
+#source /usr/local/etc/bash_completion.d/git-completion.bash
 
 source ~/.aliases
 
