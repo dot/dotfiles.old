@@ -20,6 +20,9 @@
 
     d = diff
     ds = diff --staged
+
+    fo = fetch origin
+    ro = rebase origin
 [color]
     diff = auto
     status = auto
@@ -33,5 +36,6 @@
 [core]
     excludesfile = ~/.gitignore
     autocrlf = input
+	quotepath = true
 [push]
     default = tracking

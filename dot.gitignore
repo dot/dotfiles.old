@@ -6,3 +6,5 @@
 .DS_Store
 *.elc
 *.dSYM
+.rbenv-version
+.rake_tasks
