@@ -10,6 +10,7 @@ alias tm="tmux -2 attach"
 # for bundler
 alias be='bundle exec'
 alias bu='bundle update'
+alias bi='bundle install'
 
 alias clup="find -E . -regex '.*\/(#.*#|.*~)' -print0 |xargs -0 rm"
 
