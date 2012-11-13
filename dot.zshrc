@@ -157,7 +157,5 @@ fi
 
 # init autojump
 # do brew install autojump
-if [ -f `brew --prefix`/etc/autojump ]; then
-  source `brew --prefix`/etc/autojump
-fi
+[[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
