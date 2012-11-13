@@ -56,9 +56,6 @@
 ;(global-set-key (kbd "C-x w") 'global-whitespace-mode)
 
 (set-face-foreground 'whitespace-newline "gray5")
-(set-face-attribute 'whitespace-newline nil
-                    :family "Ricty"
-                    :height 50)
 (set-face-foreground 'whitespace-tab "gray25")
 (set-face-background 'whitespace-tab 'nil)
 ;(set-face-underline  'whitespace-tab "SteelBlue")
@@ -69,13 +66,9 @@
 (setq whitespace-style '(face tabs space-mark tab-mark newline-mark trailing))
 (setq whitespace-display-mappings
       '((space-mark ?\x3000 [?\□]) ;; 全角スペース
-;         (newline-mark ?\n [8617 ?\n] [?$ ?\n])
-;        (newline-mark ?\n [8629 ?\n] [?$ ?\n])
-;        (newline-mark ?\n [?\u21B5 ?\n] [?$ ?\n])
+        (newline-mark ?\n [?\u21B5 ?\n] [?$ ?\n])
 ;        (newline-mark ?\n [9166 ?\n] [?$ ?\n])
-;        (newline-mark ?\n   [?\xB6 ?\n] [?$ ?\n])
-        (tab-mark ?\t [?\xBB ?\t] [?\\ ?\t])
-;        (tab-mark 9 [8614 9] [92 9])
+        (tab-mark 9 [8614 9] [92 9])
         ))
 ;; ;; EOB を表示
 ;(setq-default indicate-empty-lines t)

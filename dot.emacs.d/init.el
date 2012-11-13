@@ -10,9 +10,8 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp/apel")
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
-;; environment path
-(setenv "PATH" (concat "/Users/kondo/bin:/Users/kondo/.gem/ruby/1.8/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/mongodb/bin:/opt/local/bin:/opt/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:"
-                       (getenv "PATH")))
+;; ;; environment path
+;; (setenv "PATH" (concat "/Users/kondo/bin:/Users/kondo/.gem/ruby/1.8/bin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:/usr/local/mongodb/bin:/opt/local/bin:/opt/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin:" (getenv "PATH")))
 
 ;;; auto-install
 (require 'auto-install)
@@ -309,14 +308,14 @@
 (require 'org-html5presentation)
 
 ;; global
-(require 'gtags) 
+(require 'gtags)
 (autoload 'gtags-mode "gtags" "" t)
 (setq gtags-mode-hook
       '(lambda ()
          (local-set-key "\M-t" 'gtags-find-tag)
          (local-set-key "\M-r" 'gtags-find-rtag)
          (local-set-key "\M-s" 'gtags-find-symbol)
-         (local-set-key "\C-t" 'gtags-pop-stack)
+;         (local-set-key "\C-t" 'gtags-pop-stack)
 
          (setq gtags-path-style 'relative)
          ))

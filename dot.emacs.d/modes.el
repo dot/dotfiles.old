@@ -145,8 +145,9 @@
             (inf-ruby-keys)
 ;            (unset-key ruby-mode-map " ")
             (ruby-electric-mode t)
-            (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
-            (define-key ruby-mode-map "\C-j" 'newline)
+            ;; (define-key ruby-mode-map "\C-m" 'ruby-reindent-then-newline-and-indent)
+            ;; (define-key ruby-mode-map "\C-j" 'newline)
+            (define-key ruby-mode-map "\C-xt" 'rspec-toggle-spec-and-target)
             (setq ruby-indent-level 2)))
 (setq interpreter-mode-alist
       (append '(("^#!.*ruby" . ruby-mode)) interpreter-mode-alist))
@@ -155,6 +156,7 @@
                 ("\\.rake$" . ruby-mode)
                 ("Capfile" . ruby-mode)
                 ("Gemfile" . ruby-mode)
+                ("Guardfile" . ruby-mode)
                 ("\\.ru$" . ruby-mode)
                 ("Rakefile" . ruby-mode)) auto-mode-alist))
 (modify-coding-system-alist 'file "\\.rb$" 'utf-8)
@@ -213,3 +215,9 @@
 ;; yaml mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;; markdown mode
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+      (cons '("\\.md" . markdown-mode) auto-mode-alist))
