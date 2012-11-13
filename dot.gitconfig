@@ -17,6 +17,7 @@
 
     b = branch
     bm = branch --merged
+    bnm = branch --no-merged
 
     d = diff
     ds = diff --staged
@@ -36,6 +37,8 @@
 [core]
     excludesfile = ~/.gitignore
     autocrlf = input
-	quotepath = true
+  quotepath = true
 [push]
     default = tracking
+[rebase]
+	stat = true

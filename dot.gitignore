@@ -8,3 +8,4 @@
 *.dSYM
 .rbenv-version
 .rake_tasks
+quiet_assets.rb

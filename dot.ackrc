@@ -1,5 +1,6 @@
 --type-add=ruby=.haml
 --type-add=ruby=.rake
+--type-add=ruby=.ru
 --type-add=js=.javascript
 --type-add=js=.coffee
 --type-add=css=.less
