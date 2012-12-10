@@ -181,10 +181,10 @@
 
 ;; c/cpp <=> header
 (add-hook 'c-mode-common-hook
-	  '(lambda ()
-	    (define-key c-mode-map "\C-xt" 'ff-find-other-file)
-	    (define-key objc-mode-map "\C-xt" 'ff-find-other-file)
-	    (define-key c++-mode-map "\C-xt" 'ff-find-other-file)
+    '(lambda ()
+      (define-key c-mode-map "\C-xt" 'ff-find-other-file)
+      (define-key objc-mode-map "\C-xt" 'ff-find-other-file)
+      (define-key c++-mode-map "\C-xt" 'ff-find-other-file)
             (gtags-mode 1)
 ;;            (gtags-make-complete-list)
 ))
@@ -221,3 +221,31 @@
   "Major mode for editing Markdown files" t)
 (setq auto-mode-alist
       (cons '("\\.md" . markdown-mode) auto-mode-alist))
+
+;; features mode
+(require 'feature-mode)
+(defconst feature-mode-keywords
+  '("Feature" "Scenario", "Given", "Then", "When", "And", "フィーチャ", "シナリオ", "前提", "ならば", "かつ"))
+(cond
+ ((featurep 'font-lock)
+  (or (boundp 'font-lock-variable-name-face)
+      (setq font-lock-variable-name-face font-lock-type-face)))
+ (set (make-local-variable 'font-lock-syntax-table) feature-font-lock-syntax-table))
+
+(defconst feature-font-lock-keywords
+  (list
+   '("^ *Feature:" (0 font-lock-keyword-face) (".*" nil nil (0 font-lock-type-face t)))
+   '("^ *Scenario\\(?: Outline\\)?:" (0 font-lock-keyword-face) (".*" nil nil (0 font-lock-function-name-face t)))
+   '("^ *Given" . font-lock-keyword-face)
+   '("^ *When" . font-lock-keyword-face)
+   '("^ *Then" . font-lock-keyword-face)
+   '("^ *And" . font-lock-keyword-face)
+   '("^ *フィーチャ:" (0 font-lock-keyword-face) (".*" nil nil (0 font-lock-type-face t)))
+   '("^ *シナリオ\\(?: Outline\\)?:" (0 font-lock-keyword-face) (".*" nil nil (0 font-lock-function-name-face t)))
+   '("^ *前提" . font-lock-keyword-face)
+   '("^ *もし" . font-lock-keyword-face)
+   '("^ *ならば" . font-lock-keyword-face)
+   '("^ *かつ" . font-lock-keyword-face)
+   '("^ *\\(?:More \\)?Examples:" . font-lock-keyword-face)
+   '("^ *#.*" 0 font-lock-comment-face t)
+   ))
