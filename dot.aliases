@@ -7,10 +7,11 @@ alias ll='ls -al'
 alias cdp='cd -P'
 alias tm="tmux -2 attach"
 
-# for bundler
+# for ruby
 alias be='bundle exec'
 alias bu='bundle update'
 alias bi='bundle install'
+alias cuke='cucumber'
 
 alias clup="find -E . -regex '.*\/(#.*#|.*~)' -print0 |xargs -0 rm"
 
