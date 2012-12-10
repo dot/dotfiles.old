@@ -1,10 +1,30 @@
 [user]
     name = dot
     email = shuhei.kondo@gmail.com
+[core]
+    excludesfile = ~/.gitignore
+	autoCRLF = false
+    quotepath = true
+[color]
+    ui = auto
+[status]
+    diff = auto
+[branch]
+    diff = auto
+[push]
+    default = tracking
+[rebase]
+    stat = true
+[pull]
+    rebase = true
+[merge]
+    ff = false
+[branch]
+    autosetuprebase = always
 [alias]
     ci = commit
+    s = status -sb
     st = status --ignore-submodules=dirty
-#    st = status -sb
     co = checkout
     url = config --get remote.origin.url
     pr = pull --rebase
@@ -24,21 +44,11 @@
 
     fo = fetch origin
     ro = rebase origin
-[color]
-    diff = auto
-    status = auto
-    branch = auto
-    interactvie = auto
-    grep = auto
-[status]
-    diff = auto
-[branch]
-    diff = auto
-[core]
-    excludesfile = ~/.gitignore
-    autocrlf = input
-  quotepath = true
-[push]
-    default = tracking
-[rebase]
-	stat = true
+
+[web]
+    browser = google-chrome
+[browse-remote "github.com"]
+	top = https://{host}/{path}
+	ref = https://{host}/{path}/tree/{short_ref}
+	rev = https://{host}/{path}/commit/{commit}
+	file = "https://{host}/{path}/blob/{short_rev}/{file}{line && \"#L%d\" % line}"
