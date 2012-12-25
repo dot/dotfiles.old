@@ -159,3 +159,5 @@ fi
 # do brew install autojump
 [[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
+# init zaw
+source ~/.functions/zaw/zaw.zsh
