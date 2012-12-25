@@ -16,6 +16,7 @@ export LC_ALL="ja_JP.UTF-8"
 #export LC_CTYPE=C
 
 export TERM=xterm-256color
+REPORTTIME=3
 
 # for screen
 export SCREENDIR=~/.screens/
