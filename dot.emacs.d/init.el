@@ -4,6 +4,12 @@
 ; 極力UTF-8とする
 (prefer-coding-system 'utf-8)
 
+;; packages
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
 ;;; load path settings
 (add-to-list 'load-path "~/.emacs.d/site-lisp/howm")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/modes")
