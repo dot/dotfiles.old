@@ -5,7 +5,8 @@ alias ls='ls -GF'
 alias la='ls -a'
 alias ll='ls -al'
 alias cdp='cd -P'
-alias tm="tmux -2 attach"
+alias tm="tmux"
+alias tma="tmux attach"
 
 # for ruby
 alias be='bundle exec'
