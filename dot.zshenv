@@ -8,7 +8,8 @@ umask 022
 
 export PAGER="lv -c"
 export LV='-z -Ia -Ou8 -c'
-export EDITOR='vim'
+#export EDITOR='vim'
+export EDITOR="emacsclient --alternate-editor vim"
 
 # locale
 export LANG="ja_JP.UTF-8"

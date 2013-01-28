@@ -50,6 +50,7 @@ precmd () {
     psvar=()
     vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+    _z --add "$(pwd -P)"
 }
 
 RUBY_INFO=$'%{$RUBY_COLOR%}$(ruby_prompt)%{${reset_color}%}'
@@ -157,7 +158,15 @@ fi
 
 # init autojump
 # do brew install autojump
-[[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+#[[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
+. /usr/local/etc/profile.d/z.sh
+# function precmd () {
+#    _z --add "$(pwd -P)"
+# }
 
 # init zaw
 source ~/.functions/zaw/zaw.zsh
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

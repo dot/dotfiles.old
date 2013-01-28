@@ -7,6 +7,7 @@ alias ll='ls -al'
 alias cdp='cd -P'
 alias tm="tmux"
 alias tma="tmux attach"
+alias j=z
 
 # for ruby
 alias be='bundle exec'
@@ -56,4 +57,5 @@ function cdb() {
 
 # for mac applications
 alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
+#alias ce='emacsclient'
 
