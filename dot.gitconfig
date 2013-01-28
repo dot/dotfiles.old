@@ -3,9 +3,10 @@
     email = shuhei.kondo@gmail.com
 [core]
     excludesfile = ~/.gitignore
-	autoCRLF = false
+    autoCRLF = false
     quotepath = true
-	precomposeunicode = true
+    precomposeunicode = true
+    editor = emacsclient --alternate-editor vim
 [color]
     ui = auto
 [status]
@@ -49,7 +50,7 @@
 [web]
     browser = google-chrome
 [browse-remote "github.com"]
-	top = https://{host}/{path}
-	ref = https://{host}/{path}/tree/{short_ref}
-	rev = https://{host}/{path}/commit/{commit}
-	file = "https://{host}/{path}/blob/{short_rev}/{file}{line && \"#L%d\" % line}"
+  top = https://{host}/{path}
+  ref = https://{host}/{path}/tree/{short_ref}
+  rev = https://{host}/{path}/commit/{commit}
+  file = "https://{host}/{path}/blob/{short_rev}/{file}{line && \"#L%d\" % line}"
