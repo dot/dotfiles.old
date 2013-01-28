@@ -38,6 +38,12 @@
 ;; load private
 (load "~/.emacs.d/private.el")
 
+;; emacscliente
+; server start for emacs-client
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;; emacsclientのバッファを閉じるときに確認しない
 (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
