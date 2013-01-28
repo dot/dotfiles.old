@@ -50,7 +50,6 @@ precmd () {
     psvar=()
     vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-    _z --add "$(pwd -P)"
 }
 
 RUBY_INFO=$'%{$RUBY_COLOR%}$(ruby_prompt)%{${reset_color}%}'
@@ -156,11 +155,12 @@ if [[ -f ~/.rbenv/completions/rbenv.zsh ]]; then
    source ~/.rbenv/completions/rbenv.zsh
 fi
 
-# init autojump
-# do brew install autojump
-#[[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
-
 . /usr/local/etc/profile.d/z.sh
+autoload -Uz add-zsh-hook
+function _precmd () {
+    _z --add "$(pwd -P)"
+}
+add-zsh-hook preexec _precmd
 # function precmd () {
 #    _z --add "$(pwd -P)"
 # }

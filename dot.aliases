@@ -58,4 +58,3 @@ function cdb() {
 # for mac applications
 alias ce='open -a /Applications/Emacs.app/Contents/MacOS/Emacs'
 #alias ce='emacsclient'
-
