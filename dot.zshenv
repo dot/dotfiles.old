@@ -26,13 +26,14 @@ export SCREENDIR=~/.screens/
 path=( ~/bin \
     $HOME/.rbenv/bin \
     /usr/local/bin /usr/local/sbin /usr/local/mysql/bin \
+    /usr/local/share/npm/bin \
     /usr/local/mongodb/bin \
     /usr/local/cuda/bin \
     /opt/local/bin /opt/local/sbin \
     /bin /sbin /usr/bin /usr/sbin \
 )
 
-fpath=(~/.functions ~/.functions/zsh-completions ${fpath})
+fpath=(/usr/local/share/zsh/site-functions ~/.functions ~/.functions/zsh-completions ${fpath})
 
 #list color
 export LSCOLORS=gxfxcxdxbxegedabagacad
