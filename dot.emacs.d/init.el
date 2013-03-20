@@ -12,6 +12,10 @@
 (setq default-coding-systems 'utf-8)
 (setq file-name-coding-system 'utf-8)
 
+;; load paths
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/howm")
+
 ;; keys
 ; swap cmd <-> opt(meta)
 (setq ns-command-modifier (quote meta))
@@ -107,6 +111,7 @@
 
 ;; helm
 (require 'helm-config)
+(require 'helm-ls-git)
 (helm-mode 1)
 
 (defun my-helm ()
@@ -114,13 +119,24 @@
   (helm :sources '(
                    helm-c-source-buffers-list
                    helm-c-source-recentf
+                   helm-c-source-ls-git
                    helm-c-source-files-in-current-dir
                    helm-c-source-mac-spotlight
                    helm-c-source-buffer-not-found)
         :buffer "*helm default*"))
 
 (global-set-key (kbd "C-;") 'my-helm)
+(global-set-key (kbd "C-M-;") 'helm-resume)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+; diable auto complete
+(custom-set-variables '(helm-ff-auto-update-initial-value nil))
+; C-h in backspace
+(define-key helm-c-read-file-map (kbd "C-h") 'delete-backward-char)
+; tab is completion
+(define-key helm-c-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+(define-key helm-c-read-file-map (kbd "C-w") 'helm-find-files-down-one-level)
+
 
 ;; popwin
 (require 'popwin)
@@ -144,3 +160,15 @@
 ;; session
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
+
+;; howm
+; with org-mode
+(require 'org)
+(add-hook 'org-mode-hook 'howm-mode)
+(add-to-list 'auto-mode-alist '("\\.howm$" . org-mode))
+(setq howm-view-title-header "*")
+
+(require 'howm)
+(setq howm-menu-lang 'ja)
+(global-set-key "\C-c,," 'howm-menu)
+(autoload 'howm-menu "howm-mode" "Hitori Otegaru Wiki Modoki" t)
