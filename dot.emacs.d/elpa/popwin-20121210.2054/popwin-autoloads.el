@@ -6,8 +6,9 @@
 ;;;### (autoloads (popwin:messages popwin:find-file-tail popwin:find-file
 ;;;;;;  popwin:popup-buffer-tail popwin:one-window popwin:universal-display
 ;;;;;;  popwin:pop-to-buffer popwin:display-buffer popwin:popup-buffer)
-;;;;;;  "popwin" "popwin.el" (20715 59454))
-;;; Generated autoloads from popwin.el
+;;;;;;  "popwin" "../../../../../.emacs.d/elpa/popwin-20121210.2054/popwin.el"
+;;;;;;  "dc56e62a5969469b49c366d782dc3314")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/popwin-20121210.2054/popwin.el
 
 (autoload 'popwin:popup-buffer "popwin" "\
 Show BUFFER in a popup window and return the popup window. If
@@ -71,7 +72,9 @@ Display *Messages* buffer in a popup window.
 
 ;;;***
 
-;;;### (autoloads nil nil ("popwin-pkg.el") (20715 59454 666612))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/popwin-20121210.2054/popwin-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/popwin-20121210.2054/popwin.el")
+;;;;;;  (20809 35483 197116 0))
 
 ;;;***
 
