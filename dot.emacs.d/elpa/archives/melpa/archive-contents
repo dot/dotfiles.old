@@ -36,7 +36,7 @@
 	    [(20130218 2229)
 	     nil "Yet another snippet extension for Emacs. [source: github]" tar])
  (yascroll .
-	   [(20120502 1738)
+	   [(20130321 334)
 	    nil "Yet Another Scroll Bar Mode [source: github]" single])
  (yari .
        [(20110417 2248)
@@ -134,7 +134,7 @@
 	       (1 6 8)))
 	     "Weblog maintenance via XML-RPC APIs [source: bzr]" single])
  (web-mode .
-	   [(20130320 121)
+	   [(20130321 15)
 	    nil "major mode for editing HTML templates [source: github]" single])
  (web .
       [(20130312 1014)
@@ -359,7 +359,7 @@
 		 [(20120406 2251)
 		  nil "generic major mode for tabulated lists. [source: github]" single])
  (tabbar-ruler .
-	       [(20130220 2253)
+	       [(20130320 1033)
 		((tabbar
 		  (2 0 1)))
 		"Setup tabbar to look pretty... [source: github]" tar])
@@ -661,7 +661,7 @@
 	    [(20130315 250)
 	     nil "A better backspace [source: github]" single])
  (s .
-    [(20130320 710)
+    [(20130320 1524)
      nil "The long lost Emacs string manipulation library. [source: github]" single])
  (rvm .
       [(20130210 1710)
@@ -855,7 +855,7 @@
 	  [(20121128 2315)
 	   nil "Show tooltip at point [source: github]" single])
  (popwin .
-	 [(20121210 2054)
+	 [(20130321 132)
 	  nil "Popup Window Manager. [source: github]" single])
  (popup .
 	[(20130117 1954)
@@ -882,7 +882,7 @@
 	   [(20130315 2020)
 	    nil "Major mode for editing PHP code [source: github]" tar])
  (php-eldoc .
-	    [(20130131 1429)
+	    [(20130320 2207)
 	     nil "eldoc backend for php [source: github]" tar])
  (php+-mode .
 	    [(20121129 1452)
@@ -1318,9 +1318,6 @@
  (log4j-mode .
 	     [(20101016 1722)
 	      nil "major mode for viewing log files [source: github]" single])
- (loccur .
-	 [(20100307 1414)
-	  nil "Perform an occur-like folding in current buffer [source: svn]" single])
  (load-theme-buffer-local .
 			  [(20120703 17)
 			   nil "Install emacs24 color themes by buffer. [source: github]" single])
@@ -1447,9 +1444,6 @@
 	    ((emacs
 	      (24 1)))
 	    "Improved JavaScript editing mode [source: github]" tar])
- (js-comint .
-	    [(20080530 957)
-	     nil "Run javascript in an inferior process window. [source: svn]" single])
  (jknav .
 	[(20121006 1325)
 	 nil "Automatically enable j/k keys for line-based navigation [source: github]" single])
@@ -1749,7 +1743,7 @@
 	       (0 3 0)))
 	     "Guide the following key bindings automatically and dynamically [source: github]" single])
  (gruber-darker-theme .
-		      [(20130308 1113)
+		      [(20130320 2010)
 		       nil "Gruber Darker color theme for Emacs 24. [source: github]" single])
  (groovy-mode .
 	      [(20120510 1755)
@@ -1840,7 +1834,7 @@
 		       (0 1 1)))
 		     "Fringe version of git-gutter.el [source: github]" single])
  (git-gutter .
-	     [(20130318 1241)
+	     [(20130320 2326)
 	      nil "Port of Sublime Text plugin GitGutter [source: github]" single])
  (git-dwim .
 	   [(20130130 2150)
@@ -2567,7 +2561,7 @@
 		      (0 8 0)))
 		    "Yasnippets for clojure [source: github]" tar])
  (clojure-mode .
-	       [(20130225 1036)
+	       [(20130320 1351)
 		nil "Major mode for Clojure code [source: github]" single])
  (cljsbuild-mode .
 		 [(20130110 1632)
@@ -2848,6 +2842,12 @@
  (abl-mode .
 	   [(20120718 1655)
 	    nil "Python TDD minor mode [source: github]" single])
+ (loccur .
+	 [(20100307 1414)
+	  nil "Perform an occur-like folding in current buffer [source: svn]" single])
+ (js-comint .
+	    [(20080530 957)
+	     nil "Run javascript in an inferior process window. [source: svn]" single])
  (magit .
 	[(20130318 1630)
 	 nil "Control Git from Emacs. [source: github]" tar]))

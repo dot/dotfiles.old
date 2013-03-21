@@ -113,6 +113,9 @@
 (require 'helm-config)
 (require 'helm-ls-git)
 (helm-mode 1)
+(setq helm-idle-delay 0.01)
+(setq helm-input-idle-delay 0.01)
+(setq helm-candidate-number-limit 100)
 
 (defun my-helm ()
   (interactive)
@@ -160,6 +163,8 @@
 ;; session
 (require 'session)
 (add-hook 'after-init-hook 'session-initialize)
+; c.f. https://github.com/emacs-helm/helm/issues/94
+(setq session-save-print-spec '(t nil 40000))
 
 ;; howm
 ; with org-mode
@@ -172,3 +177,23 @@
 (setq howm-menu-lang 'ja)
 (global-set-key "\C-c,," 'howm-menu)
 (autoload 'howm-menu "howm-mode" "Hitori Otegaru Wiki Modoki" t)
+
+
+;;; ========== modes ==========
+
+;; ruby
+(add-hook 'ruby-mode-hook
+ '(lambda ()
+   (abbrev-mode 1)
+   (electric-pair-mode t)
+   (electric-indent-mode t)
+   (electric-layout-mode t)))
+(setq auto-mode-alist
+      (append '(("\\.rb$" . ruby-mode)
+                ("\\.rake$" . ruby-mode)
+                ("Capfile" . ruby-mode)
+                ("Gemfile" . ruby-mode)
+                ("Guardfile" . ruby-mode)
+                ("\\.ru$" . ruby-mode)
+                ("\\.thor$" . ruby-mode)
+                ("Rakefile" . ruby-mode)) auto-mode-alist))
