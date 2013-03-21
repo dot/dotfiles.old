@@ -134,7 +134,7 @@
 	       (1 6 8)))
 	     "Weblog maintenance via XML-RPC APIs [source: bzr]" single])
  (web-mode .
-	   [(20130321 15)
+	   [(20130321 820)
 	    nil "major mode for editing HTML templates [source: github]" single])
  (web .
       [(20130312 1014)
@@ -1444,6 +1444,9 @@
 	    ((emacs
 	      (24 1)))
 	    "Improved JavaScript editing mode [source: github]" tar])
+ (js-comint .
+	    [(20080530 957)
+	     nil "Run javascript in an inferior process window. [source: svn]" single])
  (jknav .
 	[(20121006 1325)
 	 nil "Automatically enable j/k keys for line-based navigation [source: github]" single])
@@ -2150,7 +2153,7 @@
 	 [(20130304 1059)
 	  nil "Erlang major mode [source: github]" tar])
  (ergoemacs-mode .
-		 [(20130313 1028)
+		 [(20130320 1942)
 		  nil "A minor mode, a keybinding set based on ergonomics. [source: git]" tar])
  (eredis .
 	 [(20120808 2207)
@@ -2845,9 +2848,6 @@
  (loccur .
 	 [(20100307 1414)
 	  nil "Perform an occur-like folding in current buffer [source: svn]" single])
- (js-comint .
-	    [(20080530 957)
-	     nil "Run javascript in an inferior process window. [source: svn]" single])
  (magit .
 	[(20130318 1630)
 	 nil "Control Git from Emacs. [source: github]" tar]))

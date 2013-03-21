@@ -4,6 +4,7 @@
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("tromey" . "http://tromey.com/elpa/"))
 (package-initialize)
 
 ;; lang / encoding
@@ -112,6 +113,7 @@
 ;; helm
 (require 'helm-config)
 (require 'helm-ls-git)
+(require 'helm-c-moccur)
 (helm-mode 1)
 (setq helm-idle-delay 0.01)
 (setq helm-input-idle-delay 0.01)
@@ -131,6 +133,11 @@
 (global-set-key (kbd "C-;") 'my-helm)
 (global-set-key (kbd "C-M-;") 'helm-resume)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "M-o") 'helm-c-moccur-occur-by-moccur)
+(setq helm-c-moccur-higligt-info-line-flag t
+      helm-c-moccur-enable-auto-look-flag t
+      helm-c-moccur-enable-initial-pattern t)
+
 
 ; diable auto complete
 (custom-set-variables '(helm-ff-auto-update-initial-value nil))
@@ -145,10 +152,6 @@
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
 (push '("^\*helm.+$" :regexp t :height 30) popwin:special-display-config)
-
-;; yasnippet
-(require 'yasnippet)
-(yas-global-mode 1)
 
 ;; bm
 (require 'bm)
@@ -177,6 +180,40 @@
 (setq howm-menu-lang 'ja)
 (global-set-key "\C-c,," 'howm-menu)
 (autoload 'howm-menu "howm-mode" "Hitori Otegaru Wiki Modoki" t)
+
+;; recentf
+(require 'recentf)
+(setq recentf-max-saved-items 1000)
+(setq recentf-exclude '("^/[^/:]+:"))
+(setq recentf-auto-cleanup 'never)
+(setq recentf-auto-save-timer
+        (run-with-idle-timer 30 t 'recentf-save-list))
+(recentf-mode 1)
+
+;; yasnippet
+(require 'yasnippet-bundle)
+
+;; helm interface
+(eval-after-load "helm-config"
+  '(progn
+     (defun my-yas/prompt (prompt choices &optional display-fn)
+       (let* ((names (loop for choice in choices
+                           collect (or (and display-fn (funcall display-fn choice))
+                                       choice)))
+              (selected (helm-other-buffer
+                         `(((name . ,(format "%s" prompt))
+                            (candidates . names)
+                            (action . (("Insert snippet" . (lambda (arg) arg))))))
+                         "*helm yas/prompt*")))
+         (if selected
+             (let ((n (position selected names :test 'equal)))
+               (nth n choices))
+           (signal 'quit "user quit!"))))
+     (custom-set-variables '(yas/prompt-functions '(my-yas/prompt)))
+     (define-key helm-command-map (kbd "y") 'yas/insert-snippet)))
+
+;; snippet-mode for *.yasnippet files
+(add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode))
 
 
 ;;; ========== modes ==========
