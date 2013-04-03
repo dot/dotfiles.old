@@ -44,12 +44,39 @@
                    '(cursor-color     . "white")
                    '(cursor-type      . box)
                    '(menu-bar-lines . 1)
-                   '(width . 120)
-                   '(height . 50)
                    )
                   initial-frame-alist)))
 (setq default-frame-alist initial-frame-alist)
 
+; fonts
+(create-fontset-from-ascii-font "Ricty-16:weight=normal:slant=normal" nil "rictyl")
+(create-fontset-from-ascii-font "Ricty-13:weight=normal:slant=normal" nil "rictym")
+(set-fontset-font "fontset-rictyl"
+                  'unicode
+                  (font-spec :family "Ricty")
+                  nil
+                  'append)
+(set-fontset-font "fontset-rictym"
+                  'unicode
+                  (font-spec :family "Ricty")
+                  nil
+                  'append)
+
+;; 画面の解像度によりフレームサイズを変化させる
+(when window-system
+  (if (>= (x-display-pixel-width) 2000)
+      (progn
+        (set-frame-width (next-frame) 150)
+        (set-frame-height (next-frame) 80)
+        (add-to-list 'default-frame-alist '(font . "fontset-rictyl"))
+      )
+      (progn
+        (set-frame-width (next-frame) 120)
+        (set-frame-height (next-frame) 60)
+        (add-to-list 'default-frame-alist '(font . "fontset-rictym"))
+      )
+  )
+)
 ; modeline
 (line-number-mode 1)
 (column-number-mode 1)
@@ -69,15 +96,6 @@
 (setq next-screen-context-lines 10)
 ; alpha background
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
-
-; fonts
-(create-fontset-from-ascii-font "Ricty-13:weight=normal:slant=normal" nil "ricty")
-(set-fontset-font "fontset-ricty"
-                  'unicode
-                  (font-spec :family "Ricty" :size 13)
-                  nil
-                  'append)
-(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
 
 ; kill ring
 (setq kill-ring-max 1000)
@@ -214,6 +232,8 @@
 
 ;; snippet-mode for *.yasnippet files
 (add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode))
+
+;(define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file)
 
 
 ;;; ========== modes ==========
