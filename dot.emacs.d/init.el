@@ -32,6 +32,13 @@
 ; ignore warnings
 (setq next-line-add-newlines nil)
 
+; no more new window
+(setq ns-pop-up-frames nil)
+; drag and drop
+(define-key global-map [ns-drag-file] 'ns-find-file)
+; trash deleted file
+(setq delete-by-moving-to-trash t)
+
 ;; window settings
 ; base
 (if (boundp 'window-system)
