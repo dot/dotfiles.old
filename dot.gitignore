@@ -2,10 +2,11 @@
 \#*
 .\#*
 *.swp
-#*#
 .DS_Store
 *.elc
 *.dSYM
 .rbenv-version
 .rake_tasks
 quiet_assets.rb
+.session
+.netrwhist

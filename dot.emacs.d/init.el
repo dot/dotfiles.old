@@ -39,6 +39,10 @@
 ; trash deleted file
 (setq delete-by-moving-to-trash t)
 
+; no more backup files
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
 ;; window settings
 ; base
 (if (boundp 'window-system)
@@ -242,6 +246,14 @@
 
 ;(define-key yas-minor-mode-map (kbd "C-x i v") 'yas-visit-snippet-file)
 
+
+;; ruby-end
+(require 'ruby-end)
+
+;; dash-at-point
+(autoload 'dash-at-point "dash-at-point"
+          "Search the word at point with Dash." t nil)
+(global-set-key "\C-cd" 'dash-at-point)
 
 ;;; ========== modes ==========
 
