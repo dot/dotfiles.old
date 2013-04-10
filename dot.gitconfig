@@ -1,54 +1,54 @@
 [user]
-    name = dot
-    email = shuhei.kondo@gmail.com
+  name = dot
+  email = shuhei.kondo@gmail.com
 [core]
-    excludesfile = ~/.gitignore
-    autoCRLF = false
-    quotepath = true
-    precomposeunicode = true
-    editor = emacsclient --alternate-editor vim
+  excludesfile = ~/.gitignore
+  autoCRLF = false
+  quotepath = false
+  precomposeunicode = true
+  editor = emacsclient --alternate-editor vim
 [color]
-    ui = auto
+  ui = auto
 [status]
-    diff = auto
+  diff = auto
 [branch]
-    diff = auto
+  diff = auto
 [push]
-    default = tracking
+  default = upstream
 [rebase]
-    stat = true
+  stat = true
 [pull]
-    rebase = true
+  rebase = true
 [merge]
-    ff = false
+  ff = false
 [branch]
-    autosetuprebase = always
+  autosetuprebase = always
 [alias]
-    ci = commit
-    s = status -sb
-    st = status --ignore-submodules=dirty
-    co = checkout
-    url = config --get remote.origin.url
-    pr = pull --rebase
-    rbm = rebase master
-    lp = log -p
-    ls = log --stat
-    lg= log --decorate
-    lgg= log --decorate --oneline --graph
-    wd= diff --word-diff
+  ci = commit
+  s = status -sb
+  st = status --ignore-submodules=dirty
+  co = checkout
+  url = config --get remote.origin.url
+  pr = pull --rebase
+  rbm = rebase master
+  lp = log -p
+  ls = log --stat
+  lg= log --decorate
+  lgg= log --decorate --oneline --graph
+  wd= diff --word-diff
 
-    b = branch
-    bm = branch --merged
-    bnm = branch --no-merged
+  b = branch
+  bm = branch --merged
+  bnm = branch --no-merged
 
-    d = diff
-    ds = diff --staged
+  d = diff
+  ds = diff --staged
 
-    fo = fetch origin
-    ro = rebase origin
-
+  fo = fetch origin
+  ro = rebase origin
+  fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
 [web]
-    browser = google-chrome
+  browser = google-chrome
 [browse-remote "github.com"]
   top = https://{host}/{path}
   ref = https://{host}/{path}/tree/{short_ref}
