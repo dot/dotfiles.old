@@ -4,8 +4,8 @@
 
 ;; Author: Eric Schulte
 ;; URL: https://github.com/eschulte/rinari
-;; Version: 20130323.928
-;; X-Original-Version: 0.12
+;; Version: 20130415.1618
+;; X-Original-Version: 0.13
 ;; Created: 2008-08-23
 ;; Keywords: test convenience
 ;; Package-Requires: ((inf-ruby "2.2.1"))
@@ -38,7 +38,7 @@
 ;; ruby-compilation-run
 ;; ruby-compilation-rake
 ;; ruby-compilation-this-buffer (C-x t)
-;; ruby-compilation-this-buffer (C-x C-t)
+;; ruby-compilation-this-test (C-x T)
 ;;
 
 ;;; TODO:
@@ -179,7 +179,7 @@ Should be used with `make-local-variable'.")
 (eval-after-load 'ruby-mode
   '(progn
      (define-key ruby-mode-map (kbd "C-x t") 'ruby-compilation-this-buffer)
-     (define-key ruby-mode-map (kbd "C-x C-t") 'ruby-compilation-this-test)))
+     (define-key ruby-mode-map (kbd "C-x T") 'ruby-compilation-this-test)))
 
 ;; So we don't get warnings with .dir-settings.el files
 (dolist (executable (list "jruby" "rbx" "ruby1.9" "ruby1.8" "ruby"))

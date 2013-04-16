@@ -4,8 +4,8 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-git-gutter
-;; Version: 20130414.1511
-;; X-Original-Version: 0.40
+;; Version: 20130415.2250
+;; X-Original-Version: 0.41
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ character for signs of changes"
      (when it ,@body)))
 
 (defun git-gutter:execute-command (cmd file)
-  (if (not (tramp-connectable-p file))
+  (if (not (file-remote-p file))
       (call-process-shell-command cmd nil t)
     (process-file-shell-command cmd nil t)))
 
@@ -503,7 +503,7 @@ character for signs of changes"
 (defalias 'git-gutter:popup-diff 'git-gutter:popup-hunk)
 
 (defun git-gutter:default-directory (dir curfile)
-  (if (not (tramp-connectable-p curfile))
+  (if (not (file-remote-p curfile))
       dir
     (let* ((vec (tramp-dissect-file-name curfile))
            (method (aref vec 0))
@@ -512,7 +512,7 @@ character for signs of changes"
       (format "/%s:%s%s:%s" method (if user (concat user "@") "") host dir))))
 
 (defun git-gutter:file-path (dir curfile)
-  (if (not (tramp-connectable-p curfile))
+  (if (not (file-remote-p curfile))
       curfile
     (let ((file (aref (tramp-dissect-file-name curfile) 3)))
       (replace-regexp-in-string (concat "\\`" dir) "" curfile))))

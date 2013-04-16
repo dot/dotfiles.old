@@ -9,7 +9,7 @@
 ;;;;;;  org-run-like-in-org-mode turn-on-orgstruct++ turn-on-orgstruct
 ;;;;;;  orgstruct-mode org-global-cycle org-cycle org-mode org-clock-persistence-insinuate
 ;;;;;;  turn-on-orgtbl org-version org-babel-do-load-languages) "org"
-;;;;;;  "org.el" (20843 22105 0 0))
+;;;;;;  "org.el" (20844 55304 0 0))
 ;;; Generated autoloads from org.el
 
 (autoload 'org-babel-do-load-languages "org" "\
@@ -235,7 +235,7 @@ Call the customize function with org as argument.
 ;;;;;;  org-search-view org-agenda-list org-batch-store-agenda-views
 ;;;;;;  org-store-agenda-views org-batch-agenda-csv org-batch-agenda
 ;;;;;;  org-agenda org-toggle-sticky-agenda) "org-agenda" "org-agenda.el"
-;;;;;;  (20843 22103 0 0))
+;;;;;;  (20844 55302 0 0))
 ;;; Generated autoloads from org-agenda.el
 
 (autoload 'org-toggle-sticky-agenda "org-agenda" "\
@@ -492,7 +492,7 @@ to override `appt-message-warning-time'.
 ;;;***
 
 ;;;### (autoloads (org-beamer-mode org-beamer-sectioning) "org-beamer"
-;;;;;;  "org-beamer.el" (20843 22105 0 0))
+;;;;;;  "org-beamer.el" (20844 55304 0 0))
 ;;; Generated autoloads from org-beamer.el
 
 (autoload 'org-beamer-sectioning "org-beamer" "\
@@ -514,8 +514,8 @@ Special support for editing Org-mode files made to export to beamer.
 ;;;***
 
 ;;;### (autoloads (org-capture-import-remember-templates org-capture
-;;;;;;  org-capture-string) "org-capture" "org-capture.el" (20843
-;;;;;;  22104 0 0))
+;;;;;;  org-capture-string) "org-capture" "org-capture.el" (20844
+;;;;;;  55303 0 0))
 ;;; Generated autoloads from org-capture.el
 
 (autoload 'org-capture-string "org-capture" "\
@@ -556,7 +556,7 @@ Set org-capture-templates to be similar to `org-remember-templates'.
 ;;;***
 
 ;;;### (autoloads (org-agenda-columns org-insert-columns-dblock org-dblock-write:columnview
-;;;;;;  org-columns) "org-colview" "org-colview.el" (20843 22103
+;;;;;;  org-columns) "org-colview" "org-colview.el" (20844 55302
 ;;;;;;  0 0))
 ;;; Generated autoloads from org-colview.el
 
@@ -601,7 +601,7 @@ Turn on or update column view in the agenda.
 ;;;***
 
 ;;;### (autoloads (org-check-version) "org-compat" "org-compat.el"
-;;;;;;  (20843 22102 0 0))
+;;;;;;  (20844 55301 0 0))
 ;;; Generated autoloads from org-compat.el
 
 (autoload 'org-check-version "org-compat" "\
@@ -612,7 +612,7 @@ Try very hard to provide sensible version strings.
 ;;;***
 
 ;;;### (autoloads (org-git-version org-release) "org-version" "org-version.el"
-;;;;;;  (20843 22104 0 0))
+;;;;;;  (20844 55304 0 0))
 ;;; Generated autoloads from org-version.el
 
 (autoload 'org-release "org-version" "\
@@ -657,8 +657,8 @@ The location of ODT styles.")
 ;;;;;;  "org-pcomplete.el" "org-pkg.el" "org-plot.el" "org-protocol.el"
 ;;;;;;  "org-publish.el" "org-remember.el" "org-rmail.el" "org-special-blocks.el"
 ;;;;;;  "org-src.el" "org-table.el" "org-taskjuggler.el" "org-timer.el"
-;;;;;;  "org-vm.el" "org-w3m.el" "org-wl.el" "org-xoxo.el") (20843
-;;;;;;  22106 253829 0))
+;;;;;;  "org-vm.el" "org-w3m.el" "org-wl.el" "org-xoxo.el") (20844
+;;;;;;  55305 590485 0))
 
 ;;;***
 
