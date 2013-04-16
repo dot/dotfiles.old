@@ -150,7 +150,7 @@ bindkey '^[d' _quote-previous-word-in-double
 source ~/.aliases
 
 # init rbenv
-eval "$(rbenv init -)"
+eval "$(rbenv init - zsh)"
 if [[ -f ~/.rbenv/completions/rbenv.zsh ]]; then
    source ~/.rbenv/completions/rbenv.zsh
 fi

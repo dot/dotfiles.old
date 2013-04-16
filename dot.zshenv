@@ -25,10 +25,9 @@ export SCREENDIR=~/.screens/
 ####  path / PATH
 path=( ~/bin \
     $HOME/.rbenv/bin \
-    /usr/local/bin /usr/local/sbin /usr/local/mysql/bin \
+    /usr/local/bin /usr/local/sbin \
     /usr/local/share/npm/bin \
     /usr/local/mongodb/bin \
-    /usr/local/cuda/bin \
     /opt/local/bin /opt/local/sbin \
     /bin /sbin /usr/bin /usr/sbin \
 )
