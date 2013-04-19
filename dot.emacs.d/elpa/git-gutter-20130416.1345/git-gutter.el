@@ -4,8 +4,8 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-git-gutter
-;; Version: 20130415.2250
-;; X-Original-Version: 0.41
+;; Version: 20130416.1345
+;; X-Original-Version: 0.42
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -390,7 +390,9 @@ character for signs of changes"
 (defun git-gutter:process-diff (curfile)
   (let ((diffinfos (git-gutter:diff curfile)))
     (setq git-gutter:diffinfos diffinfos)
-    (funcall git-gutter:view-diff-function diffinfos)))
+    (save-restriction
+      (widen)
+      (funcall git-gutter:view-diff-function diffinfos))))
 
 (defun git-gutter:search-near-diff-index (diffinfos is-reverse)
   (loop with current-line = (line-number-at-pos)
@@ -544,9 +546,11 @@ character for signs of changes"
 (defun git-gutter:clear ()
   "clear diff information in gutter"
   (interactive)
-  (when git-gutter:clear-function
-    (funcall git-gutter:clear-function))
-  (remove-overlays (point-min) (point-max) 'git-gutter t)
+  (save-restriction
+    (widen)
+    (when git-gutter:clear-function
+      (funcall git-gutter:clear-function))
+    (remove-overlays (point-min) (point-max) 'git-gutter t))
   (setq git-gutter:enabled nil
         git-gutter:diffinfos nil))
 

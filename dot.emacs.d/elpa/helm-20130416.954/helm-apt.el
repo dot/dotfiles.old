@@ -79,6 +79,7 @@
 (defvar helm-apt-all-packages nil)
 (defvar helm-apt-input-history nil)
 (defvar helm-apt-show-only 'all)
+(defvar helm-apt-term-buffer nil)
 
 (defun helm-apt-refresh ()
   "Refresh installed candidates list."
@@ -165,17 +166,25 @@ LINE is displayed like:
 package name - description."
   (car (split-string line " - ")))
 
+(defvar helm-apt-show-current-package nil)
+(define-derived-mode helm-apt-show-mode
+    special-mode "helm-apt-show"
+    "Mode to display infos on apt packages.")
+
 (defun helm-apt-cache-show (package)
   "Show information on apt package PACKAGE."
     (let* ((command (format helm-apt-show-command package))
-           (buf (get-buffer command)))
-      (helm-switch-to-buffer (get-buffer-create command))
-      (view-mode 1)
-      (unless buf
+           (buf     (get-buffer-create "*helm apt show*")))
+      (helm-switch-to-buffer buf)
+      (unless (string= package helm-apt-show-current-package)
         (let ((inhibit-read-only t))
+          (erase-buffer)
           (save-excursion
-            (insert (shell-command-to-string command))))
-        (view-mode 1))))
+            (call-process-shell-command
+             command nil (current-buffer) t))))
+      (helm-apt-show-mode)
+      (set (make-local-variable 'helm-apt-show-current-package)
+           package)))
 
 (defun helm-apt-install (package)
   "Run 'apt-get install' shell command on PACKAGE."
@@ -196,7 +205,11 @@ package name - description."
 (defun* helm-apt-generic-action (&key action)
   "Run 'apt-get ACTION'.
 Support install, remove and purge actions."
-  (ansi-term (getenv "SHELL") "helm apt")
+  (if (and helm-apt-term-buffer
+           (buffer-live-p (get-buffer helm-apt-term-buffer)))
+      (switch-to-buffer helm-apt-term-buffer)
+      (ansi-term (getenv "SHELL") "term apt")
+      (setq helm-apt-term-buffer (buffer-name)))
   (term-line-mode)
   (let ((command   (case action
                      (install   "sudo apt-get install ")
@@ -211,12 +224,12 @@ Support install, remove and purge actions."
     (goto-char (point-max))
     (insert (concat command cand-list))
     (setq end (point))
-    (if (y-or-n-p (format "%s package" (symbol-name action)))
+    (if (y-or-n-p (format "%s package(s)" (symbol-name action)))
         (progn
           (setq helm-external-commands-list nil)
           (setq helm-apt-installed-packages nil)
           (term-char-mode) (term-send-input))
-        (delete-region beg end) (term-send-eof) (kill-buffer))))
+        (delete-region beg end))))
 
 ;;;###autoload
 (defun helm-apt (arg)
