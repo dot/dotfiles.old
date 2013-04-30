@@ -4,7 +4,7 @@
 
 ;; Author: Johan Andersson <johan.rejeep@gmail.com>
 ;; Maintainer: Johan Andersson <johan.rejeep@gmail.com>
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Keywords: speed, convenience, ruby
 ;; URL: http://github.com/rejeep/ruby-end
 
@@ -167,7 +167,9 @@
   :lighter " end"
   :keymap ruby-end-mode-map)
 
-(add-hook 'ruby-mode-hook 'ruby-end-mode)
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (ruby-end-mode 1)))
 
 (provide 'ruby-end)
 

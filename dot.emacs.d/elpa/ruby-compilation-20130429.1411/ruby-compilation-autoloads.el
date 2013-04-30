@@ -6,7 +6,7 @@
 ;;;### (autoloads (ruby-compilation-this-test ruby-compilation-cap
 ;;;;;;  pcomplete/cap ruby-compilation-rake pcomplete/rake ruby-compilation-this-buffer
 ;;;;;;  ruby-compilation-run) "ruby-compilation" "ruby-compilation.el"
-;;;;;;  (20855 41911 0 0))
+;;;;;;  (20863 6570 0 0))
 ;;; Generated autoloads from ruby-compilation.el
 
 (eval-after-load 'ruby-mode '(progn (define-key ruby-mode-map (kbd "C-x t") 'ruby-compilation-this-buffer) (define-key ruby-mode-map (kbd "C-x T") 'ruby-compilation-this-test)))
@@ -59,8 +59,8 @@ Run the test at point through Ruby compilation.
 
 ;;;***
 
-;;;### (autoloads nil nil ("ruby-compilation-pkg.el") (20855 41911
-;;;;;;  925892 0))
+;;;### (autoloads nil nil ("ruby-compilation-pkg.el") (20863 6570
+;;;;;;  261395 0))
 
 ;;;***
 

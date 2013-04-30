@@ -4,8 +4,8 @@
 
 ;; Author: Eric Schulte
 ;; URL: https://github.com/eschulte/rinari
-;; Version: 20130422.1704
-;; X-Original-Version: 0.16
+;; Version: 20130429.1411
+;; X-Original-Version: 0.17
 ;; Created: 2008-08-23
 ;; Keywords: test convenience
 ;; Package-Requires: ((inf-ruby "2.2.1"))
@@ -112,7 +112,7 @@ Should be used with `make-local-variable'.")
     (when orphan-proc
       (kill-process orphan-proc))))
 
-(define-compilation-mode ruby-compilation-mode "Ruby"
+(define-compilation-mode ruby-compilation-mode "RubyComp"
   "Ruby compilation mode."
   (progn
     (set (make-local-variable 'compilation-error-regexp-alist) ruby-compilation-error-regexp-alist)
