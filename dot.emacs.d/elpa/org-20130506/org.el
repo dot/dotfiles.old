@@ -3584,14 +3584,14 @@ regular expression will be included."
 
 (defcustom org-agenda-text-search-extra-files nil
   "List of extra files to be searched by text search commands.
-These files will be search in addition to the agenda files by the
+These files will be searched in addition to the agenda files by the
 commands `org-search-view' (`C-c a s') and `org-occur-in-agenda-files'.
 Note that these files will only be searched for text search commands,
 not for the other agenda views like todo lists, tag searches or the weekly
 agenda.  This variable is intended to list notes and possibly archive files
 that should also be searched by these two commands.
 In fact, if the first element in the list is the symbol `agenda-archives',
-than all archive files of all agenda files will be added to the search
+then all archive files of all agenda files will be added to the search
 scope."
   :group 'org-agenda
   :type '(set :greedy t
@@ -7495,6 +7495,7 @@ and create a new headline with the text in the current line after point
 When INVISIBLE-OK is set, stop at invisible headlines when going back.
 This is important for non-interactive uses of the command."
   (interactive "P")
+  (if (org-called-interactively-p 'any) (org-reveal))
   (cond
    ((or (= (buffer-size) 0)
 	(and (not (save-excursion
@@ -7522,6 +7523,12 @@ This is important for non-interactive uses of the command."
 	      (or (not (null arg)) org-insert-heading-respect-content))
 	     (level nil)
 	     (on-heading (org-at-heading-p))
+	     ;; Get a level to fall back on
+	     (fix-level
+	      (save-excursion
+		(org-back-to-heading t)
+		(looking-at org-outline-regexp)
+		(make-string (1- (length (match-string 0))) ?*)))
 	     (on-empty-line
 	      (save-excursion (beginning-of-line 1) (looking-at "^\\s-*$")))
 	     (head (save-excursion
@@ -7546,11 +7553,11 @@ This is important for non-interactive uses of the command."
 					(not (org-previous-line-empty-p t)))
 			     (setq empty-line-p (org-previous-line-empty-p)))
 			   (match-string 0))
-		       (error "* "))))
+		       (error (or fix-level "* ")))))
 	     (blank-a (cdr (assq 'heading org-blank-before-new-entry)))
 	     (blank (if (eq blank-a 'auto) empty-line-p blank-a))
 	     pos hide-previous previous-pos)
-	(if ;; At the beginning of a heading, open a new line for insertiong
+	(if ;; At the beginning of a heading, open a new line for insertion
 	    (and (bolp) (org-at-heading-p)
 		 (not eops)
 		 (or (bobp)
@@ -7579,7 +7586,10 @@ This is important for non-interactive uses of the command."
 	     ((and (not arg) (not on-heading) (not on-empty-line)
 		   (not (save-excursion
 			  (beginning-of-line 1)
-			  (looking-at org-list-full-item-re))))
+			  (or (looking-at org-list-full-item-re)
+			      ;; Don't convert :end: lines to headline
+			      (looking-at "^\\s-*:end:")
+			      (looking-at "^\\s-*#\\+end_?")))))
 	      (beginning-of-line 1))
 	     (org-insert-heading-respect-content
 	      (if (not eops)
@@ -16070,7 +16080,13 @@ So these are more for recording a certain time/date."
     (set-keymap-parent map minibuffer-local-map)
     (org-defkey map (kbd ".")
                 (lambda () (interactive)
-                  (org-eval-in-calendar '(calendar-goto-today))))
+		  ;; Are we at the beginning of the prompt?
+		  (if (looking-back "^[^:]+: ")
+		      (org-eval-in-calendar '(calendar-goto-today))
+		    (insert "."))))
+    (org-defkey map (kbd "C-.")
+                (lambda () (interactive)
+		  (org-eval-in-calendar '(calendar-goto-today))))
     (org-defkey map [(meta shift left)]
                 (lambda () (interactive)
                   (org-eval-in-calendar '(calendar-backward-month 1))))
@@ -17974,9 +17990,11 @@ When a buffer is unmodified, it is just killed.  When modified, it is saved
 		  (append org-todo-keyword-alist-for-agenda org-todo-key-alist))
 	    (setq org-drawers-for-agenda
 		  (append org-drawers-for-agenda org-drawers))
-	    (unless (equal org-tag-alist-for-agenda org-tag-alist)
-	      (setq org-tag-alist-for-agenda
-		    (append org-tag-alist-for-agenda org-tag-alist)))
+	    (setq org-tag-alist-for-agenda
+		  (org-uniquify
+		   (append org-tag-alist-for-agenda
+			   org-tag-alist
+			   org-tag-persistent-alist)))
 	    (if org-group-tags
 		(setq org-tag-groups-alist-for-agenda
 		      (org-uniquify-alist
@@ -20575,9 +20593,10 @@ number of stars to add."
 Calls `org-insert-heading' or `org-table-wrap-region', depending on context.
 See the individual commands for more information."
   (interactive "P")
+  (org-check-before-invisible-edit 'insert)
   (cond
    ((run-hook-with-args-until-success 'org-metareturn-hook))
-   ((or (org-at-drawer-p) (org-at-property-p))
+   ((or (org-at-drawer-p) (org-in-drawer-p) (org-at-property-p))
     (newline-and-indent))
    ((org-at-table-p)
     (call-interactively 'org-table-wrap-region))
@@ -21541,6 +21560,17 @@ block from point."
 	      names))
       nil)))
 
+(defun org-in-drawer-p ()
+  "Is point within a drawer?"
+  (save-match-data
+    (let ((case-fold-search t)
+	  (lim-up (save-excursion (outline-previous-heading)))
+	  (lim-down (save-excursion (outline-next-heading))))
+      (org-between-regexps-p
+       (concat "^[ \t]*:" (regexp-opt org-drawers) ":")
+       "^[ \t]*:end:.*$"
+       lim-up lim-down))))
+
 (defun org-occur-in-agenda-files (regexp &optional nlines)
   "Call `multi-occur' with buffers for all agenda files."
   (interactive "sOrg-files matching: \np")
@@ -22158,7 +22188,9 @@ a footnote definition, try to fill the first paragraph within."
 	  (table-row (org-table-align) t)
 	  (table
 	   (when (eq (org-element-property :type element) 'org)
-	     (org-table-align))
+	     (save-excursion
+	       (goto-char (org-element-property :post-affiliated element))
+	       (org-table-align)))
 	   t)
 	  (paragraph
 	   ;; Paragraphs may contain `line-break' type objects.

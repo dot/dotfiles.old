@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2010 Chris Wanstrath
 
-;; Version: 20130421.1156
+;; Version: 20130502.1632
 ;; X-Original-Version: 0.4.1
 ;; Keywords: CoffeeScript major mode
 ;; Author: Chris Wanstrath <chris@ozmm.org>
@@ -977,5 +977,7 @@ it on by default."
 (add-to-list 'auto-mode-alist '("\\.iced\\'" . coffee-mode))
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("Cakefile\\'" . coffee-mode))
+;;;###autoload
+(add-to-list 'interpreter-mode-alist '("coffee" . coffee-mode))
 
 ;;; coffee-mode.el ends here

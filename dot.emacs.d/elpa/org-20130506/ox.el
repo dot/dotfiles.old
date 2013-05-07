@@ -2246,13 +2246,19 @@ according to export options INFO, stored as a plist."
     (table (plist-get info :with-tables))
     (otherwise t)))
 
-(defun org-export-expand (blob contents)
+(defun org-export-expand (blob contents &optional with-affiliated)
   "Expand a parsed element or object to its original state.
+
 BLOB is either an element or an object.  CONTENTS is its
-contents, as a string or nil."
-  (funcall
-   (intern (format "org-element-%s-interpreter" (org-element-type blob)))
-   blob contents))
+contents, as a string or nil.
+
+When optional argument WITH-AFFILIATED is non-nil, add affiliated
+keywords before output."
+  (let ((type (org-element-type blob)))
+    (concat (and with-affiliated (memq type org-element-all-elements)
+		 (org-element--interpret-affiliated-keywords blob))
+	    (funcall (intern (format "org-element-%s-interpreter" type))
+		     blob contents))))
 
 (defun org-export-ignore-element (element info)
   "Add ELEMENT to `:ignore-list' in INFO.
@@ -3970,27 +3976,41 @@ significant."
 	 ;; Split PATH at white spaces so matches are space
 	 ;; insensitive.
 	 (path (org-split-string
-		(if match-title-p (substring raw-path 1) raw-path))))
+		(if match-title-p (substring raw-path 1) raw-path)))
+	 ;; Cache for destinations that are not position dependent.
+	 (link-cache
+	  (or (plist-get info :fuzzy-link-cache)
+	      (plist-get (setq info (plist-put info :fuzzy-link-cache
+					       (make-hash-table :test 'equal)))
+			 :fuzzy-link-cache)))
+	 (cached (gethash path link-cache 'not-found)))
     (cond
+     ;; Destination is not position dependent: use cached value.
+     ((and (not match-title-p) (not (eq cached 'not-found))) cached)
      ;; First try to find a matching "<<path>>" unless user specified
      ;; he was looking for a headline (path starts with a "*"
      ;; character).
      ((and (not match-title-p)
-	   (org-element-map (plist-get info :parse-tree) 'target
-	     (lambda (blob)
-	       (and (equal (org-split-string (org-element-property :value blob))
-			   path)
-		    blob))
-	     info t)))
+	   (let ((match (org-element-map (plist-get info :parse-tree) 'target
+			  (lambda (blob)
+			    (and (equal (org-split-string
+					 (org-element-property :value blob))
+					path)
+				 blob))
+			  info 'first-match)))
+	     (and match (puthash path match link-cache)))))
      ;; Then try to find an element with a matching "#+NAME: path"
      ;; affiliated keyword.
      ((and (not match-title-p)
-	   (org-element-map (plist-get info :parse-tree)
-	       org-element-all-elements
-	     (lambda (el)
-	       (let ((name (org-element-property :name el)))
-		 (when (and name (equal (org-split-string name) path)) el)))
-	     info 'first-match)))
+	   (let ((match (org-element-map (plist-get info :parse-tree)
+			    org-element-all-elements
+			  (lambda (el)
+			    (let ((name (org-element-property :name el)))
+			      (when (and name
+					 (equal (org-split-string name) path))
+				el)))
+			  info 'first-match)))
+	     (and match (puthash path match link-cache)))))
      ;; Last case: link either points to a headline or to nothingness.
      ;; Try to find the source, with priority given to headlines with
      ;; the closest common ancestor.  If such candidate is found,
@@ -4013,15 +4033,15 @@ significant."
 		  info 'first-match)))))
 	;; Search among headlines sharing an ancestor with link, from
 	;; closest to farthest.
-	(or (catch 'exit
-	      (mapc
-	       (lambda (parent)
-		 (when (eq (org-element-type parent) 'headline)
-		   (let ((foundp (funcall find-headline path parent)))
-		     (when foundp (throw 'exit foundp)))))
-	       (org-export-get-genealogy link)) nil)
-	    ;; No match with a common ancestor: try full parse-tree.
-	    (funcall find-headline path (plist-get info :parse-tree))))))))
+	(catch 'exit
+	  (mapc
+	   (lambda (parent)
+	     (let ((foundp (funcall find-headline path parent)))
+	       (when foundp (throw 'exit foundp))))
+	   (let ((parent-hl (org-export-get-parent-headline link)))
+	     (cons parent-hl (org-export-get-genealogy parent-hl))))
+	  ;; No destination found: return nil.
+	  (and (not match-title-p) (puthash path nil link-cache))))))))
 
 (defun org-export-resolve-id-link (link info)
   "Return headline referenced as LINK destination.
