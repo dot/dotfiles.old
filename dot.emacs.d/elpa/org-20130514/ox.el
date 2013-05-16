@@ -1731,20 +1731,24 @@ process."
      (lambda (cell)
        (let ((prop (car cell)))
 	 (unless (plist-member plist prop)
-	   (setq plist
-		 (plist-put
-		  plist
-		  prop
-		  ;; Eval default value provided.  If keyword is a member
-		  ;; of `org-element-document-properties', parse it as
-		  ;; a secondary string before storing it.
-		  (let ((value (eval (nth 3 cell))))
-		    (if (not (stringp value)) value
-		      (let ((keyword (nth 1 cell)))
-			(if (not (member keyword org-element-document-properties))
-			    value
-			  (org-element-parse-secondary-string
-			   value (org-element-restriction 'keyword)))))))))))
+	   (let ((value (eval (nth 3 cell))))
+	     ;; Only set property if default value is non-nil.
+	     (when value
+	       (setq plist
+		     (plist-put
+		      plist
+		      prop
+		      ;; If keyword belongs to
+		      ;; `org-element-document-properties', parse
+		      ;; default value as a secondary string before
+		      ;; storing it.
+		      (if (not (stringp value)) value
+			(let ((keyword (nth 1 cell)))
+			  (if (not (member keyword
+					   org-element-document-properties))
+			      value
+			    (org-element-parse-secondary-string
+			     value (org-element-restriction 'keyword))))))))))))
      all)
     ;; Return value.
     plist))
@@ -3256,73 +3260,79 @@ working directory.  It is used to properly resolve relative
 paths."
   (let ((case-fold-search t))
     (goto-char (point-min))
-    (while (re-search-forward "^[ \t]*#\\+INCLUDE: +\\(.*\\)[ \t]*$" nil t)
-      (when (eq (org-element-type (save-match-data (org-element-at-point)))
-		'keyword)
-	(beginning-of-line)
-	;; Extract arguments from keyword's value.
-	(let* ((value (match-string 1))
-	       (ind (org-get-indentation))
-	       (file (and (string-match "^\"\\(\\S-+\\)\"" value)
-			  (prog1 (expand-file-name (match-string 1 value) dir)
-			    (setq value (replace-match "" nil nil value)))))
-	       (lines
-		(and (string-match
-		      ":lines +\"\\(\\(?:[0-9]+\\)?-\\(?:[0-9]+\\)?\\)\"" value)
-		     (prog1 (match-string 1 value)
-		       (setq value (replace-match "" nil nil value)))))
-	       (env (cond ((string-match "\\<example\\>" value) 'example)
-			  ((string-match "\\<src\\(?: +\\(.*\\)\\)?" value)
-			   (match-string 1 value))))
-	       ;; Minimal level of included file defaults to the child
-	       ;; level of the current headline, if any, or one.  It
-	       ;; only applies is the file is meant to be included as
-	       ;; an Org one.
-	       (minlevel
-		(and (not env)
-		     (if (string-match ":minlevel +\\([0-9]+\\)" value)
-			 (prog1 (string-to-number (match-string 1 value))
-			   (setq value (replace-match "" nil nil value)))
-		       (let ((cur (org-current-level)))
-			 (if cur (1+ (org-reduced-level cur)) 1))))))
-	  ;; Remove keyword.
-	  (delete-region (point) (progn (forward-line) (point)))
-	  (cond
-	   ((not file) (error "Invalid syntax in INCLUDE keyword"))
-	   ((not (file-readable-p file)) (error "Cannot include file %s" file))
-	   ;; Check if files has already been parsed.  Look after
-	   ;; inclusion lines too, as different parts of the same file
-	   ;; can be included too.
-	   ((member (list file lines) included)
-	    (error "Recursive file inclusion: %s" file))
-	   (t
+    (while (re-search-forward "^[ \t]*#\\+INCLUDE:" nil t)
+      (let ((element (save-match-data (org-element-at-point))))
+	(when (eq (org-element-type element) 'keyword)
+	  (beginning-of-line)
+	  ;; Extract arguments from keyword's value.
+	  (let* ((value (org-element-property :value element))
+		 (ind (org-get-indentation))
+		 (file (and (string-match
+			     "^\\(\".+?\"\\|\\S-+\\)\\(?:\\s-+\\|$\\)" value)
+			    (prog1 (expand-file-name
+				    (org-remove-double-quotes
+				     (match-string 1 value))
+				    dir)
+			      (setq value (replace-match "" nil nil value)))))
+		 (lines
+		  (and (string-match
+			":lines +\"\\(\\(?:[0-9]+\\)?-\\(?:[0-9]+\\)?\\)\""
+			value)
+		       (prog1 (match-string 1 value)
+			 (setq value (replace-match "" nil nil value)))))
+		 (env (cond ((string-match "\\<example\\>" value) 'example)
+			    ((string-match "\\<src\\(?: +\\(.*\\)\\)?" value)
+			     (match-string 1 value))))
+		 ;; Minimal level of included file defaults to the child
+		 ;; level of the current headline, if any, or one.  It
+		 ;; only applies is the file is meant to be included as
+		 ;; an Org one.
+		 (minlevel
+		  (and (not env)
+		       (if (string-match ":minlevel +\\([0-9]+\\)" value)
+			   (prog1 (string-to-number (match-string 1 value))
+			     (setq value (replace-match "" nil nil value)))
+			 (let ((cur (org-current-level)))
+			   (if cur (1+ (org-reduced-level cur)) 1))))))
+	    ;; Remove keyword.
+	    (delete-region (point) (progn (forward-line) (point)))
 	    (cond
-	     ((eq env 'example)
-	      (insert
-	       (let ((ind-str (make-string ind ? ))
-		     (contents
-		      (org-escape-code-in-string
-		       (org-export--prepare-file-contents file lines))))
-		 (format "%s#+BEGIN_EXAMPLE\n%s%s#+END_EXAMPLE\n"
-			 ind-str contents ind-str))))
-	     ((stringp env)
-	      (insert
-	       (let ((ind-str (make-string ind ? ))
-		     (contents
-		      (org-escape-code-in-string
-		       (org-export--prepare-file-contents file lines))))
-		 (format "%s#+BEGIN_SRC %s\n%s%s#+END_SRC\n"
-			 ind-str env contents ind-str))))
+	     ((not file) nil)
+	     ((not (file-readable-p file))
+	      (error "Cannot include file %s" file))
+	     ;; Check if files has already been parsed.  Look after
+	     ;; inclusion lines too, as different parts of the same file
+	     ;; can be included too.
+	     ((member (list file lines) included)
+	      (error "Recursive file inclusion: %s" file))
 	     (t
-	      (insert
-	       (with-temp-buffer
-		 (let ((org-inhibit-startup t)) (org-mode))
-		 (insert
-		  (org-export--prepare-file-contents file lines ind minlevel))
-		 (org-export-expand-include-keyword
-		  (cons (list file lines) included)
-		  (file-name-directory file))
-		 (buffer-string))))))))))))
+	      (cond
+	       ((eq env 'example)
+		(insert
+		 (let ((ind-str (make-string ind ? ))
+		       (contents
+			(org-escape-code-in-string
+			 (org-export--prepare-file-contents file lines))))
+		   (format "%s#+BEGIN_EXAMPLE\n%s%s#+END_EXAMPLE\n"
+			   ind-str contents ind-str))))
+	       ((stringp env)
+		(insert
+		 (let ((ind-str (make-string ind ? ))
+		       (contents
+			(org-escape-code-in-string
+			 (org-export--prepare-file-contents file lines))))
+		   (format "%s#+BEGIN_SRC %s\n%s%s#+END_SRC\n"
+			   ind-str env contents ind-str))))
+	       (t
+		(insert
+		 (with-temp-buffer
+		   (let ((org-inhibit-startup t)) (org-mode))
+		   (insert
+		    (org-export--prepare-file-contents file lines ind minlevel))
+		   (org-export-expand-include-keyword
+		    (cons (list file lines) included)
+		    (file-name-directory file))
+		   (buffer-string)))))))))))))
 
 (defun org-export--prepare-file-contents (file &optional lines ind minlevel)
   "Prepare the contents of FILE for inclusion and return them as a string.
@@ -4069,11 +4079,15 @@ INFO is a plist used as a communication channel.
 
 Return value can be a radio-target object or nil.  Assume LINK
 has type \"radio\"."
-  (let ((path (org-element-property :path link)))
+  (let ((path (replace-regexp-in-string
+	       "[ \r\t\n]+" " " (org-element-property :path link))))
     (org-element-map (plist-get info :parse-tree) 'radio-target
       (lambda (radio)
-	(and (compare-strings
-	      (org-element-property :value radio) 0 nil path 0 nil t)
+	(and (eq (compare-strings
+		  (replace-regexp-in-string
+		   "[ \r\t\n]+" " " (org-element-property :value radio))
+		  nil nil path nil nil t)
+		 t)
 	     radio))
       info 'first-match)))
 

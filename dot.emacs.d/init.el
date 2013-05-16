@@ -276,3 +276,6 @@
                 ("\\.ru$" . ruby-mode)
                 ("\\.thor$" . ruby-mode)
                 ("Rakefile" . ruby-mode)) auto-mode-alist))
+
+;; slim-mode
+(require 'slim-mode)
