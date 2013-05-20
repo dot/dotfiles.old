@@ -4,8 +4,8 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-ag
-;; Version: 20130418.1212
-;; X-Original-Version: 0.05
+;; Version: 20130516.1750
+;; X-Original-Version: 0.06
 ;; Package-Requires: ((helm "1.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -68,7 +68,7 @@
            (if helm-ag-insert-at-point
                (format " %s"
                        (with-helm-current-buffer
-                         (or (thing-at-point helm-ag-insert-at-point) " ")))
+                         (or (thing-at-point helm-ag-insert-at-point) "")))
              " "))))
 
 (defun helm-ag-init ()
