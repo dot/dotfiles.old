@@ -18,7 +18,7 @@
 	      [(0 4 1)
 	       nil "Major mode for CoffeeScript files" tar])
  (company .
-	  [(0 6 9)
+	  [(0 6 10)
 	   nil "Modular in-buffer completion framework" tar])
  (csv-mode .
 	   [(1 2)
