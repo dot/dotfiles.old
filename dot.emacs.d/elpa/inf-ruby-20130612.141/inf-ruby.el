@@ -6,7 +6,7 @@
 ;; URL: http://github.com/nonsequitur/inf-ruby
 ;; Created: 8 April 1998
 ;; Keywords: languages ruby
-;; Version: 20130603.311
+;; Version: 20130612.141
 ;; X-Original-Version: 2.2.4
 
 ;;; Commentary:
@@ -35,6 +35,7 @@
      "\\(^\\(irb([^)]+)"                 ; IRB default
      "\\(\[[0-9]+\] \\)?[Pp]ry ?([^)]+)" ; Pry
      "\\(jruby-\\|JRUBY-\\)?[1-9]\\.[0-9]\\.[0-9]+\\(-?p?[0-9]+\\)?" ; RVM
+     "^rbx-head"                         ; RVM continued
      ;; Statement and nesting counters, common to the last three.
      "\\) ?[0-9:]* ?%s *\\)")
    "\\|")

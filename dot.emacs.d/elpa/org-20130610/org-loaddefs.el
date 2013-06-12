@@ -1753,7 +1753,7 @@ replace any running timer.
 ;;;***
 
 ;;;### (autoloads (org-git-version org-release) "org-version" "org-version.el"
-;;;;;;  (20908 8946))
+;;;;;;  (20917 23919))
 ;;; Generated autoloads from org-version.el
 
 (autoload 'org-release "org-version" "\
@@ -1779,7 +1779,7 @@ The location of ODT styles.")
 ;;;;;;  org-run-like-in-org-mode turn-on-orgstruct++ turn-on-orgstruct
 ;;;;;;  orgstruct-mode org-global-cycle org-cycle org-mode org-clock-persistence-insinuate
 ;;;;;;  turn-on-orgtbl org-version org-babel-load-file org-babel-do-load-languages)
-;;;;;;  "org" "org.el" (20908 8937))
+;;;;;;  "org" "org.el" (20917 23911))
 ;;; Generated autoloads from org.el
 
 (autoload 'org-babel-do-load-languages "org" "\
@@ -2002,7 +2002,7 @@ Call the customize function with org as argument.
 
 ;;;### (autoloads (org-export-dispatch org-export-insert-default-template
 ;;;;;;  org-export-replace-region-by org-export-string-as org-export-to-file
-;;;;;;  org-export-to-buffer org-export-as) "ox" "ox.el" "fbebd1c5ea7f80d64ecdd94ddee313d2")
+;;;;;;  org-export-to-buffer org-export-as) "ox" "ox.el" "b0d2444d30b7c4f1ad3b93fb033f81cd")
 ;;; Generated autoloads from ox.el
 
 (autoload 'org-export-as "ox" "\
@@ -2365,7 +2365,7 @@ Return output file name.
 
 ;;;### (autoloads (org-html-publish-to-html org-html-export-to-html
 ;;;;;;  org-html-convert-region-to-html org-html-export-as-html org-html-htmlize-generate-css)
-;;;;;;  "ox-html" "ox-html.el" "d026b51873f3f7d39a95436cf4c67ae6")
+;;;;;;  "ox-html" "ox-html.el" "3b7e3de5dd1fc361dd10c768e170089f")
 ;;; Generated autoloads from ox-html.el
 
 (put 'org-html-head-include-default-style 'safe-local-variable 'booleanp)
@@ -2525,7 +2525,7 @@ The file is stored under the name chosen in
 
 ;;;### (autoloads (org-latex-publish-to-pdf org-latex-publish-to-latex
 ;;;;;;  org-latex-export-to-pdf org-latex-export-to-latex org-latex-convert-region-to-latex
-;;;;;;  org-latex-export-as-latex) "ox-latex" "ox-latex.el" "087afeea95f0ced3f50e59e166dd52f4")
+;;;;;;  org-latex-export-as-latex) "ox-latex" "ox-latex.el" "2839b3d576c6911d39e54f1bf7ffdaee")
 ;;; Generated autoloads from ox-latex.el
 
 (autoload 'org-latex-export-as-latex "ox-latex" "\
@@ -2922,7 +2922,7 @@ this command to convert it.
 
 ;;;### (autoloads (org-export-dispatch org-export-insert-default-template
 ;;;;;;  org-export-replace-region-by org-export-string-as org-export-to-file
-;;;;;;  org-export-to-buffer org-export-as) "ox" "ox.el" "01bca1bfb9e2f92149a2694be4fa27cc")
+;;;;;;  org-export-to-buffer org-export-as) "ox" "ox.el" "0ffc6999c7c9b0acecac0e1c683caf36")
 ;;; Generated autoloads from ox.el
 
 (autoload 'org-export-as "ox" "\
