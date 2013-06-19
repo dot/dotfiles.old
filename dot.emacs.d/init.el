@@ -17,6 +17,8 @@
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/howm")
 
+(setq max-specpdl-size 6000)
+
 ;; keys
 ; swap cmd <-> opt(meta)
 (setq ns-command-modifier (quote meta))
