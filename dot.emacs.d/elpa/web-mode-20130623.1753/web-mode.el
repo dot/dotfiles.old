@@ -1,20 +1,21 @@
-;;; web-mode.el --- major mode for editing HTML templates
+;;; web-mode.el --- major mode for editing html templates
 
-;; Copyright (C) 2011-2013 François-Xavier Bois
+;; Copyright 2011-2013 François-Xavier Bois
+
+;; Version: 20130623.1753
+;; X-Original-Version: 6.0.10
+;; Author: François-Xavier Bois <fxbois AT Google Mail Service>
+;; Maintainer: François-Xavier Bois
+;; Created: July 2011
+;; Keywords: web template html php javascript js css
+;;           jsp asp erb twig jinja mustache blade
+;;           freemarker django velocity cheetah smarty
+;; URL: http://web-mode.org
+;; Repository: http://github.com/fxbois/web-mode
 
 ;; =========================================================================
 ;; This work is sponsored by KerniX : Digital Agency (Web & Mobile) in Paris
 ;; =========================================================================
-;; Version: 20130611.5
-;; X-Original-Version: 6.0.8
-;; Author: François-Xavier Bois <fxbois AT Google Mail Service>
-;; Maintainer: François-Xavier Bois
-;; Created: July 2011
-;; Keywords: Web Template HTML PHP JavaScript CSS Js
-;;           JSP ASP ERB Twig Jinja Mustache Blade
-;;           FreeMarker Django Velocity Cheetah Smarty
-;; URL: http://github.com/fxbois/web-mode
-;;      http://web-mode.org
 
 ;; This file is not part of Emacs
 
@@ -33,11 +34,13 @@
 ;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
 
+;; Code goes here
+
 (defgroup web-mode nil
   "Major mode for editing web templates:
    HTML files embedding client parts (CSS/JavaScript)
    and server blocs (PHP, JSP, ASP, Django/Twig, Smarty, etc.)."
-  :version "6.0.8"
+  :version "6.0.10"
   :group 'languages)
 
 (defgroup web-mode-faces nil
@@ -339,7 +342,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   "Void (self-closing) tags.")
 
 (defvar web-mode-text-properties
-  '(client-side nil client-language nil client-tag-name nil client-tag-type nil client-token-type nil server-side nil server-engine nil server-tag-name nil server-tag-type nil server-token-type nil server-boundary nil tag-boundary nil face nil)
+  '(client-side nil client-language nil client-tag-name nil client-tag-type nil client-token-type nil server-side nil server-engine nil server-tag-name nil server-tag-type nil server-token-type nil server-beg nil tag-beg nil server-end nil tag-end nil face nil)
   "Text properties used for fontification and indentation.")
 
 (defvar web-mode-is-scratch nil
@@ -527,40 +530,41 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (define-key keymap (kbd "C-;") 'web-mode-comment-or-uncomment)
     (define-key keymap (kbd "M-;") 'web-mode-comment-or-uncomment)
 
-    (define-key keymap (kbd "C-c C-e") 'web-mode-errors-show)
-    (define-key keymap (kbd "C-c C-f") 'web-mode-fold-or-unfold)
-    (define-key keymap (kbd "C-c C-i") 'web-mode-buffer-indent)
-    (define-key keymap (kbd "C-c C-m") 'web-mode-mark-and-expand)
-    (define-key keymap (kbd "C-c C-n") 'web-mode-tag-match)
-    (define-key keymap (kbd "C-c C-r") 'web-mode-entities-replace)
-    (define-key keymap (kbd "C-c C-s") 'web-mode-snippet-insert)
-    (define-key keymap (kbd "C-c C-w") 'web-mode-whitespaces-show)
+    (define-key keymap (kbd "C-c C-b")  'web-mode-buffer-indent)
+    (define-key keymap (kbd "C-c C-d")  'web-mode-errors-show)
+    (define-key keymap (kbd "C-c C-f")  'web-mode-fold-or-unfold)
+    (define-key keymap (kbd "C-c C-i")  'web-mode-snippet-insert)
+    (define-key keymap (kbd "C-c C-m")  'web-mode-mark-and-expand)
+    (define-key keymap (kbd "C-c C-n")  'web-mode-tag-match)
+    (define-key keymap (kbd "C-c C-r")  'web-mode-entities-replace)
+    (define-key keymap (kbd "C-c C-w")  'web-mode-whitespaces-show)
 
-    (define-key keymap (kbd "C-c /")  'web-mode-element-close)
-    (define-key keymap (kbd "C-c <")  'web-mode-element-beginning)
-    (define-key keymap (kbd "C-c eb") 'web-mode-element-beginning)
-    (define-key keymap (kbd "C-c ed") 'web-mode-element-delete)
-    (define-key keymap (kbd "C-c >")  'web-mode-element-end)
-    (define-key keymap (kbd "C-c ee") 'web-mode-element-end)
-    (define-key keymap (kbd "C-c ec") 'web-mode-element-duplicate)
-    (define-key keymap (kbd "C-c en") 'web-mode-element-next)
-    (define-key keymap (kbd "C-c ep") 'web-mode-element-previous)
-    (define-key keymap (kbd "C-c er") 'web-mode-element-rename)
-    (define-key keymap (kbd "C-c es") 'web-mode-element-select)
-    (define-key keymap (kbd "C-c eu") 'web-mode-element-parent)
-    (define-key keymap (kbd "C-c ei") 'web-mode-element-content-select)
-    (define-key keymap (kbd "C-c sb") 'web-mode-server-block-beginning)
-    (define-key keymap (kbd "C-c se") 'web-mode-server-block-end)
-    (define-key keymap (kbd "C-c sn") 'web-mode-server-block-next)
-    (define-key keymap (kbd "C-c sp") 'web-mode-server-block-previous)
-    (define-key keymap (kbd "C-c tb") 'web-mode-tag-beginning)
-    (define-key keymap (kbd "C-c te") 'web-mode-tag-end)
-    (define-key keymap (kbd "C-c tm") 'web-mode-tag-match)
-    (define-key keymap (kbd "C-c ts") 'web-mode-tag-select)
-    (define-key keymap (kbd "C-c tp") 'web-mode-tag-previous)
-    (define-key keymap (kbd "C-c tn") 'web-mode-tag-next)
+    (define-key keymap (kbd "C-c /")    'web-mode-element-close)
+    (define-key keymap (kbd "C-c <")    'web-mode-element-beginning)
+    (define-key keymap (kbd "C-c >")    'web-mode-element-end)
 
-;;    (define-key keymap (kbd "<down-mouse-1>") 'web-mode-on-click)
+    (define-key keymap (kbd "C-c C-e b") 'web-mode-element-beginning)
+    (define-key keymap (kbd "C-c C-e d") 'web-mode-element-delete)
+    (define-key keymap (kbd "C-c C-e e") 'web-mode-element-end)
+    (define-key keymap (kbd "C-c C-e c") 'web-mode-element-duplicate)
+    (define-key keymap (kbd "C-c C-e n") 'web-mode-element-next)
+    (define-key keymap (kbd "C-c C-e p") 'web-mode-element-previous)
+    (define-key keymap (kbd "C-c C-e r") 'web-mode-element-rename)
+    (define-key keymap (kbd "C-c C-e s") 'web-mode-element-select)
+    (define-key keymap (kbd "C-c C-e u") 'web-mode-element-parent)
+    (define-key keymap (kbd "C-c C-e i") 'web-mode-element-content-select)
+    (define-key keymap (kbd "C-c C-s b") 'web-mode-server-block-beginning)
+    (define-key keymap (kbd "C-c C-s e") 'web-mode-server-block-end)
+    (define-key keymap (kbd "C-c C-s n") 'web-mode-server-block-next)
+    (define-key keymap (kbd "C-c C-s p") 'web-mode-server-block-previous)
+    (define-key keymap (kbd "C-c C-t b") 'web-mode-tag-beginning)
+    (define-key keymap (kbd "C-c C-t e") 'web-mode-tag-end)
+    (define-key keymap (kbd "C-c C-t m") 'web-mode-tag-match)
+    (define-key keymap (kbd "C-c C-t s") 'web-mode-tag-select)
+    (define-key keymap (kbd "C-c C-t p") 'web-mode-tag-previous)
+    (define-key keymap (kbd "C-c C-t n") 'web-mode-tag-next)
+
+    ;;    (define-key keymap (kbd "<down-mouse-1>") 'web-mode-on-click)
 
     keymap)
   "Keymap for `web-mode'.")
@@ -662,12 +666,16 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
 (defvar web-mode-erb-keywords
   (regexp-opt
    (append web-mode-extra-erb-keywords
-           '("do" "end" "render" "if" "unless" "else" "elsif" "for" "in" "package"
-             "link_to" "html_escape" "h" "u" "url_encode"
-             "javascript_tag" "form_for" "escape_javascript" "j"
-             "button_to_function" "link_to_function"
-             "class" "def" "while" "case" "when"
-             "raw" "puts" "and" "or" "not"
+           '("BEGIN" "END" "__FILE__" "__LINE__"
+             "alias" "and" "begin" "break" "button_to_function"
+             "case" "class" "csrf_meta_tag"
+             "def" "defined?" "do" "else" "elsif" "end"
+             "ensure" "escape_javascript" "false" "for" "form_for" "h" "html_escape"
+             "if" "in" "j" "javascript_include_tag" "javascript_tag"
+             "link_to" "link_to_function" "module" "next" "nil" "not"
+             "or" "package" "puts" "raw" "redo" "render" "rescue" "retry" "return"
+             "self" "super" "then" "true" "u" "undef"
+             "unless" "until" "url_encode" "when" "while" "yield"
              )))
   "ERB keywords.")
 
@@ -788,10 +796,14 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
 (defvar web-mode-javascript-keywords
   (regexp-opt
    (append web-mode-extra-javascript-keywords
-           '("break" "case" "catch" "default" "else" "false" "for" "function"
-             "if" "in" "instanceof"
-             "new" "null" "return" "switch" "this" "true" "try" "typeof"
-             "undefined" "var" "while")))
+           '("arguments" "break" "case" "catch" "class" "const" "continue"
+             "debugger" "default" "delete" "do" "else" "enum" "eval"
+             "export" "extends" "false" "finally" "for" "function" "if"
+             "implements" "import" "in" "instanceof" "interface" "let"
+             "new" "null" "package" "private" "protected" "public"
+             "return" "static" "super" "switch" "this" "throw"
+             "true" "try" "typeof" "undefined" "var" "void" "while" "with" "yield"
+             )))
   "JavaScript keywords.")
 
 (defvar web-mode-razor-keywords
@@ -819,7 +831,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
 
 (defvar web-mode-freemarker-font-lock-keywords
   (list
-;;   '("[<[]/?[#@][[:alpha:]_.]*\\|/?>\\|/?]" 0 'web-mode-preprocessor-face)
+   ;;   '("[<[]/?[#@][[:alpha:]_.]*\\|/?>\\|/?]" 0 'web-mode-preprocessor-face)
    '("\\[/?#\\|\\]" 0 'web-mode-preprocessor-face)
    '("#[ ]?\\([[:alnum:]_]+\\)" 1 'web-mode-keyword-face)
    (cons (concat "\\<\\(" web-mode-freemarker-keywords "\\)\\>") '(1 'web-mode-keyword-face))
@@ -866,7 +878,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   (list
    '("${{\\|{{[>#/{%^&]?\\|[}]?}}" 0 'web-mode-preprocessor-face)
    '("{{[#/>][ ]*\\([[:alnum:]_]+\\)" 1 'web-mode-keyword-face)
-;;   '("{{>[ ]*\\([[:alnum:]_]+\\)" 1 'web-mode-keyword-face)
+   ;;   '("{{>[ ]*\\([[:alnum:]_]+\\)" 1 'web-mode-keyword-face)
    '("[[:alnum:]_]" 0 'web-mode-variable-name-face)
    '("[ ]+\\([[:alnum:]_]+=\\)" 1 'web-mode-param-name-face t t)
    '("[:=]\\([[:alpha:]_]+\\)" 1 'web-mode-function-name-face t t)
@@ -950,7 +962,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
 
 (defvar web-mode-jsp-font-lock-keywords
   (list
-   '("-?%>\\|^%\\|<%\\(!\\|=\\|#=\\)?" 0 'web-mode-preprocessor-face)
+   '("-?%>\\|<%\\(!\\|=\\|#=\\)?" 0 'web-mode-preprocessor-face)
    '("\\(throws\\|new\\|extends\\)[ ]+\\([[:alnum:].]+\\)" 2 'web-mode-type-face)
    (cons (concat "\\<\\(" web-mode-jsp-keywords "\\)\\>") '(0 'web-mode-keyword-face))
    '("\\<\\([[:alnum:]._]+\\)[ ]?(" 1 'web-mode-function-name-face)
@@ -958,7 +970,6 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
    '("\\<\\([[:alnum:].]+\\)[ ]+[{[:alpha:]]+" 1 'web-mode-type-face)
    ))
 
-;;todo: différencier les jsp keywords et les erb keywords
 (defvar web-mode-erb-font-lock-keywords
   (list
    '("-?%>\\|^%\\|<%[=-]?" 0 'web-mode-preprocessor-face)
@@ -1195,7 +1206,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
 (defun web-mode-scan-region (beg end &optional verbose)
   "Identify code blocks (client/server) and syntactic symbols (strings/comments)."
   (interactive)
-;;  (message "scanning buffer from %d to %d" beg end)
+  ;;  (message "scanning buffer from %d to %d" beg end)
   (web-mode-with-silent-modifications
    (save-excursion
      (save-restriction
@@ -1305,7 +1316,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
             (setq closing-string "*}"))
            ((string= sub2 "{#")
             (setq closing-string "#}"))
-;;           ((char-equal ?{ (string-to-char sub2))
+           ;;           ((char-equal ?{ (string-to-char sub2))
            (t
             (setq closing-string "}"))
            )
@@ -1424,7 +1435,8 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
           (when (and close (>= end pos))
             ;;            (message "pos(%S) : open(%S) close(%S)" pos open close)
             (add-text-properties open close '(server-side t))
-            (put-text-property open (1+ open) 'server-boundary (1- close))
+            (put-text-property open (1+ open) 'server-beg t)
+            (put-text-property (1- close) close 'server-end t)
             )
 
           (if pos (goto-char pos))
@@ -1502,7 +1514,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     ))
 
 (defun web-mode-scan-server (beg end)
-  "Identifies server blocks. The scan relies on the 'server-boundary text property."
+  "Identifies server blocks. The scan relies on the 'server-beg text property."
   (let ((i 0)
         (block-beg beg)
         (block-end nil)
@@ -1510,7 +1522,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (while continue
       (setq block-end nil
             i (1+ i))
-      (unless (get-text-property block-beg 'server-boundary)
+      (unless (get-text-property block-beg 'server-beg)
         (setq block-beg (web-mode-server-block-next-position block-beg)))
       (when (and block-beg (< block-beg end))
         (setq block-end (web-mode-server-block-end-position block-beg)))
@@ -1944,7 +1956,8 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
          )
 
         (add-text-properties tag-beg tag-end props)
-        (put-text-property tag-beg (1+ tag-beg) 'tag-boundary (1- tag-end))
+        (put-text-property tag-beg (1+ tag-beg) 'tag-beg t)
+        (put-text-property (1- tag-end) tag-end 'tag-end t)
 
         (cond
 
@@ -2422,7 +2435,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
         )
       )
     (goto-char (point-min))
-    (when (not (or (get-text-property (point) 'tag-boundary)
+    (when (not (or (get-text-property (point) 'tag-beg)
                    (web-mode-tag-next)))
       (setq continue nil))
     (while continue
@@ -2448,7 +2461,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
            (t
             (setq errors (1+ errors))
             (setq beg (nth 1 cell))
-            (setq end (get-text-property beg 'tag-boundary))
+            (setq end (web-mode-tag-end-position beg))
             (unless first
               (setq first beg))
             (setq overlay (make-overlay beg (1+ end)))
@@ -2531,7 +2544,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
       (while (and continue
                   (not (bobp))
                   (forward-line -1))
-        (message "pos=%S" (point))
+;;        (message "pos=%S" (point))
         (if (not (web-mode-is-comment-or-string-line))
             (setq line (web-mode-trim (buffer-substring (point) (line-end-position)))))
         (when (not (string= line "")) (setq continue nil))
@@ -2662,7 +2675,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (let ((pos (point)))
       (and (not (bobp))
            (eq (get-text-property pos 'server-engine) language)
-           (not (get-text-property pos 'server-boundary))
+           (not (get-text-property pos 'server-beg))
            (not (looking-at-p "\\?>\\|%>"))
            )
       )))
@@ -2719,7 +2732,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
         (setq language "xml"
               indent-offset web-mode-markup-indent-offset))
 
-       ((and (get-text-property pos 'tag-boundary)
+       ((and (get-text-property pos 'tag-beg)
              (get-text-property pos 'client-tag-name))
         (setq language "html"
               indent-offset web-mode-markup-indent-offset)
@@ -2744,7 +2757,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
         (setq type "string"))
 
        ((and (get-text-property pos 'server-engine)
-             (not (get-text-property pos 'server-boundary)))
+             (not (get-text-property pos 'server-beg)))
         (setq language (symbol-name (get-text-property pos 'server-engine)))
         (setq block-beg (or (previous-single-property-change pos 'server-engine) pos-min))
         (goto-char block-beg)
@@ -2978,18 +2991,13 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
          ;;       attention il peut y avoir du "server" ou commentaire au début
          ((or (eq (length line) 0)
               (= web-mode-indent-style 2)
-              (char-equal first-char ?\<)
-              (and (string= web-mode-engine "ctemplate") (char-equal first-char ?\{))
-              (and (string= web-mode-engine "smarty") (char-equal first-char ?\{))
-              (and (string= web-mode-engine "django") (char-equal first-char ?\{))
-              (and (string= web-mode-engine "go") (char-equal first-char ?\{))
-              (and (string= web-mode-engine "blade") (memq first-char '(?\{ ?\@)))
-              (and (string= web-mode-engine "velocity") (char-equal first-char ?\#))
-              (and (string= web-mode-engine "razor") (memq first-char '(?\} ?\@)))
+;;              (char-equal first-char ?\<)
+              (get-text-property pos 'tag-beg)
+              (get-text-property pos 'server-beg)
               )
           (let ((continue t)
                 (counter 0))
-;;            (message "pt=%S %S" (point) prev-line)
+
             (while (and continue (re-search-backward "^[[:blank:]]*</?[[:alpha:]]" nil t))
               (back-to-indentation)
               (when (web-mode-is-html-tag)
@@ -3002,6 +3010,8 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
                                 ))
                 );when
               );while
+
+
             (if (eq counter 0) (setq offset 0))
             );let
           );case
@@ -3057,7 +3067,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
       (forward-line -1)
       (back-to-indentation)
       (when (looking-at-p "<\\?php \\(if\\|foreach\\)")
-        (setq out (+ (current-indentation) web-mode-))
+        (setq out (+ (current-indentation) web-mode-markup-indent-offset))
         )
       out
       )
@@ -3484,7 +3494,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
       (goto-char beg)
       (set-mark (point))
       (web-mode-tag-end)
-      (forward-char)
+;;      (forward-char)
       (exchange-point-and-mark)
       )
     beg))
@@ -3501,7 +3511,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
       (setq end (point))
       (goto-char pos)
       (web-mode-tag-end)
-      (forward-char)
+;;      (forward-char)
       (set-mark (point))
       (goto-char end)
       (exchange-point-and-mark)
@@ -3520,14 +3530,14 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
           (set-mark (point))
           (web-mode-tag-match)
           (web-mode-tag-end)
-          (forward-char)
+;;          (forward-char)
           (exchange-point-and-mark))
          (t
           (web-mode-tag-match)
           (set-mark (point))
           (web-mode-tag-match)
           (web-mode-tag-end)
-          (forward-char)
+;;          (forward-char)
           (exchange-point-and-mark))
          );cond
       (web-mode-element-parent)
@@ -3568,7 +3578,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
         (pos 0)
         (h (make-hash-table :test 'equal)))
     (while continue
-      (when (and (get-text-property pos 'tag-boundary line)
+      (when (and (get-text-property pos 'tag-beg line)
                  (member (get-text-property pos 'client-tag-type line) '(start end)))
         (setq tag (get-text-property pos 'client-tag-name line))
         (setq n (gethash tag h 0))
@@ -3576,7 +3586,8 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
             (when (> n 0) (puthash tag (1- n) h))
           (puthash tag (1+ n) h))
         );when
-      (setq pos (next-single-property-change pos 'tag-boundary line))
+;;      (setq pos (next-single-property-change pos 'tag-boundary line))
+      (setq pos (next-single-property-change pos 'tag-beg line))
       (when (null pos) (setq continue nil))
       );while
     (maphash (lambda (k v) (if (> v 0) (setq ret t))) h)
@@ -4024,6 +4035,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (setq n 0)
     ;;    (search-forward ">")
     (web-mode-tag-end)
+    (backward-char)
     (setq regexp (concat "</?" tag))
     (while (and (> counter 0) (re-search-forward regexp nil t))
       ;;      (when (not (web-mode-is-comment-or-string))
@@ -4138,8 +4150,10 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   "Match ERB tag."
   (let (chunk regexp)
     (setq chunk (buffer-substring-no-properties (+ (point) 3)
-                                                (- (get-text-property (point) 'server-boundary) 2)))
+;;                                                (- (get-text-property (point) 'server-boundary) 2)))
+                                                (- (web-mode-server-block-end-position (point)) 2)))
     (setq regexp "<%[ ]+\\(.* do \\|for\\|if\\|else\\|end\\)")
+    (message "pos=%S chunk=%S" (point) chunk)
     (if (string-match-p "else\\|end" chunk)
         (web-mode-match-opening-erb-tag regexp)
       (web-mode-match-closing-erb-tag regexp))
@@ -4148,6 +4162,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
 (defun web-mode-match-opening-erb-tag (regexp)
   "Match erb opening tag."
   (let ((counter 1) match)
+    (message "opening=%S" (point))
     (while (and (> counter 0) (web-mode-rsb regexp nil t))
       (setq match (match-string-no-properties 0))
       (cond
@@ -4806,12 +4821,12 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   (unless pos (setq pos (point)))
   (let (beg)
     (cond
-     ((get-text-property pos 'tag-boundary)
+     ((get-text-property pos 'tag-beg)
       (setq beg pos))
      ((or (get-text-property pos 'client-tag-name)
           (get-text-property pos 'server-tag-name))
-      (setq beg (1- (previous-single-property-change pos 'tag-boundary)))
-      (when (not (get-text-property beg 'tag-boundary))
+      (setq beg (1- (previous-single-property-change pos 'tag-beg)))
+      (when (not (get-text-property beg 'tag-beg))
         (setq beg nil)))
      (t
       (setq beg nil))
@@ -4823,13 +4838,13 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   (unless pos (setq pos (point)))
   (let (end)
     (cond
-     ((get-text-property pos 'tag-boundary)
-      (setq end (get-text-property pos 'tag-boundary)))
+     ((get-text-property pos 'tag-end)
+      (setq end pos))
      ((or (get-text-property pos 'server-tag-name)
           (get-text-property pos 'client-tag-name))
-      (setq pos (web-mode-tag-beginning-position pos))
-      (when pos
-        (setq end (get-text-property pos 'tag-boundary))))
+      (setq end (next-single-property-change pos 'tag-end))
+      (when (not (get-text-property end 'tag-end))
+        (setq end nil)))
      (t
       (setq end nil))
      );cond
@@ -4843,7 +4858,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (setq pos (web-mode-element-parent-position)))
    ((eq (get-text-property pos 'client-tag-type) 'end)
     (setq pos (web-mode-tag-match-position pos))
-    (setq pos (if (get-text-property pos 'tag-boundary) pos nil)))
+    (setq pos (if (get-text-property pos 'tag-beg) pos nil)))
    ((member (get-text-property pos 'client-tag-type) '(start void))
     (setq pos (web-mode-tag-beginning-position pos)))
    (t
@@ -4909,14 +4924,14 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   (cond
    ((or (and (get-text-property pos 'server-side)
              (= pos (point-min)))
-        (get-text-property pos 'server-boundary))
+        (get-text-property pos 'server-beg))
     )
    ((and (> pos (point-min))
-         (get-text-property (1- pos) 'server-boundary))
+         (get-text-property (1- pos) 'server-beg))
     (setq pos (1- pos))
     )
    ((get-text-property pos 'server-side)
-    (setq pos (previous-single-property-change pos 'server-boundary))
+    (setq pos (previous-single-property-change pos 'server-beg))
     (setq pos (if pos (1- pos) (point-min)))
 ;;    (setq pos (if pos pos (point-min)))
     )
@@ -4931,18 +4946,12 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   "web-mode-server-block-end-position"
   (unless pos (setq pos (point)))
   (cond
-;;   ((get-text-property pos 'server-end)
-;;    )
-   ((get-text-property pos 'server-side)
-
-    (setq pos (or (get-text-property (web-mode-server-block-beginning-position pos) 'server-boundary)
-                  (point-max)))
-;;    (setq pos (or (next-single-property-change pos 'server-end)
-;;                  (point-max)))
-
-;;    (message "pos=%S" pos)
+   ((get-text-property pos 'server-end)
     )
-
+   ((get-text-property pos 'server-side)
+    (setq pos (or (next-single-property-change pos 'server-end)
+                  (point-max)))
+    )
    (t
     (setq pos nil))
    );cond
@@ -5016,7 +5025,9 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   (interactive)
   (unless pos (setq pos (point)))
   (setq pos (web-mode-tag-end-position pos))
-  (when pos (goto-char pos))
+  (when pos
+    (setq pos (1+ pos))
+    (goto-char pos))
   pos)
 
 (defun web-mode-start-tag-previous (&optional regexp)
@@ -5027,7 +5038,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (while continue
       (setq ret (re-search-backward regexp nil t))
       (if (or (null ret)
-              (get-text-property (point) 'tag-boundary)
+              (get-text-property (point) 'tag-beg)
               (and (or (eq (get-text-property (point) 'client-tag-type) 'start)
                        (eq (get-text-property (point) 'server-tag-type) 'start))))
           (setq continue nil))
@@ -5043,7 +5054,7 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
     (while continue
       (setq ret (re-search-backward regexp nil t))
       (if (or (null ret)
-              (get-text-property (point) 'tag-boundary))
+              (get-text-property (point) 'tag-beg))
           (setq continue nil))
       );while
     ret))
@@ -5052,9 +5063,9 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   "Fetch next tag. Might be HTML comment or server tag (ie. JSP)."
   (interactive)
   (unless pos (setq pos (point)))
-  (when (get-text-property pos 'tag-boundary)
+  (when (get-text-property pos 'tag-beg)
     (setq pos (1+ pos)))
-  (setq pos (next-single-property-change pos 'tag-boundary))
+  (setq pos (next-single-property-change pos 'tag-beg))
   (when pos (goto-char pos))
   pos)
 
@@ -5092,7 +5103,9 @@ with value 2, HTML lines beginning text are also indented (do not forget side ef
   (interactive)
   (unless pos (setq pos (point)))
   (setq pos (web-mode-element-end-position pos))
-  (when pos (goto-char pos))
+  (when pos
+    (setq pos (1+ pos))
+    (goto-char pos))
   pos)
 
 (defun web-mode-element-parent (&optional pos)

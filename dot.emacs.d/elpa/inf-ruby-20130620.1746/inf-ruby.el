@@ -6,7 +6,7 @@
 ;; URL: http://github.com/nonsequitur/inf-ruby
 ;; Created: 8 April 1998
 ;; Keywords: languages ruby
-;; Version: 20130618.416
+;; Version: 20130620.1746
 ;; X-Original-Version: 2.2.5
 
 ;;; Commentary:
@@ -406,6 +406,7 @@ Recommended for use when the program being executed enters
 interactive mode, i.e. hits a debugger breakpoint."
   (interactive)
   (setq buffer-read-only nil)
+  (buffer-enable-undo)
   (inf-ruby-mode))
 
 ;;;###autoload

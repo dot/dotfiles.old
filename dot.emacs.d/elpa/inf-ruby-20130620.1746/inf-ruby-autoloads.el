@@ -4,8 +4,8 @@
 
 
 ;;;### (autoloads (inf-ruby-switch-setup run-ruby inf-ruby inf-ruby-minor-mode
-;;;;;;  inf-ruby-setup-keybindings) "inf-ruby" "inf-ruby.el" (20929
-;;;;;;  23002 0 0))
+;;;;;;  inf-ruby-setup-keybindings) "inf-ruby" "inf-ruby.el" (20935
+;;;;;;  39693 0 0))
 ;;; Generated autoloads from inf-ruby.el
 
 (autoload 'inf-ruby-setup-keybindings "inf-ruby" "\
@@ -46,7 +46,7 @@ keymaps to bind `inf-ruby-switch-from-compilation' to `С-x C-q'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("inf-ruby-pkg.el") (20929 23002 624286
+;;;### (autoloads nil nil ("inf-ruby-pkg.el") (20935 39693 573880
 ;;;;;;  0))
 
 ;;;***
