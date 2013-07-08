@@ -83,7 +83,6 @@ no need to provide \(lisp-interaction-mode . emacs-lisp-mode\) association."
       (eq major-mode (with-helm-current-buffer major-mode))))
 
 (defun helm-dabbrev--collect (str limit ignore-case all)
-  (assert str nil (format "helm-dabbrev: Nothing to complete at point"))
   (let ((case-fold-search ignore-case)
         (search #'(lambda (pattern direction)
                     (declare (special result pos-before pos-after))
@@ -131,6 +130,7 @@ no need to provide \(lisp-interaction-mode . emacs-lisp-mode\) association."
           finally return (nreverse result))))
 
 (defun helm-dabbrev--get-candidates (abbrev)
+  (assert abbrev nil "[No Match]")
   (with-helm-current-buffer
     (let* ((dabbrev-get #'(lambda (str all-bufs)
                              (helm-dabbrev--collect
@@ -167,6 +167,7 @@ no need to provide \(lisp-interaction-mode . emacs-lisp-mode\) association."
   (declare (special dabbrev))
   (let ((dabbrev (thing-at-point 'symbol))
         (limits (bounds-of-thing-at-point 'symbol))
+        (enable-recursive-minibuffers t)
         (helm-execute-action-at-once-if-one t)
         (helm-quit-if-no-candidate t))
     (with-helm-show-completion (car limits) (cdr limits)

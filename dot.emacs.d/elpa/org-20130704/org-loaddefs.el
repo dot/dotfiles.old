@@ -14,7 +14,7 @@
 ;;;;;;  org-babel-pop-to-session-maybe org-babel-load-in-session-maybe
 ;;;;;;  org-babel-expand-src-block-maybe org-babel-view-src-block-info
 ;;;;;;  org-babel-execute-maybe org-babel-execute-safely-maybe) "ob-core"
-;;;;;;  "ob-core.el" "c6b7e0ff72cacb391712feb37af1d65f")
+;;;;;;  "ob-core.el" "e079d8aba02a20a56288a4ed1f86d604")
 ;;; Generated autoloads from ob-core.el
 
 (autoload 'org-babel-execute-safely-maybe "ob-core" "\
@@ -290,7 +290,7 @@ used to limit the exported source code blocks by language.
 ;;;;;;  org-search-view org-agenda-list org-batch-store-agenda-views
 ;;;;;;  org-store-agenda-views org-batch-agenda-csv org-batch-agenda
 ;;;;;;  org-agenda org-toggle-sticky-agenda) "org-agenda" "org-agenda.el"
-;;;;;;  (20945 3317))
+;;;;;;  (20945 36471))
 ;;; Generated autoloads from org-agenda.el
 
 (autoload 'org-toggle-sticky-agenda "org-agenda" "\
@@ -1098,7 +1098,7 @@ line directly before or after the table.
 ;;;;;;  org-table-justify-field-maybe org-table-align org-table-export
 ;;;;;;  org-table-import org-table-convert-region org-table-create
 ;;;;;;  org-table-create-or-convert-from-region org-table-create-with-table\.el)
-;;;;;;  "org-table" "org-table.el" "3e961305d6bd43b454c45b7afb94b9ce")
+;;;;;;  "org-table" "org-table.el" "62264557dc8b58dedacbfeabf2b684de")
 ;;; Generated autoloads from org-table.el
 
 (autoload 'org-table-create-with-table\.el "org-table" "\
@@ -1753,7 +1753,7 @@ replace any running timer.
 ;;;***
 
 ;;;### (autoloads (org-git-version org-release) "org-version" "org-version.el"
-;;;;;;  (20945 3327))
+;;;;;;  (20949 55243))
 ;;; Generated autoloads from org-version.el
 
 (autoload 'org-release "org-version" "\
@@ -1779,7 +1779,7 @@ The location of ODT styles.")
 ;;;;;;  org-run-like-in-org-mode turn-on-orgstruct++ turn-on-orgstruct
 ;;;;;;  orgstruct-mode org-global-cycle org-cycle org-mode org-clock-persistence-insinuate
 ;;;;;;  turn-on-orgtbl org-version org-babel-load-file org-babel-do-load-languages)
-;;;;;;  "org" "org.el" (20945 3317))
+;;;;;;  "org" "org.el" (20949 55135))
 ;;; Generated autoloads from org.el
 
 (autoload 'org-babel-do-load-languages "org" "\
@@ -2365,7 +2365,7 @@ Return output file name.
 
 ;;;### (autoloads (org-html-publish-to-html org-html-export-to-html
 ;;;;;;  org-html-convert-region-to-html org-html-export-as-html org-html-htmlize-generate-css)
-;;;;;;  "ox-html" "ox-html.el" "f1e4c18baea71968cd3c55545c988a15")
+;;;;;;  "ox-html" "ox-html.el" "751e5478ad7b9e60d378ab5634beb74c")
 ;;; Generated autoloads from ox-html.el
 
 (put 'org-html-head-include-default-style 'safe-local-variable 'booleanp)
@@ -2715,7 +2715,7 @@ Return output file's name.
 ;;;***
 
 ;;;### (autoloads (org-odt-convert org-odt-export-to-odt org-odt-export-as-odf-and-open
-;;;;;;  org-odt-export-as-odf) "ox-odt" "ox-odt.el" "927d0c385d526bee800d22e20c582e88")
+;;;;;;  org-odt-export-as-odf) "ox-odt" "ox-odt.el" "886d31e6c1e3d71396d1663a8be8ed51")
 ;;; Generated autoloads from ox-odt.el
 
 (put 'org-odt-preferred-output-format 'safe-local-variable 'stringp)

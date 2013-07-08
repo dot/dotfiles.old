@@ -4338,8 +4338,8 @@ If TABLE-TYPE is non-nil, also check for table.el-type tables."
 (defvar org-clock-heading ""
   "The heading of the current clock entry.")
 (defun org-clock-is-active ()
-  "Return non-nil if clock is currently running.
-The return value is actually the clock marker."
+  "Return the buffer where the clock is currently running.
+Return nil if no clock is running."
   (marker-buffer org-clock-marker))
 
 (eval-and-compile
@@ -4802,7 +4802,7 @@ Support for group tags is controlled by the option
 	   (if org-group-tags "on" "off")))
 
 (defun org-set-regexps-and-options-for-tags ()
-  "Precompute regular expressions used for tags in the current buffer."
+  "Precompute variables used for tags."
   (when (derived-mode-p 'org-mode)
     (org-set-local 'org-file-tags nil)
     (let ((re (org-make-options-regexp '("FILETAGS" "TAGS")))
@@ -4870,6 +4870,7 @@ Support for group tags is controlled by the option
 	  ;; Return a list with tag variables
 	  (list org-file-tags org-tag-alist org-tag-groups-alist))))))
 
+(defvar org-ota nil)
 (defun org-set-regexps-and-options ()
   "Precompute regular expressions used in the current buffer."
   (when (derived-mode-p 'org-mode)
@@ -4899,13 +4900,15 @@ Support for group tags is controlled by the option
 	  (while
 	      (or (and
 		   ext-setup-or-nil
+		   (not org-ota)
 		   (let (ret)
 		     (with-temp-buffer
 		       (insert ext-setup-or-nil)
-		       (let ((major-mode 'org-mode))
+		       (let ((major-mode 'org-mode) org-ota)
 			 (setq ret (save-match-data
 				     (org-set-regexps-and-options-for-tags)))))
 		     ;; Append setupfile tags to existing tags
+		     (setq org-ota t)
 		     (setq org-file-tags
 			   (delq nil (append org-file-tags (nth 0 ret)))
 			   org-tag-alist
@@ -5144,8 +5147,8 @@ Support for group tags is controlled by the option
 	    (mapcar (lambda (w) (substring w 0 -1))
 		    (list org-scheduled-string org-deadline-string
 			  org-clock-string org-closed-string)))
-      (org-compute-latex-and-related-regexp)
-      (org-set-font-lock-defaults))))
+      (setq org-ota nil)
+      (org-compute-latex-and-related-regexp))))
 
 (defun org-file-contents (file &optional noerror)
   "Return the contents of FILE, as a string."
@@ -5331,6 +5334,7 @@ The following commands are available:
     (setq buffer-display-table org-display-table))
   (org-set-regexps-and-options-for-tags)
   (org-set-regexps-and-options)
+  (org-set-font-lock-defaults)
   (when (and org-tag-faces (not org-tags-special-faces-re))
     ;; tag faces set outside customize.... force initialization.
     (org-set-tag-faces 'org-tag-faces org-tag-faces))
@@ -11585,8 +11589,8 @@ prefix argument (`C-u C-u C-u C-c C-w')."
 	      (if regionp
 		  (delete-region (point) (+ (point) (- region-end region-start)))
 		(delete-region
-		 (point-at-bol)
-		 (min (buffer-size) (1+ (org-end-of-subtree t))))))
+		 (and (org-back-to-heading t) (point))
+		 (min (buffer-size) (org-end-of-subtree t t) (point)))))
 	    (when (featurep 'org-inlinetask)
 	      (org-inlinetask-remove-END-maybe))
 	    (setq org-markers-to-move nil)
@@ -11925,30 +11929,21 @@ keywords relative to each registered export back-end."
     "TITLE:" "TODO:" "TYP_TODO:" "SELECT_TAGS:" "EXCLUDE_TAGS:"))
 
 (defcustom org-structure-template-alist
-  '(("s" "#+BEGIN_SRC ?\n\n#+END_SRC"
-     "<src lang=\"?\">\n\n</src>")
-    ("e" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE"
-     "<example>\n?\n</example>")
-    ("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE"
-     "<quote>\n?\n</quote>")
-    ("v" "#+BEGIN_VERSE\n?\n#+END_VERSE"
-     "<verse>\n?\n</verse>")
-    ("V" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM"
-     "<verbatim>\n?\n</verbatim>")
-    ("c" "#+BEGIN_CENTER\n?\n#+END_CENTER"
-     "<center>\n?\n</center>")
+  '(("s" "#+BEGIN_SRC ?\n\n#+END_SRC" "<src lang=\"?\">\n\n</src>")
+    ("e" "#+BEGIN_EXAMPLE\n?\n#+END_EXAMPLE" "<example>\n?\n</example>")
+    ("q" "#+BEGIN_QUOTE\n?\n#+END_QUOTE" "<quote>\n?\n</quote>")
+    ("v" "#+BEGIN_VERSE\n?\n#+END_VERSE" "<verse>\n?\n</verse>")
+    ("V" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM" "<verbatim>\n?\n</verbatim>")
+    ("c" "#+BEGIN_CENTER\n?\n#+END_CENTER" "<center>\n?\n</center>")
     ("l" "#+BEGIN_LaTeX\n?\n#+END_LaTeX"
      "<literal style=\"latex\">\n?\n</literal>")
-    ("L" "#+LaTeX: "
-     "<literal style=\"latex\">?</literal>")
+    ("L" "#+LaTeX: " "<literal style=\"latex\">?</literal>")
     ("h" "#+BEGIN_HTML\n?\n#+END_HTML"
      "<literal style=\"html\">\n?\n</literal>")
-    ("H" "#+HTML: "
-     "<literal style=\"html\">?</literal>")
-    ("a" "#+BEGIN_ASCII\n?\n#+END_ASCII")
-    ("A" "#+ASCII: ")
-    ("i" "#+INDEX: ?"
-     "#+INDEX: ?")
+    ("H" "#+HTML: " "<literal style=\"html\">?</literal>")
+    ("a" "#+BEGIN_ASCII\n?\n#+END_ASCII" "")
+    ("A" "#+ASCII: " "")
+    ("i" "#+INDEX: ?" "#+INDEX: ?")
     ("I" "#+INCLUDE: %file ?"
      "<include file=%file markup=\"?\">"))
   "Structure completion elements.
@@ -11963,9 +11958,10 @@ the default when the /org-mtags.el/ module has been loaded.  See also the
 variable `org-mtags-prefer-muse-templates'."
   :group 'org-completion
   :type '(repeat
-	  (string :tag "Key")
-	  (string :tag "Template")
-	  (string :tag "Muse Template")))
+	  (list
+	   (string :tag "Key")
+	   (string :tag "Template")
+	   (string :tag "Muse Template"))))
 
 (defun org-try-structure-completion ()
   "Try to complete a structure template before point.
@@ -14147,9 +14143,10 @@ When DOWNCASE is non-nil, expand downcased TAGS."
 	(modify-syntax-entry ?@ "w" stable)
 	(modify-syntax-entry ?_ "w" stable)
 	(while (and tml
-		    (string-match
-		     (concat "\\(?1:[+-]?\\)\\(?2:\\<"
-			     (regexp-opt tml) "\\>\\)") rtnmatch))
+		    (with-syntax-table stable
+		      (string-match
+		       (concat "\\(?1:[+-]?\\)\\(?2:\\<"
+			       (regexp-opt tml) "\\>\\)") rtnmatch)))
 	  (let* ((dir (match-string 1 rtnmatch))
 		 (tag (match-string 2 rtnmatch))
 		 (tag (if downcased (downcase tag) tag)))
@@ -23158,9 +23155,10 @@ Move to the next element at the same level, when possible."
 	 (let* ((elem (org-element-at-point))
 		(end (org-element-property :end elem))
 		(parent (org-element-property :parent elem)))
-	   (if (and parent (= (org-element-property :contents-end parent) end))
-	       (goto-char (org-element-property :end parent))
-	     (goto-char end))))))
+	   (cond ((and parent (= (org-element-property :contents-end parent) end))
+		  (goto-char (org-element-property :end parent)))
+		 ((integer-or-marker-p end) (goto-char end))
+		 (t (message "No element at point")))))))
 
 (defun org-backward-element ()
   "Move backward by one element.
@@ -23186,6 +23184,7 @@ Move to the previous element at the same level, when possible."
 	   (cond
 	    ;; Move to beginning of current element if point isn't
 	    ;; there already.
+	    ((null beg) (message "No element at point"))
 	    ((/= (point) beg) (goto-char beg))
 	    (prev-elem (goto-char (org-element-property :begin prev-elem)))
 	    ((org-before-first-heading-p) (goto-char (point-min)))
@@ -23537,6 +23536,8 @@ To get rid of the restriction, use \\[org-agenda-remove-restriction-lock]."
     (setq current-prefix-arg nil)
     (org-agenda-maybe-redo)))
 
+(defvar speedbar-file-key-map)
+(declare-function speedbar-add-supported-extension "speedbar" (extension))
 (eval-after-load "speedbar"
   '(progn
      (speedbar-add-supported-extension ".org")
@@ -23609,6 +23610,7 @@ To get rid of the restriction, use \\[org-agenda-remove-restriction-lock]."
        (org-show-context 'bookmark-jump)))
 
 ;; Make session.el ignore our circular variable
+(defvar session-globals-exclude)
 (eval-after-load "session"
   '(add-to-list 'session-globals-exclude 'org-mark-ring))
 
