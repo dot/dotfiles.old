@@ -6,7 +6,7 @@
 ;;;### (autoloads (inf-ruby-console-default inf-ruby-console-gem
 ;;;;;;  inf-ruby-console-rails inf-ruby-console-auto inf-ruby-switch-setup
 ;;;;;;  run-ruby inf-ruby inf-ruby-minor-mode inf-ruby-setup-keybindings)
-;;;;;;  "inf-ruby" "inf-ruby.el" (21009 28537 0 0))
+;;;;;;  "inf-ruby" "inf-ruby.el" (21014 60479 0 0))
 ;;; Generated autoloads from inf-ruby.el
 
 (autoload 'inf-ruby-setup-keybindings "inf-ruby" "\
@@ -70,7 +70,7 @@ Run racksh, custom console.rb, or just IRB, in DIR.
 
 ;;;***
 
-;;;### (autoloads nil nil ("inf-ruby-pkg.el") (21009 28537 560756
+;;;### (autoloads nil nil ("inf-ruby-pkg.el") (21014 60479 792948
 ;;;;;;  0))
 
 ;;;***

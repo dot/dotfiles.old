@@ -10,7 +10,7 @@
 ;; URL: http://github.com/nonsequitur/inf-ruby
 ;; Created: 8 April 1998
 ;; Keywords: languages ruby
-;; Version: 20130726.149
+;; Version: 20130820.2222
 ;; X-Original-Version: 2.3.0
 
 ;;; Commentary:
@@ -500,24 +500,25 @@ and the directory to run it from."
 The main module should be loaded automatically. If DIR contains a
 Gemfile, it should use the `gemspec' instruction."
   (interactive "D")
-  (let ((default-directory dir))
-    (if (file-exists-p "Gemfile")
-        (run-ruby "bundle exec irb" "gem")
-      (unless (file-exists-p "lib")
-        (error "The directory must contain a 'lib' subdirectory"))
-      (let (files)
-        (dolist (item (directory-files "lib"))
-          (unless (file-directory-p item)
-            (setq files (cons item files))))
-        (run-ruby (concat "irb -I lib"
-                          ;; If there are several files under 'lib'
-                          ;; (unlikely), load them all.
-                          (mapconcat
-                           (lambda (file)
-                             (concat " -r " (file-name-sans-extension file)))
-                           files
-                           ""))
-                  "gem")))))
+  (let* ((default-directory dir)
+         (base-command (if (file-exists-p "Gemfile")
+                           "bundle exec irb"
+                         "irb -I lib"))
+         files)
+    (unless (file-exists-p "lib")
+      (error "The directory must contain a 'lib' subdirectory"))
+    (dolist (item (directory-files "lib"))
+      (unless (file-directory-p item)
+        (setq files (cons item files))))
+    (run-ruby (concat base-command " "
+                      ;; If there are several files under 'lib'
+                      ;; (unlikely), load them all.
+                      (mapconcat
+                       (lambda (file)
+                         (concat " -r " (file-name-sans-extension file)))
+                       files
+                       ""))
+              "gem")))
 
 ;;;###autoload
 (defun inf-ruby-console-default (dir)
