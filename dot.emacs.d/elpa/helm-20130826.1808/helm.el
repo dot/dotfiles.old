@@ -2060,8 +2060,6 @@ if some when multiples sources are present."
     ;; with an helm-buffer staying around (visible),
     ;; we will have no cursor in this buffer when switching to it.
     (setq cursor-type t)
-    ;; Call burry-buffer whithout arg
-    ;; to be sure helm-buffer is removed from window.
     (bury-buffer)
     ;; Be sure we call this from helm-buffer.
     (helm-funcall-foreach 'cleanup))
@@ -2168,6 +2166,7 @@ Helm plug-ins are realized by this function."
                                                  candidate-fn source))))
                                    (and (listp result) result))))
                        (invalid-regexp nil)
+                       (wrong-type-argument nil)
                        (error (funcall type-error err)))))
     (when (and (processp candidates) (not candidate-proc))
       (warn "Candidates function `%s' should be called in a `candidates-process' attribute"
