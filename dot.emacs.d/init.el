@@ -64,6 +64,8 @@
 ; fonts
 (create-fontset-from-ascii-font "Ricty-16:weight=normal:slant=normal" nil "rictyl")
 (create-fontset-from-ascii-font "Ricty-13:weight=normal:slant=normal" nil "rictym")
+(create-fontset-from-ascii-font "Source Code Pro-14:weight=normal:slant=normal" nil "scpl")
+(create-fontset-from-ascii-font "Source Code Pro-13:weight=normal:slant=normal" nil "scpm")
 (set-fontset-font "fontset-rictyl"
                   'unicode
                   (font-spec :family "Ricty")
@@ -74,6 +76,17 @@
                   (font-spec :family "Ricty")
                   nil
                   'append)
+(set-fontset-font "fontset-scpl"
+                  'unicode
+                  (font-spec :family "Source Code Pro")
+                  nil
+                  'append)
+(set-fontset-font "fontset-scpm"
+                  'unicode
+                  (font-spec :family "Source Code Pro")
+                  nil
+                  'append)
+
 
 ;; 画面の解像度によりフレームサイズを変化させる
 (when window-system
@@ -82,11 +95,13 @@
         (set-frame-width (next-frame) 150)
         (set-frame-height (next-frame) 80)
         (add-to-list 'default-frame-alist '(font . "fontset-rictyl"))
+;        (add-to-list 'default-frame-alist '(font . "fontset-scpl"))
       )
       (progn
         (set-frame-width (next-frame) 120)
         (set-frame-height (next-frame) 60)
         (add-to-list 'default-frame-alist '(font . "fontset-rictym"))
+;        (add-to-list 'default-frame-alist '(font . "fontset-scpm"))
       )
   )
 )
