@@ -294,5 +294,15 @@
                 ("\\.thor$" . ruby-mode)
                 ("Rakefile" . ruby-mode)) auto-mode-alist))
 
+(require 'ruby-block)
+(ruby-block-mode t)
+(setq ruby-block-highlight-toggle t)
+
+
+;; feature-mode
+(setq feature-default-language "ja")
+(require 'feature-mode)
+(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+
 ;; slim-mode
 (require 'slim-mode)
