@@ -3,7 +3,7 @@
 
 ;; Copyright 2011-2013 François-Xavier Bois
 
-;; Version: 7.0.37
+;; Version: 7.0.39
 ;; Author: François-Xavier Bois <fxbois AT Google Mail Service>
 ;; Maintainer: François-Xavier Bois
 ;; Created: July 2011
@@ -48,7 +48,7 @@
   "Major mode for editing web templates:
    HTML files embedding parts (CSS/JavaScript)
    and blocks (PHP, Erb, Django/Twig, Smarty, JSP, ASP, etc.)."
-  :version "7.0.37"
+  :version "7.0.39"
   :group 'languages)
 
 (defgroup web-mode-faces nil
@@ -614,7 +614,13 @@ Must be used in conjunction with web-mode-enable-block-face."
 (defvar web-mode-buffer-highlighted nil
   "Is buffer highlighted.")
 
-(defvar web-mode-display-table nil
+;;    http://webdesign.about.com/od/localization/l/blhtmlcodes-ascii.htm
+(defvar web-mode-display-table
+  (let ((table (make-display-table)))
+    (aset table 9  (vector ?\xBB ?\t)) ;tab
+    (aset table 10 (vector ?\xB6 ?\n)) ;line feed
+    (aset table 32 (vector ?\xB7))
+    table)
   "Display table.")
 
 (defvar web-mode-hl-line-mode-flag nil
@@ -1582,11 +1588,11 @@ Must be used in conjunction with web-mode-enable-block-face."
   (cond
    ((boundp 'yas-after-exit-snippet-hook)
     (add-hook 'yas-after-exit-snippet-hook
-              '(lambda () (web-mode-buffer-refresh))
+              'web-mode-yasnippet-exit-hook
               t t))
    ((boundp 'yas/after-exit-snippet-hook)
     (add-hook 'yas/after-exit-snippet-hook
-              '(lambda () (web-mode-buffer-refresh))
+              'web-mode-yasnippet-exit-hook
               t t))
    )
 
@@ -1597,6 +1603,10 @@ Must be used in conjunction with web-mode-enable-block-face."
   (web-mode-scan-buffer)
 
   )
+
+(defun web-mode-yasnippet-exit-hook ()
+  "Yasnippet exit hook"
+  (web-mode-buffer-refresh))
 
 (defun web-mode-forward-sexp (&optional arg)
   "Move forward."
@@ -3376,16 +3386,16 @@ Must be used in conjunction with web-mode-enable-block-face."
 (defun web-mode-whitespaces-on ()
   "Show whitespaces."
   (interactive)
-  (when (null web-mode-display-table)
-    ;;    http://webdesign.about.com/od/localization/l/blhtmlcodes-ascii.htm
-    (setq web-mode-display-table (make-display-table))
-    (aset web-mode-display-table 9  (vector ?\xBB ?\t)) ;tab
-    (aset web-mode-display-table 10 (vector ?\xB6 ?\n)) ;line feed
-    (aset web-mode-display-table 32 (vector ?\xB7)) ;space
-    );when
+  ;;  (when (null web-mode-display-table)
+  ;;    (setq web-mode-display-table (make-display-table))
+  ;;    (aset web-mode-display-table 9  (vector ?\xBB ?\t)) ;tab
+  ;;    (aset web-mode-display-table 10 (vector ?\xB6 ?\n)) ;line feed
+  ;;    (aset web-mode-display-table 32 (vector ?\xB7)) ;space
+  ;;    );when
   (when web-mode-hl-line-mode-flag
     (global-hl-line-mode -1))
-  (setq buffer-display-table web-mode-display-table)
+  (when web-mode-display-table
+    (setq buffer-display-table web-mode-display-table))
   (setq web-mode-enable-whitespaces t))
 
 (defun web-mode-whitespaces-off ()
@@ -3411,8 +3421,9 @@ Must be used in conjunction with web-mode-enable-block-face."
   "Normalize buffer"
   (interactive)
   (save-excursion
-    (goto-char (point-min))
+
     (let ((continue t))
+      (goto-char (point-min))
       (when (and (not (get-text-property (point) 'tag-beg))
                  (not (web-mode-tag-next)))
         (setq continue nil)
@@ -3428,7 +3439,21 @@ Must be used in conjunction with web-mode-enable-block-face."
                  (point))
         (unless (web-mode-tag-next)
           (setq continue nil))
-        )
+        );while
+
+      ;; (goto-char (point-min))
+      ;; (setq continue t)
+      ;; (while continue
+      ;;   (if (web-mode-attr-next)
+      ;;       (progn
+      ;;         (replace-match (downcase (match-string 0)) t)
+      ;;         (message "tag: %S (%S)"
+      ;;                  (get-text-property (point) 'tag-name)
+      ;;                  (point))
+      ;;         )
+      ;;     (setq continue nil))
+      ;;   );while
+
       )))
 
 (defun web-mode-previous-usable-server-line ()
@@ -6823,6 +6848,17 @@ Must be used in conjunction with web-mode-enable-block-face."
     (setq pos (next-single-property-change pos 'tag-beg))
     (when pos (goto-char pos)))
   pos)
+
+(defun web-mode-attr-next (&optional pos)
+  "Fetch next tag. Might be HTML comment or server tag (ie. JSP)."
+  (interactive)
+  (let ((continue t))
+    (unless pos (setq pos (point)))
+    (if (eobp)
+        (setq pos nil)
+      (setq pos (next-single-property-change pos 'part-token))
+      (when pos (goto-char pos)))
+    pos))
 
 (defun web-mode-element-previous ()
   "Fetch previous element."

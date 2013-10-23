@@ -198,6 +198,7 @@
 (require 'popwin)
 (setq display-buffer-function 'popwin:display-buffer)
 (push '("^\*helm.+$" :regexp t :height 30) popwin:special-display-config)
+(setq max-lisp-eval-depth 10000)
 
 ;; bm
 (require 'bm)
