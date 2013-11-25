@@ -299,6 +299,8 @@
 (ruby-block-mode t)
 (setq ruby-block-highlight-toggle t)
 
+;; (custom-set-variables
+;;  '(ruby-insert-encoding-magic-comment nil))
 
 ;; feature-mode
 (setq feature-default-language "ja")
