@@ -1,56 +1,65 @@
 [user]
-  name = dot
-  email = shuhei.kondo@gmail.com
+    name = dot
+    email = shuhei.kondo@gmail.com
 [core]
-  excludesfile = ~/.gitignore
-  autoCRLF = false
-  quotepath = false
-  precomposeunicode = true
-  editor = emacsclient --alternate-editor vim
+    excludesfile = ~/.gitignore
+    autoCRLF = false
+    quotepath = false
+    precomposeunicode = true
+    editor = emacsclient --alternate-editor vim
 [color]
-  ui = auto
+    ui = auto
 [status]
-  diff = auto
+    diff = auto
 [branch]
-  diff = auto
+    diff = auto
 [push]
-  default = upstream
+    default = upstream
 [rebase]
-  stat = true
+    stat = true
 [pull]
-  rebase = true
+    rebase = true
 [merge]
-  ff = false
+    ff = false
 [branch]
-  autosetuprebase = always
+    autosetuprebase = always
 [alias]
-  ci = commit
-  s = status -sb
-  st = status --ignore-submodules=dirty
-  co = checkout
-  url = config --get remote.origin.url
-  pr = pull --rebase
-  rbm = rebase master
-  lp = log -p
-  ls = log --stat
-  lg= log --decorate
-  lgg= log --decorate --oneline --graph
-  wd= diff --word-diff
+    ci = commit
+    s = status -sb
+    st = status --ignore-submodules=dirty
+    co = checkout
+    url = config --get remote.origin.url
+    pr = pull --rebase
+    rbm = rebase master
+    lp = log -p
+    ls = log --stat
+    lg= log --decorate
+    lgg= log --decorate --oneline --graph
+    wd= diff --word-diff
 
-  b = branch
-  bm = branch --merged
-  bnm = branch --no-merged
+    b = branch -v -v
+    bm = branch --merged
+    bnm = branch --no-merged
 
-  d = diff
-  ds = diff --staged
+    d = diff --patience
+    ds = diff --staged
 
-  fo = fetch origin
-  ro = rebase origin
-  fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
+    fo = fetch origin
+    ro = rebase origin
+    fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
 [web]
-  browser = google-chrome
+    browser = google-chrome
 [browse-remote "github.com"]
-  top = https://{host}/{path}
-  ref = https://{host}/{path}/tree/{short_ref}
-  rev = https://{host}/{path}/commit/{commit}
-  file = "https://{host}/{path}/blob/{short_rev}/{file}{line && \"#L%d\" % line}"
+    top = https://{host}/{path}
+    ref = https://{host}/{path}/tree/{short_ref}
+    rev = https://{host}/{path}/commit/{commit}
+    file = "https://{host}/{path}/blob/{short_rev}/{file}{line && \"#L%d\" % line}"
+[credential]
+    helper = osxkeychain
+[pager]
+    log = `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight | less
+    show = `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight | less
+    diff = `brew --prefix git`/share/git-core/contrib/diff-highlight/diff-highlight | less
+[url "git@github.com:"]
+    pushinsteadof = "https://github.com/"
+    pushinsteadof = "git://github.com/"

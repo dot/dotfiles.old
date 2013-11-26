@@ -32,12 +32,15 @@ path=( ~/bin \
     /bin /sbin /usr/bin /usr/sbin \
 )
 
-fpath=(/usr/local/share/zsh/site-functions ~/.functions ~/.functions/zsh-completions ${fpath})
+fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh/site-functions ~/.functions ~/.functions/zsh-completions ${fpath})
 
 #list color
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 export ZLS_COLORS=$LS_COLORS
+
+# add cert file see. brew info curl-ca-cert for rubygems
+export SSL_CERT_FILE=/usr/local/opt/curl-ca-bundle/share/ca-bundle.crt
 
 # local settings
 if [ -e $HOME/.zshlocalenv ]; then

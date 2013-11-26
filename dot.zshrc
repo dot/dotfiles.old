@@ -155,7 +155,7 @@ if [[ -f ~/.rbenv/completions/rbenv.zsh ]]; then
    source ~/.rbenv/completions/rbenv.zsh
 fi
 
-. /usr/local/etc/profile.d/z.sh
+. `brew --prefix`/etc/profile.d/z.sh
 autoload -Uz add-zsh-hook
 function _precmd () {
     _z --add "$(pwd -P)"
@@ -170,3 +170,6 @@ source ~/.functions/zaw/zaw.zsh
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+# added by travis gem
+[ -f /Users/shuhei/.travis/travis.sh ] && source /Users/shuhei/.travis/travis.sh
