@@ -161,6 +161,7 @@
 (require 'helm-ls-git)
 (require 'helm-c-moccur)
 (helm-mode 1)
+(helm-descbinds-mode)
 (setq helm-idle-delay 0.01)
 (setq helm-input-idle-delay 0.01)
 (setq helm-candidate-number-limit 100)
