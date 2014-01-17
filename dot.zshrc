@@ -50,6 +50,7 @@ precmd () {
     psvar=()
     vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+    echo -ne "\033]0;${USER}@${HOSTNAME%%.*}\007"
 }
 
 RUBY_INFO=$'%{$RUBY_COLOR%}$(ruby_prompt)%{${reset_color}%}'
@@ -172,4 +173,8 @@ source ~/.functions/zaw/zaw.zsh
 export PATH="/usr/local/heroku/bin:$PATH"
 
 # added by travis gem
-[ -f /Users/shuhei/.travis/travis.sh ] && source /Users/shuhei/.travis/travis.sh
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+
+if [ ~/.zshrc -nt ~/.zshrc.zwc ]; then
+   zcompile ~/.zshrc
+fi

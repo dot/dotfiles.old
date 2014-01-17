@@ -10,6 +10,7 @@ export PAGER="lv -c"
 export LV='-z -Ia -Ou8 -c'
 #export EDITOR='vim'
 export EDITOR="emacsclient --alternate-editor vim"
+export HOSTNAME=`scutil --get LocalHostName`
 
 # locale
 export LANG="ja_JP.UTF-8"
@@ -32,7 +33,7 @@ path=( ~/bin \
     /bin /sbin /usr/bin /usr/sbin \
 )
 
-fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh/site-functions ~/.functions ~/.functions/zsh-completions ${fpath})
+fpath=(/usr/local/share/zsh/site-functions ~/.functions ~/.functions/zsh-completions ${fpath})
 
 #list color
 export LSCOLORS=gxfxcxdxbxegedabagacad
