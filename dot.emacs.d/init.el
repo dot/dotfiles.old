@@ -22,7 +22,7 @@
 ;; keys
 ; swap cmd <-> opt(meta)
 (setq ns-command-modifier (quote meta))
-(setq ns-alternate-modifier (quote super))
+;(setq ns-alternate-modifier (quote super))
 ; input mode
 (global-set-key "\C-o" 'toggle-input-method)
 ; to swap C-h and Backspace
