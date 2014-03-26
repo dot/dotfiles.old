@@ -189,10 +189,25 @@
 ; diable auto complete
 (custom-set-variables '(helm-ff-auto-update-initial-value nil))
 ; C-h in backspace
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
 (define-key helm-c-read-file-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
 ; tab is completion
+(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 (define-key helm-c-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 (define-key helm-c-read-file-map (kbd "C-w") 'helm-find-files-down-one-level)
+;; tab-tab 
+(defadvice helm-ff-kill-or-find-buffer-fname (around execute-only-if-exist activate)
+  "Execute command only if CANDIDATE exists"
+  (when (file-exists-p candidate)
+    ad-do-it))
+
+;; Emulate `kill-line' in helm minibuffer
+(setq helm-delete-minibuffer-contents-from-point t)
+(defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
+  "Emulate `kill-line' in helm minibuffer"
+  (kill-new (buffer-substring (point) (field-end))))
 
 
 ;; popwin
@@ -325,3 +340,8 @@
 
 ;; slim-mode
 (require 'slim-mode)
+
+
+;; theme spacegray
+(load-theme 'spacegray t)
+;(global-linum-mode 1)
