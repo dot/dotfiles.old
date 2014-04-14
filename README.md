@@ -1,1 +1,1 @@
-[dot/dotfiles] is new dotfiles repository
+dot/dotfiles is new dotfiles repository
